@@ -1,0 +1,74 @@
+@import "~bourbon";
+@import "_config";
+@import "_mixin";
+@import "_extend";
+
+// reset / normalize
+@import "lib/_reset";
+
+// reset box-sizing
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+
+// web fonts
+// webpackのaliasで解決するために、`~fonts/...`というパスにする
+@include font-face("Neue Frutiger", "~fonts/NeueFrutiger-Book", $file-formats: eot woff2 woff);
+@include font-face("Neue Frutiger", "~fonts/NeueFrutiger-Bold", bold, $file-formats: eot woff2 woff);
+@include font-face("Noto Sans Japanese", "~fonts/NotoSansJP-DemiLight", $file-formats: eot woff);
+@include font-face("Noto Sans Japanese", "~fonts/NotoSansJP-Bold", bold, $file-formats: eot woff);
+
+
+html {
+  font-size: 62.5%;
+}
+
+
+body {
+  background-color: $bgColor_default;
+  font-family: $fontFamily_default;
+  font-size: $fontSize_default;
+  line-height: $lineHeight_default;
+  letter-spacing: $letterSpacing_default;
+  font-kerning: normal;
+  font-feature-settings: "palt" on;
+  color: $textColor_default;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: unset;
+
+  & ::-moz-selection {
+    background-color: rgba($textColor_default, 0.85);
+    color: $bgColor_default;
+  }
+  & ::selection {
+    background-color: rgba($textColor_default, 0.85);
+    color: $bgColor_default;
+  }
+
+  @include mq($mq_retina) {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @include mq($mq_spLarge) {
+    font-size: $fontSize_default_sp;
+  }
+}
+
+
+a {
+  @extend %link;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: $lineHeight_title;
+}

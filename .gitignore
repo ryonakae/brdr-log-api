@@ -1,0 +1,14 @@
+.DS_Store
+
+logs
+*.log
+npm-debug.log*
+
+.env
+backup
+
+node_modules
+theme/public
+_sprite.*
+
+!.gitkeep

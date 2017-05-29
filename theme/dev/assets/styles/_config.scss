@@ -1,0 +1,78 @@
+// color
+$color_key: #162140;
+
+
+// bg color;
+$bgColor_default: #fff;
+
+
+// border color;
+$borderColor_default: rgba(#fff, 0.05);
+
+
+// text color;
+$textColor_default: #162140;
+$textColor_gray: rgba($textColor_default, 0.5);
+
+
+// font family;
+$fontFamily_default: "Neue Frutiger", "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+
+
+// font size;
+$fontSize_default: 1.3rem;
+$fontSize_default_sp: 1.2rem;
+$fontSize_small: 1.1rem;
+$fontSize_small_sp: 1.0rem;
+$fontSize_h1: 2.8rem;
+$fontSize_h2: 2.2rem;
+$fontSize_h3: 1.8rem;
+$fontSize_h4: 1.5rem;
+$fontSize_h5: 1.3rem;
+$fontSize_h6: 1.3rem;
+
+
+// line height;
+$lineHeight_default: 1.8;
+$lineHeight_title: 1.1;
+$lineHeight_itemTitle: 1.3;
+
+
+// letter spacing;
+$letterSpacing_default: 0.07em;
+$letterSpacing_title: 0.15em;
+$letterSpacing_itemTitle: 0.15em;
+
+
+// media query;
+$mq_pcXLarge:     "only screen and (max-width: 1599px)";
+$mq_pcLarge:     "only screen and (max-width: 1399px)";
+$mq_pc:          "only screen and (max-width: 1199px)";
+$mq_tabletLarge: "only screen and (max-width: 979px)";
+$mq_tablet:      "only screen and (max-width: 899px)";
+$mq_tabletSmall: "only screen and (max-width: 759px)";
+$mq_spLarge:     "only screen and (max-width: 639px)";
+$mq_sp:          "only screen and (max-width: 399px)";
+$mq_spSmall:     "only screen and (max-width: 349px)";
+$mq_retina:      "only screen and (-webkit-min-device-pixel-ratio: 1.5),
+                  only screen and (min--moz-device-pixel-ratio: 1.5),
+                  only screen and (-o-min-device-pixel-ratio: 1.5/1),
+                  only screen and (min-resolution: 144dpi),
+                  only screen and (min-resolution: 1.5dppx)";
+
+
+// transition;
+$duration: 1000ms;
+$duration_quick: 400ms;
+$easing: $ease-out-expo;
+
+
+// margin
+$margin_page: 40px;
+$margin_page_sp: 20px;
+$margin_post: 15px;
+$margin_post_sp: 10px;
+
+
+// width
+$max_page_width: 1600px;

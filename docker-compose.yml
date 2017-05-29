@@ -1,0 +1,90 @@
+version: '2'
+services:
+  nginx:
+    image: nginx:1.13.0-alpine
+    container_name: brdr-log-nginx
+    ports:
+      - 8082:80
+    restart: always
+    tty: false
+    env_file: .env
+    links:
+      - wordpress
+      - mysql:mysql
+    volumes_from:
+      - wordpress
+    volumes:
+      - ./setting/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./setting/nginx/conf:/etc/nginx/conf/:ro
+      - ./setting/nginx/htpasswd:/etc/nginx/htpasswd/:ro
+    networks:
+      - front
+      - back-brdr-log
+
+  wordpress:
+    build: ./docker/wordpress
+    container_name: brdr-log-wordpress
+    ports:
+      - 9002:9000
+    restart: always
+    tty: false
+    environment:
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_TABLE_PREFIX=wp_
+    env_file: .env
+    links:
+      - mysql:mysql
+    volumes_from:
+      - data
+    volumes:
+      - ./setting/php:/usr/local/etc/php:ro
+      - ./theme/public:/var/www/html/wp-content/themes/l:ro
+    networks:
+      - back-brdr-log
+
+  mysql:
+    image: mysql:5.7.18
+    container_name: brdr-log-mysql
+    ports:
+      - 13308:3306
+    restart: always
+    tty: false
+    env_file: .env
+    volumes_from:
+      - data
+    networks:
+      - back-brdr-log
+
+  data:
+    image: busybox:1.26.2-musl
+    container_name: brdr-log-data
+    volumes:
+      - brdr-log-data-db:/var/lib/mysql
+      - brdr-log-data-wp:/var/www/html
+      - ./backup:/backup
+    networks:
+      - back-brdr-log
+
+  wpcli:
+    image: tatemz/wp-cli
+    container_name: brdr-log-wpcli
+    volumes_from:
+      - data
+    links:
+      - mysql:mysql
+    entrypoint: wp
+    command: '--info'
+    networks:
+      - back-brdr-log
+
+volumes:
+  brdr-log-data-db:
+    external: true
+  brdr-log-data-wp:
+    external: true
+
+networks:
+  front:
+    external: true
+  back-brdr-log:
+    external: true
