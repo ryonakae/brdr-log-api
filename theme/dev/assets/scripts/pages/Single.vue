@@ -13,7 +13,6 @@
 
 <script>
 import moment from 'moment';
-import {resizeManager} from '../app';
 
 export default {
   data() {

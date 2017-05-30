@@ -14,5 +14,9 @@ export default {
 
   SET_PER_PAGE(state, count) {
     state.perPage = count;
+  },
+
+  CHANGE_INFINITE_SCROLL_LOCK(state, boolean) {
+    state.infiniteScrollLock = boolean;
   }
 };

@@ -61,38 +61,30 @@ export default {
   },
 
   // スクロールでさらに記事一覧を取得
-  initInfiniteScroll(context, options) {
-    let lock = false;
+  infiniteScroll(context, options) {
+    console.log('fire infiniteScroll');
+    const documentHeight = $(document).height();
 
-    options.scrollManager.add(onScroll);
+    // スクロールが7割位になったら次のポストロード
+    if (options.scrollManager.scrollBottom > documentHeight * 0.7) {
+      if (context.state.infiniteScrollLock) return;
 
-    function onScroll(){
-      // options.pathと現在のpathが同じ時だけ実行
-      if (options.path === location.pathname) {
-        const documentHeight = $(document).height();
+      context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
-        // スクロールが7割位になったら次のポストロード
-        if (options.scrollManager.scrollBottom > documentHeight * 0.7) {
-          if (lock) return;
-
-          lock = true;
-
-          context.dispatch('getAllPosts', {per_page:context.state.perPage, offset:context.state.allPostData.length})
-            .then((result)=>{
-              // 現在のallPostDataとresultを結合する
-              const newData = context.state.allPostData.concat(result);
-              console.log('infiniteScroll', newData);
-              // 結合した配列をallPostDataにセット
-              return context.dispatch('setAllPost', newData);
-            })
-            .then(()=>{
-              lock = false;
-            })
-            .catch((err)=>{
-              lock = true;
-            });
-        }
-      }
+      context.dispatch('getAllPosts', {per_page:context.state.perPage, offset:context.state.allPostData.length})
+        .then((result)=>{
+          // 現在のallPostDataとresultを結合する
+          const newData = context.state.allPostData.concat(result);
+          console.log('infiniteScroll', newData);
+          // 結合した配列をallPostDataにセット
+          return context.dispatch('setAllPost', newData);
+        })
+        .then(()=>{
+          context.commit('CHANGE_INFINITE_SCROLL_LOCK', false);
+        })
+        .catch((err)=>{
+          context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
+        });
     }
   },
 

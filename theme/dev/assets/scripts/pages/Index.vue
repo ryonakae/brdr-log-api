@@ -49,16 +49,19 @@ export default {
           this.$store.dispatch('setAllPost', result);
         })
         .then(()=>{
-          // infiniteScrollを有効化
-          this.$store.dispatch('initInfiniteScroll', {
-            scrollManager: scrollManager,
-            path: '/'
+          scrollManager.add('index.infiniteScroll', ()=>{
+            this.$store.dispatch('infiniteScroll', {scrollManager: scrollManager});
           });
         });
     }
     else {
       console.log('allPostData already exsist');
     }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    scrollManager.remove('index.infiniteScroll');
+    next();
   }
 };
 </script>

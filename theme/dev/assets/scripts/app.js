@@ -8,12 +8,7 @@ export const util = new Util();
 export const resizeManager = new ResizeManager();
 export const scrollManager = new ScrollManager({
   resizeManager: resizeManager,
-  util: util,
-  nameSpace: 'scrollManager'
-});
-
-resizeManager.add('func1', ()=>{
-  console.log(resizeManager.getWindowWidth, resizeManager.getWindowHeight);
+  util: util
 });
 
 // import vue library

@@ -1,8 +1,10 @@
 export default class ResizeManager {
   constructor(){
+    this.$window = null;
+
     this.windowHeight = 0;
     this.windowWidth = 0;
-    this.functions = [];
+    this.functions = {};
     this.fps = 60;
     this.isResizing = false;
 
@@ -10,19 +12,19 @@ export default class ResizeManager {
   }
 
   init(){
+    this.$window = $(window);
+
     this.update();
 
-    window.addEventListener('resize', this.onResize.bind(this), false);
-    window.addEventListener('orientationchange', this.onResize.bind(this), false);
+    this.$window.on('resize.resizeManager orientationchange.resizeManager', this.onResize.bind(this));
   }
 
   add(name, func){
     this.functions[name] = func;
   }
 
-  remove(func){
-    // not working
-    this.functions.splice(func, 1);
+  remove(name){
+    delete this.functions[name];
   }
 
   onResize(){
@@ -42,10 +44,11 @@ export default class ResizeManager {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
 
-    console.log(this.functions['func1']);
-    // for (let i = 0; i < this.functions.length; i++) {
-    //   this.functions[i]();
-    // }
+    if (Object.keys(this.functions).length > 0) {
+      for (const func in this.functions) {
+        this.functions[func]();
+      }
+    }
 
     this.isResizing = false;
   }
