@@ -12,6 +12,10 @@ export const scrollManager = new ScrollManager({
   nameSpace: 'scrollManager'
 });
 
+resizeManager.add('func1', ()=>{
+  console.log(resizeManager.getWindowWidth, resizeManager.getWindowHeight);
+});
+
 // import vue library
 import Vue from 'vue';
 import VueRouter from 'vue-router';

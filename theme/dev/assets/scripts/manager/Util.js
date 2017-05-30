@@ -50,4 +50,11 @@ export default class Util {
   getNow() {
     return Math.floor( new Date().getTime() / 1000 );
   }
+
+  // Promise用wait関数
+  wait(delay) {
+    return new Promise((resolve, reject)=>{
+      setTimeout(resolve, delay);
+    });
+  }
 }
