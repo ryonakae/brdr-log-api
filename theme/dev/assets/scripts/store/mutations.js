@@ -1,3 +1,5 @@
+'use strict';
+
 // 同期、単一の処理
 export default {
   SET_PAGE_TITLE(state, title) {

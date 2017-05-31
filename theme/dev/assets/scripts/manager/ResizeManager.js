@@ -1,3 +1,7 @@
+'use strict';
+
+const $ = require('jquery');
+
 export default class ResizeManager {
   constructor(){
     this.$window = null;

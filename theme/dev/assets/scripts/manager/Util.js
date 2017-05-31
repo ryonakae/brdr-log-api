@@ -1,5 +1,6 @@
 'use strict';
 
+import 'es6-promise/auto';
 import UAParser from 'ua-parser-js';
 const parser = new UAParser();
 const ua = parser.getResult();

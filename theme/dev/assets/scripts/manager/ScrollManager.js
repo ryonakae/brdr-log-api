@@ -1,4 +1,7 @@
-// require jQuery, resizeManager & util
+'use strict';
+
+const $ = require('jquery');
+
 export default class ScrollManager {
   constructor(options){
     this.$window = null;

@@ -1,6 +1,7 @@
 'use strict';
 
 // import, initialize and export manager
+import 'es6-promise/auto';
 import Util from './manager/Util';
 import ResizeManager from './manager/ResizeManager';
 import ScrollManager from './manager/ScrollManager';

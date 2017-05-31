@@ -6,9 +6,8 @@
 </template>
 
 <script>
+const $ = require('jquery');
 import HeaderComponent from './components/Header.vue';
-
-// import, initialize and export manager
 import {util} from './app';
 import {resizeManager} from './app';
 import {scrollManager} from './app';
