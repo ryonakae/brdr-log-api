@@ -1,17 +1,26 @@
 <template>
-  <header :class="$style.header">
-    <router-link :to="'/'" tag="h1" :class="$style.title">{{siteTitle}}</router-link>
+  <header>
+    <router-link :to="'/'" tag="h1" :class="$style.title">
+      <svg :viewBox="logo.viewBox">
+        <use :xlink:href="'#'+logo.id"></use>
+      </svg>
+    </router-link>
 
-    <ul :class="$style.navi">
-      <router-link :to="'/about'" tag="li" :class="$style.naviItem">About</router-link>
+    <ul>
+      <router-link :to="'/about'" tag="li">About</router-link>
     </ul>
   </header>
 </template>
 
 <script>
+import logo from 'images/logo.svg';
+console.log(logo);
+
 export default {
   data() {
-    return {};
+    return {
+      logo: logo
+    };
   },
 
   computed: {
@@ -30,4 +39,11 @@ export default {
 @import "~bourbon";
 @import "~styles/config";
 @import "~styles/mixin";
+
+.title {
+  svg {
+    width: 22px;
+    height: 30px;
+  }
+}
 </style>

@@ -19,12 +19,17 @@ export default {
       // images
       {
         test: /\.(jpg|png|gif)$/,
-        loader: 'url-loader?emitFile=false&limit=200000&name=' + filePath.theme.images + '[name].[ext]',
+        loader: 'url-loader?emitFile=false&limit=200000&name=' + filePath.theme.images + '[name].[ext]'
+      },
+      // images(svg)
+      {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader'
       },
       // webfont
       {
-        test: /\.(otf|eot|svg|ttf|woff|woff2)$/,
-        loader: 'url-loader?emitFile=false&limit=200000&name=' + filePath.theme.fonts + '[name].[ext]',
+        test: /\.(otf|eot|ttf|woff|woff2)$/,
+        loader: 'url-loader?emitFile=false&limit=200000&name=' + filePath.theme.fonts + '[name].[ext]'
       },
       // eslint
       {
