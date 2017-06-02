@@ -19,7 +19,7 @@ export default {
   },
 
   theme: {
-    images: 'wp-content/themes/d/assets/images/',
-    fonts: 'wp-content/themes/d/assets/fonts/',
+    images: 'wp-content/themes/l/assets/images/',
+    fonts: 'wp-content/themes/l/assets/fonts/',
   }
 };
