@@ -60,5 +60,5 @@ add_action('load-post-new.php', 'disable_visual_editor_mypost');
 function disable_autosave() {
   wp_deregister_script('autosave');
 }
-add_action( 'wp_print_scripts', 'disable_autosave' );
+add_action('wp_print_scripts', 'disable_autosave');
 ?>

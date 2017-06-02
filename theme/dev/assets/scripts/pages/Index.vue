@@ -1,18 +1,21 @@
 <template>
-  <div>
-    <ul>
-      <li v-if="hasPosts" v-for="post in posts" :key="post.id">
-        <router-link :to="'/post/'+post.id" tag="h1" v-html="post.title.rendered"></router-link>
+  <div :class="$style.page">
+    <ul v-if="hasPosts" :class="$style.list">
+      <li v-for="post in posts" :key="post.id" :class="$style.item">
+        <post-item-component :post="post" @click="setCurrentPost(post)"></post-item-component>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import PostItemComponent from '../components/PostItem.vue';
 import {scrollManager} from '../app';
 
 export default {
-  components: {},
+  components: {
+    PostItemComponent
+  },
 
   computed: {
     siteUrl() {
@@ -29,12 +32,27 @@ export default {
 
     perPage() {
       return this.$store.state.perPage;
+    }
+  },
+
+  methods: {
+    setCurrentPost(post) {
+      if (this.$route.path === '/') {
+        this.$store.dispatch('setCurrentPost', post);
+      }
+    },
+
+    clearCurrentPost() {
+      if (this.$route.path === '/') {
+        this.$store.dispatch('clearCurrentPost');
+      }
     },
   },
 
-  methods: {},
-
-  created() {},
+  created() {
+    // currentPostDataを空にする
+    this.clearCurrentPost();
+  },
 
   mounted() {
     // ページタイトルを変更
@@ -70,4 +88,20 @@ export default {
 @import "~bourbon";
 @import "~styles/config";
 @import "~styles/mixin";
+
+.page {
+  max-width: $width_page;
+  margin: 0 auto $margin_page;
+}
+
+.list {
+  padding-top: 200px;
+}
+
+.item {
+  margin-top: 50px;
+  &:first-child {
+    margin-top: 0px;
+  }
+}
 </style>

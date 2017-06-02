@@ -72,7 +72,7 @@ export default {
 
   filters: {
     moment(date) {
-      return moment(date).format('YYYY');
+      return moment(date).format('YYYY.M.D');
     }
   },
 
