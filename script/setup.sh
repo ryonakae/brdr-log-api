@@ -4,7 +4,14 @@
 docker-compose run --rm wpcli core language install ja
 docker-compose run --rm wpcli core language activate ja
 
-# remove default plugin
+# delete default theme
+docker-compose run --rm wpcli theme delete \
+  twentyfifteen \
+  twentyseventeen \
+  twentysixteen
+
+
+# delete default plugin
 docker-compose run --rm wpcli plugin delete \
   akismet \
   hello
