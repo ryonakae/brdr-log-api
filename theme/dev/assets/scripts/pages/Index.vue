@@ -95,13 +95,6 @@ export default {
 }
 
 .list {
-  padding-top: 200px;
-}
-
-.item {
-  margin-top: 50px;
-  &:first-child {
-    margin-top: 0px;
-  }
+  margin-top: 200px;
 }
 </style>

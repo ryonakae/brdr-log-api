@@ -12,6 +12,7 @@ $borderColor_default: rgba(#fff, 0.05);
 
 // text color;
 $textColor_default: #162140;
+$textColor_inverse: #fff;
 $textColor_gray: rgba($textColor_default, 0.5);
 
 
@@ -20,10 +21,10 @@ $fontFamily_default: "Neue Frutiger", "Avenir Next", Avenir, "Helvetica Neue", H
 
 
 // font size;
-$fontSize_default: 1.3rem;
-$fontSize_default_sp: 1.2rem;
-$fontSize_small: 1.1rem;
-$fontSize_small_sp: 1.0rem;
+$fontSize_default: 1.6rem;
+$fontSize_default_sp: 1.5rem;
+$fontSize_small: 1.2rem;
+$fontSize_small_sp: 1.1rem;
 $fontSize_h1: 2.8rem;
 $fontSize_h2: 2.2rem;
 $fontSize_h3: 1.8rem;
@@ -33,12 +34,13 @@ $fontSize_h6: 1.3rem;
 
 
 // line height;
-$lineHeight_default: 1.9;
+$lineHeight_default: 1.75;
 $lineHeight_title: 1.25;
 
 
 // letter spacing;
-$letterSpacing_default: 0.09em;
+$letterSpacing_default: 0.1em;
+$letterSpacing_title: 0.13em;
 
 
 // media query;
@@ -61,7 +63,7 @@ $mq_retina:      "only screen and (-webkit-min-device-pixel-ratio: 1.5),
 // transition;
 $duration: 1000ms;
 $duration_quick: 400ms;
-$easing: $ease-out-expo;
+$easing: $ease-out-quart;
 
 
 // margin

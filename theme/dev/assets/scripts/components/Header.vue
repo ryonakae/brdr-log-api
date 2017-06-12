@@ -7,7 +7,9 @@
     </router-link>
 
     <ul :class="$style.navi">
-      <router-link :to="'/about'" tag="li">About</router-link>
+      <li :class="$style.link">
+        <a href="//brdr.jp" target="_blank">BRDR</a>
+      </li>
     </ul>
   </header>
 </template>
@@ -63,15 +65,15 @@ export default {
 .navi {
   float: right;
   margin-top: 6px;
+}
 
-  li {
-    margin-left: 30px;
-    pointer-events: auto;
-    font-size: 1.2rem;
+.link {
+  margin-left: 30px;
+  pointer-events: auto;
+  font-size: $fontSize_small;
 
-    &:first-child {
-      margin-left: 0;
-    }
+  &:first-child {
+    margin-left: 0;
   }
 }
 </style>

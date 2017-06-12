@@ -1,13 +1,13 @@
 <template>
-  <article v-if="hasPost">
-    <h1 v-html="post.title.rendered"></h1>
-    <div v-if="hasContent" v-html="post.content.rendered"></div>
-    <div>
+  <article v-if="hasPost" :class="$style.article">
+    <h1 :class="$style.title" v-html="post.title.rendered"></h1>
+    <div :class="$style.info">
       <div>{{post.date | moment}}</div>
       <ul v-if="hasTags">
         <li v-for="tag in tags" :key="tag.id">{{tag.name}}</li>
       </ul>
     </div>
+    <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered"></div>
   </article>
 </template>
 
@@ -107,4 +107,23 @@ export default {
 @import "~styles/config";
 @import "~styles/mixin";
 @import "~styles/extend";
+
+.article {
+  max-width: $width_content;
+  margin: 200px auto $margin_page;
+}
+
+.title {
+  font-size: $fontSize_h1;
+}
+
+.info {
+  margin-top: 25px;
+  font-size: $fontSize_small;
+}
+
+.content {
+  margin-top: 70px;
+  @extend %content;
+}
 </style>
