@@ -14,11 +14,12 @@ $borderColor_default: rgba($color_key, 0.08);
 // text color;
 $textColor_default: $color_key;
 $textColor_inverse: #fff;
-$textColor_gray: rgba($color_key, 0.3);
+$textColor_gray: rgba($color_key, 0.5);
 
 
 // font family;
 $fontFamily_default: "Neue Frutiger", "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+$fontFamily_code: "Source Code Pro", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
 
 
 // font size;
@@ -32,16 +33,20 @@ $fontSize_h3: 1.8rem;
 $fontSize_h4: 1.5rem;
 $fontSize_h5: 1.3rem;
 $fontSize_h6: 1.3rem;
+$fontSize_code: 1.4rem;
+$fontSize_code_sp: 1.3rem;
 
 
 // line height;
 $lineHeight_default: 1.75;
 $lineHeight_title: 1.4;
+$lineHeight_code: 1.5;
 
 
 // letter spacing;
 $letterSpacing_default: 0.075em;
 $letterSpacing_title: 0.075em;
+$letterSpacing_code: 0;
 
 
 // media query;

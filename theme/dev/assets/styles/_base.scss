@@ -23,10 +23,12 @@ html {
 @include font-face("Neue Frutiger", "~fonts/NeueFrutiger-Bold", bold, $file-formats: woff2 woff);
 @include font-face("Noto Sans Japanese", "~fonts/NotoSansCJKjp-DemiLight", $file-formats: woff2 woff);
 @include font-face("Noto Sans Japanese", "~fonts/NotoSansCJKjp-Bold", bold, $file-formats: woff2 woff);
+@include font-face("Source Code Pro", "~fonts/SourceCodePro-Regular", $file-formats: woff2 woff);
 
 
 html {
-  font-size: 62.5%;
+  // font-size: 62.5%;
+  font-size: 10px;
 }
 
 
