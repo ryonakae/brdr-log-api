@@ -4,16 +4,17 @@ $color_key: #162140;
 
 // bg color;
 $bgColor_default: #fff;
+$bgColor_gray: rgba($color_key, 0.1);
 
 
 // border color;
-$borderColor_default: rgba(#fff, 0.05);
+$borderColor_default: rgba($color_key, 0.08);
 
 
 // text color;
-$textColor_default: #162140;
+$textColor_default: $color_key;
 $textColor_inverse: #fff;
-$textColor_gray: rgba($textColor_default, 0.5);
+$textColor_gray: rgba($color_key, 0.3);
 
 
 // font family;
@@ -35,12 +36,12 @@ $fontSize_h6: 1.3rem;
 
 // line height;
 $lineHeight_default: 1.75;
-$lineHeight_title: 1.25;
+$lineHeight_title: 1.4;
 
 
 // letter spacing;
-$letterSpacing_default: 0.1em;
-$letterSpacing_title: 0.13em;
+$letterSpacing_default: 0.075em;
+$letterSpacing_title: 0.075em;
 
 
 // media query;
@@ -62,7 +63,7 @@ $mq_retina:      "only screen and (-webkit-min-device-pixel-ratio: 1.5),
 
 // transition;
 $duration: 1000ms;
-$duration_quick: 400ms;
+$duration_quick: 500ms;
 $easing: $ease-out-quart;
 
 

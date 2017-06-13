@@ -16,7 +16,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    margin: 3em 0 1em;
+    margin: 2.5em 0 1em;
   }
 
   h1 { font-size: $fontSize_h1; }
@@ -36,7 +36,7 @@
   }
 
   p, ul, ol {
-    margin: 0 0 1.2em;
+    margin: 0 0 1.3em;
   }
 
   ul {
@@ -51,14 +51,26 @@
 
   img {
     line-height: 0;
-    margin: 0 0 1.2rem;
-    width: 100%;
+    max-width: 100%;
     height: auto;
     vertical-align: top;
+    border: 1px solid $color_key;
   }
 
-  p img {
-    margin-bottom: 0,5em;
+  :global(.img) {
+    text-align: center;
+    margin: 2.1em auto;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  :global(.caption) {
+    display: block;
+    font-size: $fontSize_small;
+    text-align: left;
+    margin-top: 1.2em;
   }
 
   hr {

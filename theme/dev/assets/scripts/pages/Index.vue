@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.page">
-    <ul v-if="hasPosts" :class="$style.list">
+    <ul v-if="hasPosts">
       <li v-for="post in posts" :key="post.id" :class="$style.item">
         <post-item-component :post="post" @click="setCurrentPost(post)"></post-item-component>
       </li>
@@ -91,10 +91,14 @@ export default {
 
 .page {
   max-width: $width_page;
-  margin: 0 auto $margin_page;
+  margin: 200px auto 150px;
 }
 
-.list {
-  margin-top: 200px;
+.item {
+  margin-top: 75px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 </style>

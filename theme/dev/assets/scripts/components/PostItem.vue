@@ -1,12 +1,12 @@
 <template>
   <!-- アイキャッチがある -->
-  <router-link v-if="hasEyecatch" :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.eyecatch]">
+  <router-link v-if="hasEyecatch" :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.eyecatch]" ref="post">
     <div :class="$style.bg">
-      <div :class="$style.image" :style="{backgroundImage:'url('+eyecatch+')'}"></div>
-      <div :class="$style.overlay"></div>
+      <div :class="$style.image" :style="{backgroundImage:'url('+eyecatch+')'}" ref="image"></div>
+      <div :class="$style.overlay" ref="overlay"></div>
     </div>
 
-    <div :class="$style.text">
+    <div :class="$style.text" ref="text">
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
@@ -15,8 +15,8 @@
   </router-link>
 
   <!-- アイキャッチがない -->
-  <router-link v-else :to="'/post/'+post.id" tag="div" :class="$style.post">
-    <div :class="$style.text">
+  <router-link v-else :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.noeyecatch]" ref="post">
+    <div :class="$style.text" ref="text">
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
@@ -26,10 +26,23 @@
 </template>
 
 <script>
+import {util} from '../app';
 import moment from 'moment';
+const $ = require('jquery');
+const imagesLoaded = require('imagesloaded');
+imagesLoaded.makeJQueryPlugin($);
 
 export default {
   props: ['post'],
+
+  data() {
+    return {
+      $post: null,
+      $image: null,
+      $overlay: null,
+      $text: null
+    };
+  },
 
   computed: {
     hasEyecatch() {
@@ -48,6 +61,30 @@ export default {
       return moment(date).format('YYYY.M.D');
     }
   },
+
+  mounted() {
+    this.$post = $(this.$refs.post.$el);
+    this.$text = $(this.$refs.text);
+
+    util.wait(100)
+      .then(()=>{
+        // アイキャッチがある時
+        if (this.hasEyecatch) {
+          this.$image = $(this.$refs.image);
+          this.$overlay = $(this.$refs.overlay);
+
+          this.$post.imagesLoaded({background: true}, ()=>{
+            this.$image.addClass(this.$style.ready);
+            this.$overlay.addClass(this.$style.ready);
+            this.$text.addClass(this.$style.ready);
+          });
+        }
+        // ないとき
+        else {
+          this.$text.addClass(this.$style.ready);
+        }
+      });
+  }
 };
 </script>
 
@@ -58,16 +95,33 @@ export default {
 
 .post {
   position: relative;
-  padding: 75px 150px;
+  padding-left: 150px;
+  padding-right: 150px;
   cursor: pointer;
 
+  .text {
+    transition: all $duration_quick $easing;
+    opacity: 0;
+
+    &.ready {
+      opacity: 1;
+    }
+  }
+
+  .title {
+    font-size: $fontSize_h1;
+  }
+
+  .info {
+    margin-top: 25px;
+    font-size: $fontSize_small;
+  }
+}
+
+.post.noeyecatch {
   &:hover {
     .text {
-      opacity: 0.8;
-    }
-
-    .title {
-      transform: translateY(2px);
+      opacity: 0.7;
     }
   }
 }
@@ -76,6 +130,7 @@ export default {
   padding: 0;
 
   .bg {
+    background-color: $bgColor_gray;
     position: absolute;
     top: 0;
     left: 0;
@@ -93,6 +148,11 @@ export default {
     background-position: 50% 50%;
     z-index: 0;
     transition: all $duration_quick $easing;
+    opacity: 0;
+
+    &.ready {
+      opacity: 1;
+    }
   }
 
   .overlay {
@@ -103,9 +163,13 @@ export default {
     width: 100%;
     height: 100%;
     background-color: $color_key;
-    opacity: 0.5;
+    opacity: 0;
     mix-blend-mode: multiply;
     transition: all $duration_quick $easing;
+
+    &.ready {
+      opacity: 0.5;
+    }
   }
 
   .text {
@@ -121,26 +185,8 @@ export default {
     }
 
     .image {
-      transform: scale(1.1);
-    }
-
-    .text {
-      opacity: 1;
+      transform: scale(1.05);
     }
   }
-}
-
-.text {
-  transition: all $duration_quick $easing;
-}
-
-.title {
-  font-size: $fontSize_h1;
-  transition: all $duration_quick $easing;
-}
-
-.info {
-  margin-top: 25px;
-  font-size: $fontSize_small;
 }
 </style>

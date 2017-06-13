@@ -1,23 +1,33 @@
 <template>
   <article v-if="hasPost" :class="$style.article">
-    <h1 :class="$style.title" v-html="post.title.rendered"></h1>
-    <div :class="$style.info">
-      <div>{{post.date | moment}}</div>
-      <ul v-if="hasTags">
-        <li v-for="tag in tags" :key="tag.id">{{tag.name}}</li>
-      </ul>
+    <div :class="$style.header">
+      <h1 :class="$style.title" v-html="post.title.rendered"></h1>
+
+      <div :class="$style.info">
+        <div :class="$style.date">{{post.date | moment}}</div>
+        <ul v-if="hasTags" :class="$style.tags">
+          <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
+        </ul>
+      </div>
     </div>
-    <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered"></div>
+
+    <div v-if="hasEyecatch" :class="$style.eyecatch">
+      <img :src="eyecatch">
+    </div>
+
+    <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered" ref="content"></div>
   </article>
 </template>
 
 <script>
 import moment from 'moment';
+const $ = require('jquery');
 
 export default {
   data() {
     return {
-      tags: []
+      tags: [],
+      $content: null
     };
   },
 
@@ -36,6 +46,14 @@ export default {
 
     hasTags() {
       return this.post.tags.length >= 1 ? true : false;
+    },
+
+    hasEyecatch() {
+      return this.post.featured_media > 0 ? true : false;
+    },
+
+    eyecatch() {
+      return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url;
     }
   },
 
@@ -50,6 +68,14 @@ export default {
             console.log('getTagName done');
           });
       }
+
+      // 本文の画像の親要素にaddClass
+      this.$content = $(this.$refs.content);
+      console.log($(this.$refs.content).find('img'));
+
+      this.$content.find('img').each((i, elem)=>{
+        $(elem).parent().addClass('img');
+      });
     },
 
     getTagName(tags) {
@@ -109,8 +135,13 @@ export default {
 @import "~styles/extend";
 
 .article {
+  max-width: $width_page;
+  margin: 200px auto 150px;
+}
+
+.header {
   max-width: $width_content;
-  margin: 200px auto $margin_page;
+  margin: 0 auto 70px;
 }
 
 .title {
@@ -122,8 +153,38 @@ export default {
   font-size: $fontSize_small;
 }
 
+.date {
+  display: inline-block;
+}
+
+.tags {
+  display: inline-block;
+  margin-left: 24px;
+}
+
+.tag {
+  display: inline-block;
+  margin-left: 1em;
+
+  &:first-child{
+    margin-left: 0;
+  }
+}
+
+.eyecatch {
+  border: 1px solid $color_key;
+  margin-bottom: 2em;
+
+  img {
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+  }
+}
+
 .content {
-  margin-top: 70px;
+  max-width: $width_content;
+  margin: 0 auto;
   @extend %content;
 }
 </style>

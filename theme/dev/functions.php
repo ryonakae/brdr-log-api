@@ -61,4 +61,33 @@ function disable_autosave() {
   wp_deregister_script('autosave');
 }
 add_action('wp_print_scripts', 'disable_autosave');
+
+// 投稿に画像を挿入するときのフォーマットを変更
+function my_remove_img_attr($html, $id, $alt, $title, $align, $size){
+  $html = preg_replace('/ width="\d+"/', '', $html);
+  $html = preg_replace('/ height="\d+"/', '', $html);
+  $html = preg_replace('/ class=".+"/', '', $html);
+  $html = preg_replace('/ title=".+"/', '', $html);
+  return $html;
+}
+add_action('get_image_tag', 'my_remove_img_attr', 1 ,6);
+
+function my_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $size ) {
+  $html = preg_replace('/<a href=".+">/', '', $html);
+  $html = preg_replace('/<\/a>/', '', $html);
+  $html = preg_replace('/" \/>/', '">', $html);
+
+  if ($caption) {
+    $html = '<p class="img">' . "\n" .
+            $html . "\n" .
+            '<small class="caption">' . $caption . '</small>' . "\n" .
+            '</p>';
+  }
+  else {
+    $html = '<p class="img">' . $html . '</p>';
+  }
+
+  return $html;
+}
+add_action('image_send_to_editor', 'my_image_send_to_editor', 10 ,7);
 ?>
