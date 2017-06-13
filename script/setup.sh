@@ -18,11 +18,13 @@ docker-compose run --rm wpcli plugin delete \
 
 # install and actvate plugin
 docker-compose run --rm wpcli plugin install --activate \
-  acf-to-rest-api \
-  advanced-custom-fields \
-  https://cl.ly/3S0C2G3T3w1z/download/acf-repeater.zip \
   update-control \
   wp-multibyte-patch \
   jetpack-markdown \
   disable-comments \
   disable-post-revision
+
+# docker-compose run --rm wpcli plugin install --activate \
+#   acf-to-rest-api \
+#   advanced-custom-fields \
+#   https://cl.ly/3S0C2G3T3w1z/download/acf-repeater.zip \

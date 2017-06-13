@@ -37,6 +37,21 @@ add_theme_support('post-thumbnails');
 // アイキャッチ画像生成時の画質を変更
 add_filter('jpeg_quality', function($arg){return 95;});
 
+// アイキャッチ画像のサイズを削除
+function remove_image_sizes($sizes) {
+	unset($sizes['thumbnail']);
+	// unset($sizes['medium']);
+	unset($sizes['large']);
+	return $sizes;
+}
+add_filter('intermediate_image_sizes_advanced', 'remove_image_sizes');
+// medium_large
+update_option('medium_large_size_w', 0);
+
+// アイキャッチ画像のサイズを追加
+// add_image_size('theme_dummy', 10, 10, false);
+add_image_size('theme_thumbnail', 2048, 0, false);
+
 // セルフピンバックの無効化
 function no_self_ping(&$links){
   $home = get_option('home');

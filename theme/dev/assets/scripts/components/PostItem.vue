@@ -50,7 +50,7 @@ export default {
     },
 
     eyecatch() {
-      return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url;
+      return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
     }
   },
 

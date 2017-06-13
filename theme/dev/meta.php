@@ -29,10 +29,7 @@
     }
 
     // og_image
-    if (get_field('images')) {
-      $og_image = get_field('images')[0][image];
-    }
-    else if (has_post_thumbnail()) {
+    if (has_post_thumbnail()) {
       $thumbnail_id = get_post_thumbnail_id($post->ID);
       $image = wp_get_attachment_image_src( $thumbnail_id, 'medium' );
       $og_image = $image[0];
