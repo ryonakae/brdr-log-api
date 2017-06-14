@@ -101,8 +101,8 @@ export default {
 
 .post {
   position: relative;
-  padding-left: (($width_page - $width_content) / 2);
-  padding-right: (($width_page - $width_content) / 2);
+  padding-left: (($width_index - $width_content) / 2);
+  padding-right: (($width_index - $width_content) / 2);
   cursor: pointer;
 
   .text {
@@ -142,6 +142,7 @@ export default {
   }
 
   .image {
+    border: 1px solid $color_key;
     width: 100%;
     height: 100%;
     background-size: cover;
@@ -169,12 +170,12 @@ export default {
     transition: all $duration_quick $easing;
 
     &.ready {
-      opacity: 0.5;
+      opacity: 0.35;
     }
   }
 
   .text {
-    padding: 90px (($width_page - $width_content) / 2) 45px;
+    padding: 90px (($width_index - $width_content) / 2) 45px;
     position: relative;
     z-index: 2;
     color: $textColor_inverse;

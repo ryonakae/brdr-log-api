@@ -90,8 +90,8 @@ export default {
 @import "~styles/mixin";
 
 .page {
-  max-width: $width_page;
-  margin: 200px auto 150px;
+  max-width: $width_index;
+  margin: 150px auto 150px;
 }
 
 .item {

@@ -44,7 +44,7 @@ export default {
 .header {
   @include clearfix();
   position: fixed;
-  z-index: 3;
+  z-index: 100;
   top: 40px;
   width: 100%;
   padding: 0 $margin_page;

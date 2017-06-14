@@ -1,5 +1,5 @@
 <template>
-  <article v-if="hasPost" :class="$style.article">
+  <article v-if="hasPost">
     <header :class="$style.header">
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
 
@@ -7,6 +7,24 @@
         <div :class="$style.date">{{post.date | moment}}</div>
         <ul v-if="hasTags" :class="$style.tags">
           <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
+        </ul>
+
+        <ul :class="$style.share">
+          <li :class="[$style.icon, $style.twitter]">
+            <a href="#" target="_blank">
+              <svg :viewBox="icon.twitter.viewBox">
+                <use :xlink:href="'#'+icon.twitter.id"></use>
+              </svg>
+            </a>
+          </li>
+
+          <li :class="[$style.icon, $style.facebook]">
+            <a href="#" target="_blank">
+              <svg :viewBox="icon.facebook.viewBox">
+                <use :xlink:href="'#'+icon.facebook.id"></use>
+              </svg>
+            </a>
+          </li>
         </ul>
       </div>
     </header>
@@ -19,7 +37,7 @@
 
     <footer :class="$style.footer">
       <ul :class="$style.share">
-        <li :class="$style.twitter">
+        <li :class="[$style.icon, $style.twitter]">
           <a href="#" target="_blank">
             <svg :viewBox="icon.twitter.viewBox">
               <use :xlink:href="'#'+icon.twitter.id"></use>
@@ -27,7 +45,7 @@
           </a>
         </li>
 
-        <li :class="$style.facebook">
+        <li :class="[$style.icon, $style.facebook]">
           <a href="#" target="_blank">
             <svg :viewBox="icon.facebook.viewBox">
               <use :xlink:href="'#'+icon.facebook.id"></use>
@@ -35,6 +53,13 @@
           </a>
         </li>
       </ul>
+
+      <small :class="$style.copyright">&copy;BORDER</small>
+
+      <router-link :to="'/'" tag="div" :class="$style.backTop">
+        <span>←</span>
+        <span>Index</span>
+      </router-link>
     </footer>
   </article>
 </template>
@@ -144,14 +169,46 @@ export default {
 @import "~styles/mixin";
 @import "~styles/extend";
 
-.article {
-  max-width: $width_page;
-  margin: 200px auto $margin_page;
+.page {
+  max-width: $width_single;
+  margin: 150px auto $margin_page;
+}
+
+.share {
+  line-height: 1;
+
+  .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 16px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    svg {
+      fill: $color_key;
+    }
+
+    &.twitter {
+      svg {
+        width: 14px;
+        height: 11px;
+      }
+    }
+
+    &.facebook {
+      svg {
+        width: 8px;
+        height: 14px;
+      }
+    }
+  }
 }
 
 .header {
   max-width: $width_content;
-  margin: 0 auto 70px;
+  margin: 150px auto 70px;
 
   .title {
     font-size: $fontSize_h1;
@@ -160,12 +217,19 @@ export default {
   .info {
     @extend %info;
     margin-top: 25px;
+    @include clearfix();
+
+    .share {
+      float: right;
+      margin-top: 1px;
+    }
   }
 }
 
 .eyecatch {
+  max-width: $width_single;
   border: 1px solid $color_key;
-  margin-bottom: 2em;
+  margin: 0 auto 3em;
 
   img {
     width: 100%;
@@ -181,20 +245,30 @@ export default {
 }
 
 .footer {
-  .twitter {
-    svg {
-      width: 14px;
-      height: 11px;
-      fill: $color_key;
-    }
+  margin: 100px $margin_page $margin_page;
+  line-height: 1;
+  @include clearfix();
+  text-align: center;
+
+  .share {
+    display: inline-block;
   }
 
-  .facebook {
-    svg {
-      width: 8px;
-      height: 14px;
-      fill: $color_key;
-    }
+  .copyright {
+    display: block;
+    float: right;
+    color: $textColor_lightGray;
+    font-size: $fontSize_xSmall;
+    line-height: 1;
+    margin-top: 4px;
+  }
+
+  .backTop {
+    position: fixed;
+    bottom: $margin_page + 3px;
+    left: $margin_page;
+    font-size: $fontSize_small;
+    line-height: 1;
   }
 }
 </style>
