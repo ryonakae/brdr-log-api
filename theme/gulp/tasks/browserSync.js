@@ -24,7 +24,10 @@ gulp.task('bs:init', () => {
       middleware: [
         webpackDevMiddleware(bundler, {
           publicPath: webpackConfig.output.publicPath,
-          stats: {colors: true}
+          noInfo: false,
+          stats: {
+            colors: true
+          }
         }),
         webpackHotMiddleware(bundler)
       ]

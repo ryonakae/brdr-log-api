@@ -4,8 +4,7 @@ import baseConfig from './webpack.config.base';
 
 module.exports = merge(baseConfig, {
   entry: [
-    'webpack-hot-middleware/client',
-    'webpack/hot/only-dev-server'
+    'webpack-hot-middleware/client?noinfo=true'
   ],
   output: {
     publicPath: '/'
