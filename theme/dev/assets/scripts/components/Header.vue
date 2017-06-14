@@ -16,7 +16,6 @@
 
 <script>
 import logo from 'images/logo.svg';
-console.log(logo);
 
 export default {
   data() {
@@ -59,6 +58,7 @@ export default {
   svg {
     width: 22px;
     height: 30px;
+    fill: $color_key;
   }
 }
 

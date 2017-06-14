@@ -10,6 +10,29 @@
 }
 
 
+%info {
+  font-size: $fontSize_small;
+
+  .date {
+    display: inline-block;
+  }
+
+  .tags {
+    display: inline-block;
+    margin-left: 24px;
+  }
+
+  .tag {
+    display: inline-block;
+    margin-left: 1em;
+
+    &:first-child{
+      margin-left: 0;
+    }
+  }
+}
+
+
 %content {
   a {
     text-decoration: underline;
@@ -129,6 +152,7 @@
     overflow-x: auto;
 
     code {
+      display: block;
       white-space: pre;
       margin: 0;
       padding: 0;

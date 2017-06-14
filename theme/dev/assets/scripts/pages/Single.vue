@@ -1,6 +1,6 @@
 <template>
   <article v-if="hasPost" :class="$style.article">
-    <div :class="$style.header">
+    <header :class="$style.header">
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
 
       <div :class="$style.info">
@@ -9,13 +9,33 @@
           <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
         </ul>
       </div>
-    </div>
+    </header>
 
     <div v-if="hasEyecatch" :class="$style.eyecatch">
       <img :src="eyecatch">
     </div>
 
     <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered" ref="content"></div>
+
+    <footer :class="$style.footer">
+      <ul :class="$style.share">
+        <li :class="$style.twitter">
+          <a href="#" target="_blank">
+            <svg :viewBox="icon.twitter.viewBox">
+              <use :xlink:href="'#'+icon.twitter.id"></use>
+            </svg>
+          </a>
+        </li>
+
+        <li :class="$style.facebook">
+          <a href="#" target="_blank">
+            <svg :viewBox="icon.facebook.viewBox">
+              <use :xlink:href="'#'+icon.facebook.id"></use>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </footer>
   </article>
 </template>
 
@@ -23,11 +43,18 @@
 import moment from 'moment';
 const $ = require('jquery');
 
+import iconTwitter from 'images/icon-twitter.svg';
+import iconFacebook from 'images/icon-facebook.svg';
+
 export default {
   data() {
     return {
       tags: [],
-      $content: null
+      $content: null,
+      icon: {
+        twitter: iconTwitter,
+        facebook: iconFacebook
+      }
     };
   },
 
@@ -61,11 +88,11 @@ export default {
     init() {
       this.$store.dispatch('changeTitle', this.post.title.rendered);
 
-      // タグがある場合はgetTagName()してからテキストを表示
+      // タグがある場合はタグ取得
       if (this.hasTags) {
-        this.getTagName(this.post.tags)
-          .then(()=>{
-            console.log('getTagName done');
+        this.$store.dispatch('getAllTagName', this.post.tags)
+          .then((result)=>{
+            return this.tags = result;
           });
       }
 
@@ -75,23 +102,6 @@ export default {
 
       this.$content.find('img').each((i, elem)=>{
         $(elem).parent().addClass('img');
-      });
-    },
-
-    getTagName(tags) {
-      return new Promise((resolve, reject)=>{
-        tags.forEach((tagId, index)=>{
-          this.$store.dispatch('getTagName', tagId)
-          .then((result)=>{
-            // 管理画面で追加した順番にタグを配列に追加
-            this.tags.splice(index, 0, result);
-
-            // ループの最後
-            if (tags.length === index+1) {
-              resolve();
-            }
-          });
-        });
       });
     }
   },
@@ -136,38 +146,20 @@ export default {
 
 .article {
   max-width: $width_page;
-  margin: 200px auto 150px;
+  margin: 200px auto $margin_page;
 }
 
 .header {
   max-width: $width_content;
   margin: 0 auto 70px;
-}
 
-.title {
-  font-size: $fontSize_h1;
-}
+  .title {
+    font-size: $fontSize_h1;
+  }
 
-.info {
-  margin-top: 25px;
-  font-size: $fontSize_small;
-}
-
-.date {
-  display: inline-block;
-}
-
-.tags {
-  display: inline-block;
-  margin-left: 24px;
-}
-
-.tag {
-  display: inline-block;
-  margin-left: 1em;
-
-  &:first-child{
-    margin-left: 0;
+  .info {
+    @extend %info;
+    margin-top: 25px;
   }
 }
 
@@ -186,5 +178,23 @@ export default {
   max-width: $width_content;
   margin: 0 auto;
   @extend %content;
+}
+
+.footer {
+  .twitter {
+    svg {
+      width: 14px;
+      height: 11px;
+      fill: $color_key;
+    }
+  }
+
+  .facebook {
+    svg {
+      width: 8px;
+      height: 14px;
+      fill: $color_key;
+    }
+  }
 }
 </style>

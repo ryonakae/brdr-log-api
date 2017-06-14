@@ -163,10 +163,33 @@ export default {
             console.log(err);
           }
           else {
-            console.log(res.body);
             resolve(res.body);
           }
         });
+    });
+  },
+
+  // すべてのタグの名前を取得
+  getAllTagName(context, tags) {
+    return new Promise((resolve, reject)=>{
+      const _tags = [];
+
+      tags.forEach((tagId, index)=>{
+        context.dispatch('getTagName', tagId)
+          .then((result)=>{
+            // 管理画面で追加した順番にタグを配列に追加
+            _tags.splice(index, 0, result);
+
+            // ループの最後
+            if (tags.length === index+1) {
+              console.log(_tags);
+              resolve(_tags);
+            }
+          })
+          .catch((err)=>{
+            console.log(err);
+          });
+      });
     });
   },
 

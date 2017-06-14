@@ -6,17 +6,20 @@
       <div :class="$style.overlay" ref="overlay"></div>
     </div>
 
-    <div :class="$style.text" ref="text">
+    <div :class="$style.text">
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
+        <ul v-if="hasTags" :class="$style.tags">
+          <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
+        </ul>
       </div>
     </div>
   </router-link>
 
   <!-- アイキャッチがない -->
-  <router-link v-else :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.noeyecatch]" ref="post">
-    <div :class="$style.text" ref="text">
+  <router-link v-else :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.noeyecatch]">
+    <div :class="$style.text">
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
@@ -37,14 +40,15 @@ export default {
 
   data() {
     return {
-      $post: null,
-      $image: null,
-      $overlay: null,
-      $text: null
+      tags: []
     };
   },
 
   computed: {
+    hasTags() {
+      return this.post.tags.length >= 1 ? true : false;
+    },
+
     hasEyecatch() {
       return this.post.featured_media > 0 ? true : false;
     },
@@ -63,27 +67,28 @@ export default {
   },
 
   mounted() {
-    this.$post = $(this.$refs.post.$el);
-    this.$text = $(this.$refs.text);
+    // タグがある場合はタグ取得
+    if (this.hasTags) {
+      this.$store.dispatch('getAllTagName', this.post.tags)
+        .then((result)=>{
+          return this.tags = result;
+        });
+    }
 
-    util.wait(100)
-      .then(()=>{
-        // アイキャッチがある時
-        if (this.hasEyecatch) {
-          this.$image = $(this.$refs.image);
-          this.$overlay = $(this.$refs.overlay);
+    // アイキャッチがある時
+    if (this.hasEyecatch) {
+      const $post = $(this.$refs.post.$el);
+      const $image = $(this.$refs.image);
+      const $overlay = $(this.$refs.overlay);
 
-          this.$post.imagesLoaded({background: true}, ()=>{
-            this.$image.addClass(this.$style.ready);
-            this.$overlay.addClass(this.$style.ready);
-            this.$text.addClass(this.$style.ready);
+      util.wait(100)
+        .then(()=>{
+          $post.imagesLoaded({background: true}, ()=>{
+            $image.addClass(this.$style.ready);
+            $overlay.addClass(this.$style.ready);
           });
-        }
-        // ないとき
-        else {
-          this.$text.addClass(this.$style.ready);
-        }
-      });
+        });
+    }
   }
 };
 </script>
@@ -92,20 +97,16 @@ export default {
 @import "~bourbon";
 @import "~styles/config";
 @import "~styles/mixin";
+@import "~styles/extend";
 
 .post {
   position: relative;
-  padding-left: 150px;
-  padding-right: 150px;
+  padding-left: (($width_page - $width_content) / 2);
+  padding-right: (($width_page - $width_content) / 2);
   cursor: pointer;
 
   .text {
     transition: all $duration_quick $easing;
-    opacity: 0;
-
-    &.ready {
-      opacity: 1;
-    }
   }
 
   .title {
@@ -113,8 +114,8 @@ export default {
   }
 
   .info {
+    @extend %info;
     margin-top: 25px;
-    font-size: $fontSize_small;
   }
 }
 
@@ -173,7 +174,7 @@ export default {
   }
 
   .text {
-    padding: 90px 150px 45px;
+    padding: 90px (($width_page - $width_content) / 2) 45px;
     position: relative;
     z-index: 2;
     color: $textColor_inverse;
