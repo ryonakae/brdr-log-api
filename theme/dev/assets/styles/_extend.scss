@@ -1,10 +1,13 @@
 %link {
   color: inherit;
-  text-decoration: underline;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all $duration_quick $easing;
 
   body.is-pc & {
     &:hover {
       text-decoration: none;
+      opacity: 0.7;
     }
   }
 }
@@ -24,10 +27,13 @@
 
   .tag {
     display: inline-block;
-    margin-left: 1em;
 
-    &:first-child{
-      margin-left: 0;
+    &:before {
+      content: ", ";
+    }
+
+    &:first-child:before {
+      content: "";
     }
   }
 }
@@ -35,6 +41,7 @@
 
 %content {
   a {
+    @extend %link;
     text-decoration: underline;
   }
 

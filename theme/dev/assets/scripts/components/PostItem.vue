@@ -54,7 +54,16 @@ export default {
     },
 
     eyecatch() {
-      return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
+      let eyecatch;
+
+      if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
+      }
+      else {
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url;
+      }
+
+      return eyecatch;
     }
   },
 
@@ -120,9 +129,11 @@ export default {
 }
 
 .post.noeyecatch {
-  &:hover {
-    .text {
-      opacity: 0.7;
+  :global(body.is-pc) & {
+    &:hover {
+      .text {
+        opacity: 0.7;
+      }
     }
   }
 }
@@ -149,7 +160,7 @@ export default {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     z-index: 0;
-    transition: all $duration_quick $easing;
+    transition: all $duration_image $easing;
     opacity: 0;
 
     &.ready {
@@ -181,13 +192,15 @@ export default {
     color: $textColor_inverse;
   }
 
-  &:hover {
-    .overlay {
-      opacity: 0.75;
-    }
+  :global(body.is-pc) & {
+    &:hover {
+      .overlay {
+        opacity: 0.75;
+      }
 
-    .image {
-      transform: scale(1.05);
+      .image {
+        transform: scale(1.05);
+      }
     }
   }
 }

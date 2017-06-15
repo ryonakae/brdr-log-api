@@ -9,23 +9,7 @@
           <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
         </ul>
 
-        <ul :class="$style.share">
-          <li :class="[$style.icon, $style.twitter]">
-            <a href="#" target="_blank">
-              <svg :viewBox="icon.twitter.viewBox">
-                <use :xlink:href="'#'+icon.twitter.id"></use>
-              </svg>
-            </a>
-          </li>
-
-          <li :class="[$style.icon, $style.facebook]">
-            <a href="#" target="_blank">
-              <svg :viewBox="icon.facebook.viewBox">
-                <use :xlink:href="'#'+icon.facebook.id"></use>
-              </svg>
-            </a>
-          </li>
-        </ul>
+        <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
       </div>
     </header>
 
@@ -36,28 +20,12 @@
     <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered" ref="content"></div>
 
     <footer :class="$style.footer">
-      <ul :class="$style.share">
-        <li :class="[$style.icon, $style.twitter]">
-          <a href="#" target="_blank">
-            <svg :viewBox="icon.twitter.viewBox">
-              <use :xlink:href="'#'+icon.twitter.id"></use>
-            </svg>
-          </a>
-        </li>
-
-        <li :class="[$style.icon, $style.facebook]">
-          <a href="#" target="_blank">
-            <svg :viewBox="icon.facebook.viewBox">
-              <use :xlink:href="'#'+icon.facebook.id"></use>
-            </svg>
-          </a>
-        </li>
-      </ul>
+      <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
 
       <small :class="$style.copyright">&copy;BORDER</small>
 
       <router-link :to="'/'" tag="div" :class="$style.backTop">
-        <span>←</span>
+        <span :class="$style.arrow">←</span>
         <span>Index</span>
       </router-link>
     </footer>
@@ -67,19 +35,17 @@
 <script>
 import moment from 'moment';
 const $ = require('jquery');
-
-import iconTwitter from 'images/icon-twitter.svg';
-import iconFacebook from 'images/icon-facebook.svg';
+import ShareComponent from '../components/Share.vue';
 
 export default {
+  components: {
+    ShareComponent
+  },
+
   data() {
     return {
       tags: [],
-      $content: null,
-      icon: {
-        twitter: iconTwitter,
-        facebook: iconFacebook
-      }
+      $content: null
     };
   },
 
@@ -105,7 +71,16 @@ export default {
     },
 
     eyecatch() {
-      return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
+      let eyecatch;
+
+      if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
+      }
+      else {
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url;
+      }
+
+      return eyecatch;
     }
   },
 
@@ -174,38 +149,6 @@ export default {
   margin: 150px auto $margin_page;
 }
 
-.share {
-  line-height: 1;
-
-  .icon {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 16px;
-
-    &:first-child {
-      margin-left: 0;
-    }
-
-    svg {
-      fill: $color_key;
-    }
-
-    &.twitter {
-      svg {
-        width: 14px;
-        height: 11px;
-      }
-    }
-
-    &.facebook {
-      svg {
-        width: 8px;
-        height: 14px;
-      }
-    }
-  }
-}
-
 .header {
   max-width: $width_content;
   margin: 150px auto 70px;
@@ -228,11 +171,12 @@ export default {
 
 .eyecatch {
   max-width: $width_single;
-  border: 1px solid $color_key;
   margin: 0 auto 3em;
+  text-align: center;
 
   img {
-    width: 100%;
+    border: 1px solid $color_key;
+    max-width: 100%;
     height: auto;
     vertical-align: top;
   }
@@ -249,26 +193,45 @@ export default {
   line-height: 1;
   @include clearfix();
   text-align: center;
+}
 
-  .share {
+.share {
+  display: inline-block;
+}
+
+.copyright {
+  display: block;
+  float: right;
+  color: $textColor_lightGray;
+  font-size: $fontSize_xSmall;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.backTop {
+  position: fixed;
+  bottom: $margin_page + 3px;
+  left: $margin_page;
+  font-size: $fontSize_small;
+  line-height: 1;
+  transition: all $duration_quick $easing;
+
+  span {
     display: inline-block;
   }
 
-  .copyright {
-    display: block;
-    float: right;
-    color: $textColor_lightGray;
-    font-size: $fontSize_xSmall;
-    line-height: 1;
-    margin-top: 4px;
+  .arrow {
+    transition: all $duration_quick $easing;
   }
 
-  .backTop {
-    position: fixed;
-    bottom: $margin_page + 3px;
-    left: $margin_page;
-    font-size: $fontSize_small;
-    line-height: 1;
+  :global(body.is-pc) & {
+    &:hover {
+      opacity: 0.7;
+
+      .arrow {
+        transform: translateX(-3px);
+      }
+    }
   }
 }
 </style>

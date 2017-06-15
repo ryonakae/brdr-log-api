@@ -68,7 +68,10 @@ body {
 
 a {
   @extend %link;
-  text-decoration: none;
+}
+
+.link {
+  @extend %link;
 }
 
 

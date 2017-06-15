@@ -93,13 +93,13 @@ function my_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $s
   $html = preg_replace('/" \/>/', '">', $html);
 
   if ($caption) {
-    $html = '<p class="img">' . "\n" .
+    $html = "\n" . '<p class="img">' . "\n" .
             $html . "\n" .
             '<small class="caption">' . $caption . '</small>' . "\n" .
             '</p>';
   }
   else {
-    $html = '<p class="img">' . $html . '</p>';
+    $html = "\n" . '<p class="img">' . $html . '</p>';
   }
 
   return $html;
