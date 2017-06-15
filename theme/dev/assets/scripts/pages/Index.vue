@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.page">
+  <div :class="$style.page" ref="page">
     <ul v-if="hasPosts">
       <li v-for="post in posts" :key="post.id" :class="$style.item">
         <post-item-component :post="post" @click="setCurrentPost(post)"></post-item-component>
@@ -9,12 +9,20 @@
 </template>
 
 <script>
+const $ = require('jquery');
 import PostItemComponent from '../components/PostItem.vue';
 import {scrollManager} from '../app';
+import {util} from '../app';
 
 export default {
   components: {
     PostItemComponent
+  },
+
+  data() {
+    return {
+      $logo: null
+    };
   },
 
   computed: {
@@ -32,6 +40,23 @@ export default {
 
     perPage() {
       return this.$store.state.perPage;
+    },
+
+    loadedContentCount() {
+      return this.$store.state.loadedContentCount;
+    }
+  },
+
+  watch: {
+    loadedContentCount(count) {
+      // loadedCountが記事数と同じになったらlogoのローディング終了
+      if (this.posts.length === count) {
+        console.log('all postitem loaded');
+
+        util.wait(550).then(()=>{
+          $('#header').find('.logo').addClass('ready');
+        });
+      }
     }
   },
 
@@ -46,12 +71,15 @@ export default {
       if (this.$route.path === '/') {
         this.$store.dispatch('clearCurrentPost');
       }
-    },
+    }
   },
 
   created() {
     // currentPostDataを空にする
     this.clearCurrentPost();
+
+    // loadedContentCountをリセット
+    this.$store.dispatch('changeLoadedContentCount', 'reset');
   },
 
   mounted() {

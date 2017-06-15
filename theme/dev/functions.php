@@ -95,8 +95,8 @@ function my_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $s
   if ($caption) {
     $html = "\n" . '<p class="img">' . "\n" .
             $html . "\n" .
-            '<small class="caption">' . $caption . '</small>' . "\n" .
-            '</p>';
+            '</p>' . "\n" .
+            '<p class="caption"><small>' . $caption . '</small></p>';
   }
   else {
     $html = "\n" . '<p class="img">' . $html . '</p>';

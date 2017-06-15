@@ -112,22 +112,38 @@
     max-width: 100%;
     height: auto;
     vertical-align: top;
-    border: 1px solid $color_key;
+    transition: all $duration_quick $easing;
+    opacity: 0;
+
+    &:global(.ready) {
+      opacity: 1;
+    }
   }
 
   :global(.img) {
-    text-align: center;
+    display: table;
     margin: 2.1em auto;
+    border: 1px solid $color_key;
+    overflow: hidden;
 
     &:first-child {
       margin-top: 0;
     }
+  }
 
-    :global(.caption) {
-      display: block;
+  :global(.caption) {
+    text-align: center;
+    margin-top: 1.2em;
+    line-height: $lineHeight_caption;
+
+    small {
       font-size: $fontSize_small;
-      margin-top: 1.2em;
     }
+  }
+
+  :global(.img + .caption) {
+    margin-top: -1.2em;
+    margin-bottom: 2.1em;
   }
 
   blockquote, pre {
@@ -148,7 +164,7 @@
     font-family: $fontFamily_code;
     font-size: $fontSize_code;
     letter-spacing: $letterSpacing_code;
-    border: 1px solid $color_key;
+    background-color: $bgColor_gray;
   }
 
   pre {
@@ -165,6 +181,7 @@
       padding: 0;
       border: none;
       line-height: $lineHeight_code;
+      background: none;
     }
   }
 

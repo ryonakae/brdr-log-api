@@ -16,7 +16,8 @@ const state = {
   currentPostData: {},
   perPage: 10,
   perPageMobile: 6,
-  infiniteScrollLock: false
+  infiniteScrollLock: false,
+  loadedContentCount: 0
 };
 
 const store = new Vuex.Store({

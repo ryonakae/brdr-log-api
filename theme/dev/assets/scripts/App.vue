@@ -11,6 +11,7 @@ import HeaderComponent from './components/Header.vue';
 import {util} from './app';
 import {resizeManager} from './app';
 import {scrollManager} from './app';
+const webFont = require('webfontloader');
 
 export default {
   components: {
@@ -42,6 +43,19 @@ export default {
     if (util.getDevice() === 'mobile') {
       this.$store.dispatch('changePerPage', this.perPageMobile);
     }
+
+    webFont.load({
+      classes: false,
+      custom: {
+        families: ['Neue Frutiger', 'Noto Sans Japanese', 'Source Code Pro']
+      },
+      active: ()=>{
+        console.log('all webfont loaded');
+        util.wait(50).then(()=>{
+          $('body').addClass('ready');
+        });
+      }
+    });
   }
 };
 </script>

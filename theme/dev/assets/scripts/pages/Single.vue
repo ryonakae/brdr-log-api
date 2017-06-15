@@ -1,5 +1,5 @@
 <template>
-  <article v-if="hasPost">
+  <article v-if="hasPost" ref="article">
     <header :class="$style.header">
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
 
@@ -33,8 +33,11 @@
 </template>
 
 <script>
+import {util} from '../app';
 import moment from 'moment';
 const $ = require('jquery');
+const imagesLoaded = require('imagesloaded');
+imagesLoaded.makeJQueryPlugin($);
 import ShareComponent from '../components/Share.vue';
 
 export default {
@@ -45,7 +48,8 @@ export default {
   data() {
     return {
       tags: [],
-      $content: null
+      $content: null,
+      $article: null
     };
   },
 
@@ -98,11 +102,27 @@ export default {
 
       // 本文の画像の親要素にaddClass
       this.$content = $(this.$refs.content);
-      console.log($(this.$refs.content).find('img'));
 
       this.$content.find('img').each((i, elem)=>{
         $(elem).parent().addClass('img');
       });
+
+      // ページ内の画像全部ロードしたらlogoのローディング終了
+      this.$article = $(this.$refs.article);
+
+      this.$article.imagesLoaded({background:true})
+        .progress((instance, image)=>{
+          console.log(instance, image);
+
+          $(image.img).addClass('ready');
+        })
+        .done((instance)=>{
+          console.log(instance);
+
+          util.wait(550).then(()=>{
+            $('#header').find('.logo').addClass('ready');
+          });
+        });
     }
   },
 
@@ -170,15 +190,22 @@ export default {
 }
 
 .eyecatch {
+  display: table;
+  border: 1px solid $color_key;
   max-width: $width_single;
   margin: 0 auto 3em;
   text-align: center;
 
   img {
-    border: 1px solid $color_key;
     max-width: 100%;
     height: auto;
     vertical-align: top;
+    transition: all $duration_quick $easing;
+    opacity: 0;
+
+    &:global(.ready) {
+      opacity: 1;
+    }
   }
 }
 

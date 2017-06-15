@@ -1,9 +1,10 @@
 <template>
-  <header :class="$style.header">
-    <router-link :to="'/'" tag="h1" :class="$style.title">
-      <svg :viewBox="logo.viewBox">
-        <use :xlink:href="'#'+logo.id"></use>
-      </svg>
+  <header :class="$style.header" id="header">
+    <router-link :to="'/'" tag="h1" :class="$style.logo" class="logo">
+      <div :class="$style.inner">
+        <div :class="$style.loading"></div>
+        <div :class="$style.default"></div>
+      </div>
     </router-link>
 
     <ul :class="$style.navi">
@@ -41,6 +42,11 @@ export default {
 @import "~styles/config";
 @import "~styles/mixin";
 
+@keyframes loading {
+  0%   { transform: translateX(20%); }
+  100% { transform: translateX(-100%); }
+}
+
 .header {
   @include clearfix();
   position: fixed;
@@ -51,14 +57,68 @@ export default {
   pointer-events: none;
 }
 
-.title {
+.logo {
   float: left;
   pointer-events: auto;
+  cursor: pointer;
+  width: 22px;
+  height: 30px;
 
-  svg {
-    width: 22px;
-    height: 30px;
-    fill: $color_key;
+  .inner {
+    width: 100%;
+    height: 100%;
+    clip-path: url(#logo_clippingPath);
+    position: relative;
+    overflow: hidden;
+    background-color: #6da3f2;
+  }
+
+  .loading,
+  .default {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .loading {
+    width: 500%;
+    animation-name: loading;
+    animation-duration: 1.2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    background: linear-gradient(
+      105deg,
+      #6da3f2 0%,
+      #6da3f2 5%,
+      #af9bde 13%,
+      #fa7895 26%,
+      #ffa284 39%,
+      #efb46e 52%,
+      #efd69b 65%,
+      #aed3b0 78%,
+      #8ec9ce 91%,
+      #6da3f2 95%,
+      #6da3f2 100%
+    );
+  }
+
+  .default {
+    background-color: $color_key;
+    transition: all $duration_image $ease-out-quad;
+    opacity: 0;
+  }
+
+  &:global(.ready) {
+    .loading {
+      animation-name: none;
+    }
+
+    .default {
+      opacity: 1;
+    }
   }
 }
 

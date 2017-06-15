@@ -67,7 +67,12 @@ export default {
     }
   },
 
-  methods: {},
+  methods: {
+    onLoad() {
+      // PostItemがロードされたらloadedContentCountを1up
+      this.$store.dispatch('changeLoadedContentCount', 'increment');
+    }
+  },
 
   filters: {
     moment(date) {
@@ -90,13 +95,21 @@ export default {
       const $image = $(this.$refs.image);
       const $overlay = $(this.$refs.overlay);
 
-      util.wait(100)
-        .then(()=>{
-          $post.imagesLoaded({background: true}, ()=>{
+      $post.imagesLoaded({background: true}).done((instance)=>{
+        util.wait(10)
+          .then(()=>{
             $image.addClass(this.$style.ready);
             $overlay.addClass(this.$style.ready);
           });
-        });
+
+        this.onLoad();
+      });
+    }
+    // アイキャッチがないとき
+    else {
+      util.wait(10).then(()=>{
+        this.onLoad();
+      });
     }
   }
 };
@@ -142,6 +155,7 @@ export default {
   padding: 0;
 
   .bg {
+    border: 1px solid $color_key;
     background-color: $bgColor_gray;
     position: absolute;
     top: 0;
@@ -153,7 +167,6 @@ export default {
   }
 
   .image {
-    border: 1px solid $color_key;
     width: 100%;
     height: 100%;
     background-size: cover;

@@ -3,6 +3,7 @@
 const $ = require('jquery');
 import superagent from 'superagent';
 import {router} from '../app';
+import {util} from '../app';
 
 // 非同期、複数のmutationsを組み合わせた処理
 export default {
@@ -20,14 +21,14 @@ export default {
         document.title = title + ' - ' + context.state.siteTitle;
       }
 
-      setTimeout(resolve, 10);
+      util.wait(10).then(resolve);
     });
   },
 
   changePerPage(context, count) {
     return new Promise((resolve, reject)=>{
       context.commit('SET_PER_PAGE', count);
-      setTimeout(resolve, 10);
+      util.wait(10).then(resolve);
     });
   },
 
@@ -74,6 +75,9 @@ export default {
 
       context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
+      // logoをローディング中にする
+      $('#header').find('.logo').removeClass('ready');
+
       context.dispatch('getAllPosts', {per_page:context.state.perPage, offset:context.state.allPostData.length})
         .then((result)=>{
           // 現在のallPostDataとresultを結合する
@@ -86,7 +90,14 @@ export default {
           context.commit('CHANGE_INFINITE_SCROLL_LOCK', false);
         })
         .catch((err)=>{
+          // エラーか、これ以上投稿ないとき
+          console.log('error or nomore posts');
           context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
+
+          // logoのローディング終了
+          util.wait(550).then(()=>{
+            $('#header').find('.logo').addClass('ready');
+          });
         });
     }
   },
@@ -196,7 +207,7 @@ export default {
   setAllPost(context, data) {
     return new Promise((resolve, reject)=>{
       context.commit('SET_ALL_POST_DATA', data);
-      setTimeout(resolve, 10);
+      util.wait(10).then(resolve);
     });
   },
 
@@ -204,14 +215,14 @@ export default {
   setCurrentPost(context, data) {
     return new Promise((resolve, reject)=>{
       context.commit('SET_CURRENT_POST_DATA', data);
-      setTimeout(resolve, 10);
+      util.wait(10).then(resolve);
     });
   },
 
   clearCurrentPost(context) {
     return new Promise((resolve, reject)=>{
       context.commit('SET_CURRENT_POST_DATA', {});
-      setTimeout(resolve, 10);
+      util.wait(10).then(resolve);
     });
   },
 
@@ -221,6 +232,19 @@ export default {
         router.push(from.path);
         $(document).off('.backByEsc');
       }
+    });
+  },
+
+  changeLoadedContentCount(context, arg) {
+    return new Promise((resolve, reject)=>{
+      if (arg === 'increment') {
+        context.commit('INCREMENT_LOADED_CONTENT_COUNT');
+      }
+      else if (arg === 'reset') {
+        context.commit('RESET_LOADED_CONTENT_COUNT');
+      }
+
+      util.wait(10).then(resolve);
     });
   }
 };

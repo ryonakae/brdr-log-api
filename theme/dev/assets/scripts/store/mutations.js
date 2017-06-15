@@ -20,5 +20,13 @@ export default {
 
   CHANGE_INFINITE_SCROLL_LOCK(state, boolean) {
     state.infiniteScrollLock = boolean;
+  },
+
+  INCREMENT_LOADED_CONTENT_COUNT(state) {
+    state.loadedContentCount++;
+  },
+
+  RESET_LOADED_CONTENT_COUNT(state) {
+    state.loadedContentCount = 0;
   }
 };
