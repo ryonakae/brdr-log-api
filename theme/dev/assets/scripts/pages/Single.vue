@@ -22,7 +22,7 @@
     <footer :class="$style.footer">
       <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
 
-      <small :class="$style.copyright">&copy;BORDER</small>
+      <small :class="$style.copyright">&copy;Ryo Nakae</small>
 
       <router-link :to="'/'" tag="div" :class="$style.backTop">
         <span :class="$style.arrow">←</span>

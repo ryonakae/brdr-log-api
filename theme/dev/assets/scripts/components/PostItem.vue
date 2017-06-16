@@ -23,6 +23,9 @@
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
+        <ul v-if="hasTags" :class="$style.tags">
+          <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
+        </ul>
       </div>
     </div>
   </router-link>
@@ -85,7 +88,7 @@ export default {
     if (this.hasTags) {
       this.$store.dispatch('getAllTagName', this.post.tags)
         .then((result)=>{
-          return this.tags = result;
+          this.tags = result;
         });
     }
 

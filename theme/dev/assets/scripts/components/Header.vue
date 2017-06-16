@@ -8,7 +8,9 @@
     </router-link>
 
     <ul :class="$style.navi">
-      <li :class="$style.link">
+      <li @click="clearFilter">Clear</li>
+      <li @click="filterByTag(4)">Tags</li>
+      <li>
         <a href="//brdr.jp" target="_blank">BRDR</a>
       </li>
     </ul>
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+import {scrollManager} from '../app';
 import logo from 'images/logo.svg';
 
 export default {
@@ -29,9 +32,31 @@ export default {
     siteTitle() {
       return this.$store.state.siteTitle;
     },
+
+    perPage() {
+      return this.$store.state.perPage;
+    },
   },
 
-  methods: {},
+  methods: {
+    // タグで絞り込み
+    // tagのオプションを追加してgetAllPostsする (index以外にいたらindexに遷移)
+    filterByTag(tagId) {
+      if (this.$route.path !== '/') {
+        this.$router.push('/');
+      }
+      window.scrollTo(0,0);
+      this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0, tags:tagId});
+    },
+
+    clearFilter() {
+      if (this.$route.path !== '/') {
+        this.$router.push('/');
+      }
+      window.scrollTo(0,0);
+      this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0});
+    }
+  },
 
   mounted() {}
 };
@@ -125,15 +150,17 @@ export default {
 .navi {
   float: right;
   margin-top: 6px;
-}
+  @include clearfix();
 
-.link {
-  margin-left: 30px;
-  pointer-events: auto;
-  font-size: $fontSize_small;
+  li {
+    float: left;
+    margin-left: 30px;
+    pointer-events: auto;
+    font-size: $fontSize_small;
 
-  &:first-child {
-    margin-left: 0;
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }
 </style>

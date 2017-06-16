@@ -4,6 +4,7 @@ const $ = require('jquery');
 import superagent from 'superagent';
 import {router} from '../app';
 import {util} from '../app';
+import {scrollManager} from '../app';
 
 // 非同期、複数のmutationsを組み合わせた処理
 export default {
@@ -70,7 +71,7 @@ export default {
     const documentHeight = $(document).height();
 
     // スクロールが7割位になったら次のポストロード
-    if (options.scrollManager.scrollBottom > documentHeight * 0.7) {
+    if (scrollManager.scrollBottom > documentHeight * 0.7) {
       if (context.state.infiniteScrollLock) return;
 
       context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
@@ -78,7 +79,8 @@ export default {
       // logoをローディング中にする
       context.dispatch('logoLoading', {state:'start', wait:0});
 
-      context.dispatch('getAllPosts', {per_page:context.state.perPage, offset:context.state.allPostData.length})
+      // getAllPostsする（optionsはそのまま渡す）
+      context.dispatch('getAllPosts', options)
         .then((result)=>{
           // 現在のallPostDataとresultを結合する
           const newData = context.state.allPostData.concat(result);
@@ -91,13 +93,39 @@ export default {
         })
         .catch((err)=>{
           // エラーか、これ以上投稿ないとき
-          console.log('error or nomore posts');
+          console.log('error or nomore posts', err);
           context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
           // logoのローディング終了
           context.dispatch('logoLoading', {state:'end', wait:350});
         });
     }
+  },
+
+  // 記事一覧を作成
+  // getAllPosts→setAllPost→infiniteScroll
+  createIndex(context, options) {
+    return new Promise((resolve, reject)=>{
+      // infiniteScrollをリセット
+      scrollManager.remove('index.infiniteScroll');
+      context.commit('CHANGE_INFINITE_SCROLL_LOCK', false);
+
+      // getAllPostsする→setAllPostする→infiniteScroll開始
+      context.dispatch('getAllPosts', options)
+        .then((result)=>{
+          context.dispatch('setAllPost', result);
+        })
+        .then(()=>{
+          // infiniteScroll
+          scrollManager.add('index.infiniteScroll', ()=>{
+            // getAllPostsのoptionに、offsetの値をmergeして、infiniteScroll actionを実行
+            const infiniteScrollOptions = Object.assign(options, {offset:context.state.allPostData.length});
+            context.dispatch('infiniteScroll', infiniteScrollOptions);
+          });
+
+          resolve();
+        });
+    });
   },
 
   // 単一の投稿を取得
@@ -221,15 +249,6 @@ export default {
     return new Promise((resolve, reject)=>{
       context.commit('SET_CURRENT_POST_DATA', {});
       util.wait(10).then(resolve);
-    });
-  },
-
-  backByEsc(context, from) {
-    $(document).on('keyup.backByEsc', (e)=>{
-      if (e.keyCode === 27) {
-        router.push(from.path);
-        $(document).off('.backByEsc');
-      }
     });
   },
 

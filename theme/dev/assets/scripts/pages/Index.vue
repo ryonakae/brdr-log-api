@@ -82,15 +82,7 @@ export default {
       // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
       // allPostDataがない時だけgetAllPostsする
       if (!this.hasPosts) {
-        this.$store.dispatch('getAllPosts', {per_page:this.perPage, offset:0})
-          .then((result)=>{
-            this.$store.dispatch('setAllPost', result);
-          })
-          .then(()=>{
-            scrollManager.add('index.infiniteScroll', ()=>{
-              this.$store.dispatch('infiniteScroll', {scrollManager: scrollManager});
-            });
-          });
+        this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0});
       }
       else {
         console.log('allPostData already exsist');
