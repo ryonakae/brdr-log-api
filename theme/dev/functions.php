@@ -77,6 +77,13 @@ function disable_autosave() {
 }
 add_action('wp_print_scripts', 'disable_autosave');
 
+// カテゴリーを無効化(非表示)
+function unregister_categories() {
+  register_taxonomy('category', array());
+}
+add_action('init', 'unregister_categories');
+unregister_widget( 'WP_Widget_Categories' );
+
 // 投稿に画像を挿入するときのフォーマットを変更
 function my_remove_img_attr($html, $id, $alt, $title, $align, $size){
   $html = preg_replace('/ width="\d+"/', '', $html);
