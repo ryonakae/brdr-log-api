@@ -30,13 +30,13 @@ export default {
 
     // デバイスによってbodyにaddClass
     if (util.getDevice() === 'pc') {
-      $('body').addClass('is-pc');
+      $('body').addClass('pc');
     }
     else if (util.getDevice() === 'tablet') {
-      $('body').addClass('is-tablet');
+      $('body').addClass('tablet');
     }
     else if (util.getDevice() === 'mobile') {
-      $('body').addClass('is-mobile');
+      $('body').addClass('mobile');
     }
 
     // mobileのときだけperPageを少なくする
@@ -44,6 +44,10 @@ export default {
       this.$store.dispatch('changePerPage', this.perPageMobile);
     }
 
+    // logoのローディング開始
+    this.$store.dispatch('logoLoading', {state:'start', wait:0});
+
+    // webfontの読み込み検知
     webFont.load({
       classes: false,
       custom: {
@@ -52,7 +56,7 @@ export default {
       active: ()=>{
         console.log('all webfont loaded');
         util.wait(50).then(()=>{
-          $('body').addClass('ready');
+          this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true);
         });
       }
     });

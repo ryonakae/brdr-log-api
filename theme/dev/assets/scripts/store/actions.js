@@ -76,7 +76,7 @@ export default {
       context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
       // logoをローディング中にする
-      $('#header').find('.logo').removeClass('ready');
+      context.dispatch('logoLoading', {state:'start', wait:0});
 
       context.dispatch('getAllPosts', {per_page:context.state.perPage, offset:context.state.allPostData.length})
         .then((result)=>{
@@ -95,9 +95,7 @@ export default {
           context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
           // logoのローディング終了
-          util.wait(550).then(()=>{
-            $('#header').find('.logo').addClass('ready');
-          });
+          context.dispatch('logoLoading', {state:'end', wait:350});
         });
     }
   },
@@ -235,16 +233,35 @@ export default {
     });
   },
 
-  changeLoadedContentCount(context, arg) {
+  changeloadedPostItem(context, arg) {
     return new Promise((resolve, reject)=>{
       if (arg === 'increment') {
-        context.commit('INCREMENT_LOADED_CONTENT_COUNT');
+        context.commit('INCREMENT_LOADED_POST_ITEM');
       }
       else if (arg === 'reset') {
-        context.commit('RESET_LOADED_CONTENT_COUNT');
+        context.commit('RESET_LOADED_POST_ITEM');
       }
 
       util.wait(10).then(resolve);
+    });
+  },
+
+  // logoのadd/remove class
+  logoLoading(context, options) {
+    return new Promise((resolve, reject)=>{
+      const $logo = $('#header').find('.logo');
+
+      util.wait(options.wait)
+        .then(()=>{
+          if (options.state === 'start') {
+            $logo.removeClass('ready');
+          }
+          else if (options.state === 'end') {
+            $logo.addClass('ready');
+          }
+
+          util.wait(10).then(resolve);
+        });
     });
   }
 };

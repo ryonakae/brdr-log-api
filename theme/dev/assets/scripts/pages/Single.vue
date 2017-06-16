@@ -75,21 +75,41 @@ export default {
     },
 
     eyecatch() {
-      let eyecatch;
-
       if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
+        return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
       }
       else {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url;
+        return this.post._embedded['wp:featuredmedia'][0].source_url;
       }
+    },
 
-      return eyecatch;
+    isWebfontLoaded() {
+      return this.$store.state.isWebfontLoaded;
     }
   },
 
   methods: {
+    onWebfontLoad() {
+      // currentPostDataがある(indexから遷移した時)
+      // 通信せずにcurrentPostDataをそのまま使う
+      if (this.hasPost) {
+        this.init();
+      }
+      // currentPostDataがない場合(url直接叩いたとき)
+      // →getPost()実行してcurrentPostDataにデータを入れる
+      else {
+        this.$store.dispatch('getPost', this.$route.params.id)
+          .then((result)=>{
+            return this.$store.dispatch('setCurrentPost', result);
+          })
+          .then(()=>{
+            return this.init();
+          });
+      }
+    },
+
     init() {
+      // ページタイトルを変更
       this.$store.dispatch('changeTitle', this.post.title.rendered);
 
       // タグがある場合はタグ取得
@@ -102,26 +122,18 @@ export default {
 
       // 本文の画像の親要素にaddClass
       this.$content = $(this.$refs.content);
-
       this.$content.find('img').each((i, elem)=>{
         $(elem).parent().addClass('img');
       });
 
       // ページ内の画像全部ロードしたらlogoのローディング終了
       this.$article = $(this.$refs.article);
-
       this.$article.imagesLoaded({background:true})
         .progress((instance, image)=>{
-          console.log(instance, image);
-
           $(image.img).addClass('ready');
         })
         .done((instance)=>{
-          console.log(instance);
-
-          util.wait(550).then(()=>{
-            $('#header').find('.logo').addClass('ready');
-          });
+          this.$store.dispatch('logoLoading', {state:'end', wait:350});
         });
     }
   },
@@ -132,27 +144,16 @@ export default {
     }
   },
 
-  beforeRouteEnter(to, from, next) {
-    next((vm)=>{
-    });
-  },
-
   mounted() {
-    // currentPostDataがある(indexから遷移した時)
-    // 通信せずにcurrentPostDataをそのまま使う
-    if (this.hasPost) {
-      this.init();
-    }
-    // currentPostDataがない場合(url直接叩いたとき)
-    // →getPost()実行してcurrentPostDataにデータを入れる
-    else {
-      this.$store.dispatch('getPost', this.$route.params.id)
-      .then((result)=>{
-        return this.$store.dispatch('setCurrentPost', result);
-      })
-      .then(()=>{
-        return this.init();
+    // webfontのロードが終わってない→isWebfontLoadedを監視して、読み込み後onWebfontLoad関数実行
+    if (!this.isWebfontLoaded) {
+      this.$watch('isWebfontLoaded', ()=>{
+        this.onWebfontLoad();
       });
+    }
+    // webfontのローディングが終わってる(他のページから遷移した時とか)→そのままonWebfontLoad関数実行
+    else {
+      this.onWebfontLoad();
     }
   }
 };
@@ -251,7 +252,7 @@ export default {
     transition: all $duration_quick $easing;
   }
 
-  :global(body.is-pc) & {
+  :global(body.pc) & {
     &:hover {
       opacity: 0.7;
 

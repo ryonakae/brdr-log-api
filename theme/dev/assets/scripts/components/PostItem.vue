@@ -69,8 +69,8 @@ export default {
 
   methods: {
     onLoad() {
-      // PostItemがロードされたらloadedContentCountを1up
-      this.$store.dispatch('changeLoadedContentCount', 'increment');
+      // PostItemがロードされたらloadedPostItemを1up
+      this.$store.dispatch('changeloadedPostItem', 'increment');
     }
   },
 
@@ -96,13 +96,11 @@ export default {
       const $overlay = $(this.$refs.overlay);
 
       $post.imagesLoaded({background: true}).done((instance)=>{
-        util.wait(10)
-          .then(()=>{
-            $image.addClass(this.$style.ready);
-            $overlay.addClass(this.$style.ready);
-          });
-
-        this.onLoad();
+        util.wait(10).then(()=>{
+          $image.addClass(this.$style.ready);
+          $overlay.addClass(this.$style.ready);
+          this.onLoad();
+        });
       });
     }
     // アイキャッチがないとき
@@ -142,7 +140,7 @@ export default {
 }
 
 .post.noeyecatch {
-  :global(body.is-pc) & {
+  :global(body.pc) & {
     &:hover {
       .text {
         opacity: 0.7;
@@ -156,7 +154,7 @@ export default {
 
   .bg {
     border: 1px solid $color_key;
-    background-color: $bgColor_gray;
+    background-color: $color_key;
     position: absolute;
     top: 0;
     left: 0;
@@ -205,7 +203,7 @@ export default {
     color: $textColor_inverse;
   }
 
-  :global(body.is-pc) & {
+  :global(body.pc) & {
     &:hover {
       .overlay {
         opacity: 0.75;

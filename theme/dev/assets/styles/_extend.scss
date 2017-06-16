@@ -4,7 +4,7 @@
   cursor: pointer;
   transition: all $duration_quick $easing;
 
-  body.is-pc & {
+  body.pc & {
     &:hover {
       text-decoration: none;
       opacity: 0.7;

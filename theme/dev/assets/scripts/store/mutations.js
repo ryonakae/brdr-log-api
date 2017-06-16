@@ -22,11 +22,15 @@ export default {
     state.infiniteScrollLock = boolean;
   },
 
-  INCREMENT_LOADED_CONTENT_COUNT(state) {
-    state.loadedContentCount++;
+  INCREMENT_LOADED_POST_ITEM(state) {
+    state.loadedPostItem++;
   },
 
-  RESET_LOADED_CONTENT_COUNT(state) {
-    state.loadedContentCount = 0;
+  RESET_LOADED_POST_ITEM(state) {
+    state.loadedPostItem = 0;
+  },
+
+  CHANGE_IS_WEBFONT_LOADED(state, boolean) {
+    state.isWebfontLoaded = boolean;
   }
 };

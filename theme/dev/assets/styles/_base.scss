@@ -46,13 +46,6 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: unset;
-  // visibility: hidden;
-  opacity: 0;
-
-  &.ready {
-    // visibility: visible;
-    opacity: 1;
-  }
 
   & ::-moz-selection {
     background-color: rgba($textColor_default, 0.85);

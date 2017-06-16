@@ -107,7 +107,7 @@ export default {
 
   .default {
     background-color: $color_key;
-    transition: all $duration_image $ease-out-quad;
+    transition: all $duration_quick $ease-out-quad;
     opacity: 0;
   }
 

@@ -1,5 +1,5 @@
 <template>
-  <article v-if="hasPage" ref="page">
+  <article id="page" v-if="hasPage" ref="page">
     <h1 v-html="page.title.rendered.toUpperCase()"></h1>
     <div v-html="page.content.rendered"></div>
   </article>

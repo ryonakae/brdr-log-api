@@ -1,8 +1,8 @@
 <template>
   <div :class="$style.page" ref="page">
     <ul v-if="hasPosts">
-      <li v-for="post in posts" :key="post.id" :class="$style.item">
-        <post-item-component :post="post" @click="setCurrentPost(post)"></post-item-component>
+      <li v-for="post in posts" :key="post.id" :class="$style.item" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
+        <post-item-component :post="post"></post-item-component>
       </li>
     </ul>
   </div>
@@ -42,21 +42,18 @@ export default {
       return this.$store.state.perPage;
     },
 
-    loadedContentCount() {
-      return this.$store.state.loadedContentCount;
+    loadedPostItem() {
+      return this.$store.state.loadedPostItem;
+    },
+
+    isWebfontLoaded() {
+      return this.$store.state.isWebfontLoaded;
     }
   },
 
   watch: {
-    loadedContentCount(count) {
-      // loadedCountが記事数と同じになったらlogoのローディング終了
-      if (this.posts.length === count) {
-        console.log('all postitem loaded');
-
-        util.wait(550).then(()=>{
-          $('#header').find('.logo').addClass('ready');
-        });
-      }
+    loadedPostItem() {
+      this.onLoad();
     }
   },
 
@@ -71,37 +68,57 @@ export default {
       if (this.$route.path === '/') {
         this.$store.dispatch('clearCurrentPost');
       }
+    },
+
+    onLoad() {
+      // loadedCountが記事数と同じになったらlogoのローディング終了
+      if (this.posts.length === this.loadedPostItem) {
+        console.log('all postitem loaded');
+        this.$store.dispatch('logoLoading', {state:'end', wait:350});
+      }
+    },
+
+    init() {
+      // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
+      // allPostDataがない時だけgetAllPostsする
+      if (!this.hasPosts) {
+        this.$store.dispatch('getAllPosts', {per_page:this.perPage, offset:0})
+          .then((result)=>{
+            this.$store.dispatch('setAllPost', result);
+          })
+          .then(()=>{
+            scrollManager.add('index.infiniteScroll', ()=>{
+              this.$store.dispatch('infiniteScroll', {scrollManager: scrollManager});
+            });
+          });
+      }
+      else {
+        console.log('allPostData already exsist');
+      }
     }
   },
 
   created() {
-    // currentPostDataを空にする
-    this.clearCurrentPost();
-
-    // loadedContentCountをリセット
-    this.$store.dispatch('changeLoadedContentCount', 'reset');
-  },
-
-  mounted() {
     // ページタイトルを変更
     this.$store.dispatch('changeTitle', '');
 
-    // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
-    // allPostDataがない時だけgetAllPostsする
-    console.log(this.posts.length, this.hasPosts);
-    if (!this.hasPosts) {
-      this.$store.dispatch('getAllPosts', {per_page:this.perPage, offset:0})
-        .then((result)=>{
-          this.$store.dispatch('setAllPost', result);
-        })
-        .then(()=>{
-          scrollManager.add('index.infiniteScroll', ()=>{
-            this.$store.dispatch('infiniteScroll', {scrollManager: scrollManager});
-          });
-        });
+    // currentPostDataを空にする
+    this.clearCurrentPost();
+
+    // loadedPostItemをリセット
+    this.$store.dispatch('changeloadedPostItem', 'reset');
+  },
+
+  mounted() {
+    // webfontのロードが終わってない→isWebfontLoadedを監視して、読み込み後init関数実行
+    if (!this.isWebfontLoaded) {
+      this.$watch('isWebfontLoaded', ()=>{
+        this.init();
+      });
     }
+    // webfontのローディングが終わってる(他のページから遷移した時とか)→そのままinit関数実行
     else {
-      console.log('allPostData already exsist');
+      this.init();
     }
   },
 
