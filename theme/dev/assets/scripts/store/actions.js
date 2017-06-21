@@ -68,7 +68,7 @@ export default {
   // スクロールでさらに記事一覧を取得
   infiniteScroll(context, options) {
     console.log('fire infiniteScroll');
-    const documentHeight = $(document).height();
+    const documentHeight = document.body.clientHeight;
 
     // スクロールが7割位になったら次のポストロード
     if (scrollManager.scrollBottom > documentHeight * 0.7) {
@@ -268,15 +268,15 @@ export default {
   // logoのadd/remove class
   logoLoading(context, options) {
     return new Promise((resolve, reject)=>{
-      const $logo = $('#header').find('.logo');
+      const $logo = document.getElementById('headerLogo');
 
       util.wait(options.wait)
         .then(()=>{
           if (options.state === 'start') {
-            $logo.removeClass('ready');
+            $logo.classList.remove('ready');
           }
           else if (options.state === 'end') {
-            $logo.addClass('ready');
+            $logo.classList.add('ready');
           }
 
           util.wait(10).then(resolve);

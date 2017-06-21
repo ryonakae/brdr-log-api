@@ -1,6 +1,6 @@
 <template>
-  <header :class="$style.header" id="header">
-    <router-link :to="'/'" tag="h1" :class="$style.logo" class="logo">
+  <header :class="$style.header">
+    <router-link :to="'/'" tag="h1" :class="$style.logo" class="logo" id="headerLogo">
       <div :class="$style.inner">
         <div :class="$style.loading"></div>
         <div :class="$style.default"></div>

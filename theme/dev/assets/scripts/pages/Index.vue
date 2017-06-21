@@ -128,7 +128,8 @@ export default {
 
 .page {
   max-width: $width_index;
-  margin: 150px auto 150px;
+  padding: 150px 0;
+  margin: 0 auto;
 }
 
 .item {

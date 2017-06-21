@@ -29,15 +29,7 @@ export default {
     this.$store.dispatch('changeTitle', '');
 
     // デバイスによってbodyにaddClass
-    if (util.getDevice() === 'pc') {
-      $('body').addClass('pc');
-    }
-    else if (util.getDevice() === 'tablet') {
-      $('body').addClass('tablet');
-    }
-    else if (util.getDevice() === 'mobile') {
-      $('body').addClass('mobile');
-    }
+    document.body.classList.add(util.getDevice());
 
     // mobileのときだけperPageを少なくする
     if (util.getDevice() === 'mobile') {
