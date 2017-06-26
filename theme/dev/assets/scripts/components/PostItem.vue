@@ -34,9 +34,7 @@
 <script>
 import {util} from '../app';
 import moment from 'moment';
-const $ = require('jquery');
-const imagesLoaded = require('imagesloaded');
-imagesLoaded.makeJQueryPlugin($);
+import imagesLoaded from 'imagesloaded';
 
 export default {
   props: ['post'],
@@ -94,14 +92,14 @@ export default {
 
     // アイキャッチがある時
     if (this.hasEyecatch) {
-      const $post = $(this.$refs.post.$el);
-      const $image = $(this.$refs.image);
-      const $overlay = $(this.$refs.overlay);
+      const $post = this.$refs.post.$el;
+      const $image = this.$refs.image;
+      const $overlay = this.$refs.overlay;
 
-      $post.imagesLoaded({background: true}).done((instance)=>{
+      imagesLoaded($post, {background: true}, ()=>{
         util.wait(10).then(()=>{
-          $image.addClass(this.$style.ready);
-          $overlay.addClass(this.$style.ready);
+          $image.classList.add(this.$style.ready);
+          $overlay.classList.add(this.$style.ready);
           this.onLoad();
         });
       });

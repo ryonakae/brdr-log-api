@@ -121,10 +121,12 @@ export default {
       }
 
       // 本文の画像の親要素にaddClass
-      this.$content = $(this.$refs.content);
-      this.$content.find('img').each((i, elem)=>{
-        $(elem).parent().addClass('img');
-      });
+      this.$content = this.$refs.content;
+      const $images = this.$content.getElementsByTagName('img');
+      for (let i = 0; i < $images.length; i++) {
+        const $img = $images[i];
+        $img.parentNode.classList.add('img');
+      }
 
       // ページ内の画像全部ロードしたらlogoのローディング終了
       this.$article = $(this.$refs.article);
