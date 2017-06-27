@@ -19,7 +19,8 @@ const state = {
   infiniteScrollLock: false,
   loadedPostItem: 0,
   isWebfontLoaded: false,
-  isLogoLoading: false
+  isLogoLoading: false,
+  isFiltered: false
 };
 
 const store = new Vuex.Store({

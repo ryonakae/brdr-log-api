@@ -1,7 +1,6 @@
 'use strict';
 
 import superagent from 'superagent';
-import {router} from '../app';
 import {util} from '../app';
 import {scrollManager} from '../app';
 
@@ -264,7 +263,7 @@ export default {
     });
   },
 
-  // logoのadd/remove class
+  // logoのloading
   logoLoading(context, options) {
     return new Promise((resolve, reject)=>{
       util.wait(options.wait)
@@ -273,6 +272,12 @@ export default {
           console.log('isLogoLoading', context.state.isLogoLoading);
           resolve();
         });
+    });
+  },
+
+  filterByTag(context, tagId) {
+    return new Promise((resolve, reject)=>{
+      console.log(context.state.route.path);
     });
   }
 };

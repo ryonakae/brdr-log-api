@@ -35,8 +35,7 @@ export default {
     return {
       logo: logo,
       tags: [],
-      isTagsActive: false,
-      isFiltered: false
+      isTagsActive: false
     };
   },
 
@@ -51,6 +50,10 @@ export default {
 
     isLogoLoading() {
       return this.$store.state.isLogoLoading;
+    },
+
+    isFiltered() {
+      return this.$store.state.isFiltered;
     }
   },
 
@@ -58,6 +61,8 @@ export default {
     // タグで絞り込み
     // tagのオプションを追加してgetAllPostsする (index以外にいたらindexに遷移)
     filterByTag(tagId) {
+      this.$store.dispatch('filterByTag', tagId);
+
       // タグ一覧を閉じる
       this.isTagsActive = false;
 

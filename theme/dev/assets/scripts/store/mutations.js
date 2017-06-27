@@ -36,5 +36,9 @@ export default {
 
   CHANGE_IS_LOGO_LOADING(state, boolean) {
     state.isLogoLoading = boolean;
+  },
+
+  CHANGE_IS_FILTERED(state, boolean) {
+    state.isFiltered = boolean;
   }
 };
