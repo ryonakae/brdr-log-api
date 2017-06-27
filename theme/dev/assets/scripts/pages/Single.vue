@@ -245,6 +245,7 @@ export default {
 }
 
 .backTop {
+  cursor: pointer;
   position: fixed;
   bottom: $margin_page + 3px;
   left: $margin_page;

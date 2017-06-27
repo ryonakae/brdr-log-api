@@ -1,6 +1,5 @@
 'use strict';
 
-const $ = require('jquery');
 import superagent from 'superagent';
 import {router} from '../app';
 import {util} from '../app';

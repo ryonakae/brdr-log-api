@@ -7,9 +7,17 @@
       </div>
     </router-link>
 
+    <div v-if="isFiltered" :class="$style.clear" @click="clearFilter">Clear</div>
+
     <ul :class="$style.navi">
-      <li @click="clearFilter">Clear</li>
-      <li @click="filterByTag(4)">Tags</li>
+      <li :class="$style.tags">
+        <span @click="toggleTags">Tags</span>
+        <ul :class="{[$style.active]: isTagsActive}">
+          <li v-for="tag in tags" :key="tag.id" @click="filterByTag(tag.id)">
+            <span>{{tag.name}}</span>
+          </li>
+        </ul>
+      </li>
       <li>
         <a href="//brdr.jp" target="_blank">BRDR</a>
       </li>
@@ -18,13 +26,17 @@
 </template>
 
 <script>
+import superagent from 'superagent';
 import {scrollManager} from '../app';
 import logo from 'images/logo.svg';
 
 export default {
   data() {
     return {
-      logo: logo
+      logo: logo,
+      tags: [],
+      isTagsActive: false,
+      isFiltered: false
     };
   },
 
@@ -46,23 +58,74 @@ export default {
     // タグで絞り込み
     // tagのオプションを追加してgetAllPostsする (index以外にいたらindexに遷移)
     filterByTag(tagId) {
+      // タグ一覧を閉じる
+      this.isTagsActive = false;
+
       if (this.$route.path !== '/') {
         this.$router.push('/');
       }
       window.scrollTo(0,0);
       this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0, tags:tagId});
+
+      // clearを表示
+      this.isFiltered = true;
     },
 
     clearFilter() {
+      // タグ一覧を閉じる
+      this.isTagsActive = false;
+
       if (this.$route.path !== '/') {
         this.$router.push('/');
       }
       window.scrollTo(0,0);
       this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0});
+
+      // clearを隠す
+      this.isFiltered = false;
+    },
+
+    getAllTag() {
+      return new Promise((resolve, reject)=>{
+        const getUrl = this.$store.state.siteUrl + '/wp-json/wp/v2/tags';
+
+        superagent
+          .get(getUrl)
+          .timeout({
+            response: 10000,
+            deadline: 60000
+          })
+          .end((err, res) => {
+            if (err) {
+              console.log(err);
+            }
+            else {
+              console.log(res.body);
+              resolve(res.body);
+            }
+          });
+      });
+    },
+
+    toggleTags() {
+      if (this.isTagsActive) {
+        this.isTagsActive = false;
+      }
+      else {
+        this.isTagsActive = true;
+      }
     }
   },
 
-  mounted() {}
+  mounted() {
+    this.getAllTag()
+      .then((result)=>{
+        return new Promise((resolve, reject)=>{
+          this.tags = result;
+          resolve();
+        });
+      });
+  }
 };
 </script>
 
@@ -70,6 +133,7 @@ export default {
 @import "~bourbon";
 @import "~styles/config";
 @import "~styles/mixin";
+@import "~styles/extend";
 
 @keyframes loading {
   0%   { transform: translateX(20%); }
@@ -84,6 +148,7 @@ export default {
   width: 100%;
   padding: 0 $margin_page;
   pointer-events: none;
+  text-align: center;
 }
 
 .logo {
@@ -151,12 +216,32 @@ export default {
   }
 }
 
+.clear {
+  display: inline-block;
+  font-size: $fontSize_small;
+  pointer-events: auto;
+  @extend %link;
+
+  :global(body.pc) &:hover {
+    opacity: 0.7;
+  }
+}
+
 .navi {
+  text-align: left;
   float: right;
   margin-top: 6px;
   @include clearfix();
 
-  li {
+  span {
+    @extend %link;
+
+    :global(body.pc) &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  > li {
     float: left;
     margin-left: 30px;
     pointer-events: auto;
@@ -164,6 +249,30 @@ export default {
 
     &:first-child {
       margin-left: 0;
+    }
+  }
+
+  .tags {
+    position: relative;
+
+    ul {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 15px;
+      display: none;
+
+      &.active {
+        display: block;
+      }
+    }
+
+    li {
+      margin-top: 5px;
+
+      &:first-child {
+        margin-top: 0;
+      }
     }
   }
 }
