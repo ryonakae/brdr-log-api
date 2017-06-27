@@ -1,6 +1,7 @@
 'use strict';
 
-const $ = require('jquery');
+// スクロール量の取得はブラウザによって差異がありすぎるので、jQueryを使う
+import $ from 'jquery';
 
 export default class ScrollManager {
   constructor(options){

@@ -35,9 +35,7 @@
 <script>
 import {util} from '../app';
 import moment from 'moment';
-const $ = require('jquery');
-const imagesLoaded = require('imagesloaded');
-imagesLoaded.makeJQueryPlugin($);
+import imagesLoaded from 'imagesloaded';
 import ShareComponent from '../components/Share.vue';
 
 export default {
@@ -49,7 +47,8 @@ export default {
     return {
       tags: [],
       $content: null,
-      $article: null
+      $article: null,
+      imgLoad: null,
     };
   },
 
@@ -129,14 +128,16 @@ export default {
       }
 
       // ページ内の画像全部ロードしたらlogoのローディング終了
-      this.$article = $(this.$refs.article);
-      this.$article.imagesLoaded({background:true})
-        .progress((instance, image)=>{
-          $(image.img).addClass('ready');
-        })
-        .done((instance)=>{
-          this.$store.dispatch('logoLoading', {state:'end', wait:350});
-        });
+      this.$article = this.$refs.article;
+      this.imgLoad = imagesLoaded(this.$article, {background: true});
+      // progress
+      this.imgLoad.on('progress', (instance, image)=>{
+        image.img.classList.add('ready');
+      });
+      // done
+      this.imgLoad.on('done', (instance)=>{
+        this.$store.dispatch('logoLoading', {boolean:false, wait:350});
+      });
     }
   },
 
@@ -144,6 +145,11 @@ export default {
     moment(date) {
       return moment(date).format('YYYY.M.D');
     }
+  },
+
+  created() {
+    // logoのローディング開始
+    this.$store.dispatch('logoLoading', {boolean:true, wait:0});
   },
 
   mounted() {

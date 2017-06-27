@@ -17,7 +17,7 @@ gulp.task('bs:init', () => {
     open: false,
     notify: false,
     port: 3000,
-    reloadDelay: 300,
+    // reloadDelay: 300,
     ghostMode: false,
     proxy: {
       target: 'log.brdr.dev',

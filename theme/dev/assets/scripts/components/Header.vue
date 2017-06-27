@@ -1,6 +1,6 @@
 <template>
   <header :class="$style.header">
-    <router-link :to="'/'" tag="h1" :class="$style.logo" class="logo" id="headerLogo">
+    <router-link :to="'/'" tag="h1" :class="[$style.logo, {[$style.ready]: !isLogoLoading}]">
       <div :class="$style.inner">
         <div :class="$style.loading"></div>
         <div :class="$style.default"></div>
@@ -36,6 +36,10 @@ export default {
     perPage() {
       return this.$store.state.perPage;
     },
+
+    isLogoLoading() {
+      return this.$store.state.isLogoLoading;
+    }
   },
 
   methods: {
@@ -136,7 +140,7 @@ export default {
     opacity: 0;
   }
 
-  &:global(.ready) {
+  &.ready {
     .loading {
       animation-name: none;
     }

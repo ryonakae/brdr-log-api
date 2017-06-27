@@ -37,7 +37,7 @@ export default {
     }
 
     // logoのローディング開始
-    this.$store.dispatch('logoLoading', {state:'start', wait:0});
+    this.$store.dispatch('logoLoading', {boolean:true, wait:0});
 
     // webfontの読み込み検知
     webFont.load({
@@ -46,8 +46,8 @@ export default {
         families: ['Neue Frutiger', 'Noto Sans Japanese', 'Source Code Pro']
       },
       active: ()=>{
-        console.log('all webfont loaded');
         util.wait(50).then(()=>{
+          console.log('all webfont loaded');
           this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true);
         });
       }

@@ -49,7 +49,9 @@ export const router = new VueRouter({
   app: App,
   mode: 'history',
   routes,
-  scrollBehavior
+  scrollBehavior,
+  linkActiveClass: '',
+  linkExactActiveClass: ''
 });
 
 // create app

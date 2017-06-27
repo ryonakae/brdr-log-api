@@ -74,7 +74,7 @@ export default {
       // loadedCountが記事数と同じになったらlogoのローディング終了
       if (this.posts.length === this.loadedPostItem) {
         console.log('all postitem loaded');
-        this.$store.dispatch('logoLoading', {state:'end', wait:350});
+        this.$store.dispatch('logoLoading', {boolean:false, wait:350});
       }
     },
 
@@ -99,6 +99,9 @@ export default {
 
     // loadedPostItemをリセット
     this.$store.dispatch('changeloadedPostItem', 'reset');
+
+    // logoのローディング開始
+    this.$store.dispatch('logoLoading', {boolean:true, wait:0});
   },
 
   mounted() {

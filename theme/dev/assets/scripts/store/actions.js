@@ -77,7 +77,7 @@ export default {
       context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
       // logoをローディング中にする
-      context.dispatch('logoLoading', {state:'start', wait:0});
+      context.dispatch('logoLoading', {boolean:true, wait:0});
 
       // getAllPostsする（optionsはそのまま渡す）
       context.dispatch('getAllPosts', options)
@@ -97,7 +97,7 @@ export default {
           context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
           // logoのローディング終了
-          context.dispatch('logoLoading', {state:'end', wait:350});
+          context.dispatch('logoLoading', {boolean:false, wait:350});
         });
     }
   },
@@ -268,18 +268,11 @@ export default {
   // logoのadd/remove class
   logoLoading(context, options) {
     return new Promise((resolve, reject)=>{
-      const $logo = document.getElementById('headerLogo');
-
       util.wait(options.wait)
         .then(()=>{
-          if (options.state === 'start') {
-            $logo.classList.remove('ready');
-          }
-          else if (options.state === 'end') {
-            $logo.classList.add('ready');
-          }
-
-          util.wait(10).then(resolve);
+          context.commit('CHANGE_IS_LOGO_LOADING', options.boolean);
+          console.log('isLogoLoading', context.state.isLogoLoading);
+          resolve();
         });
     });
   }

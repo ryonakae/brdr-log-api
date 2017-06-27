@@ -1,7 +1,5 @@
 'use strict';
 
-const $ = require('jquery');
-
 export default class ResizeManager {
   constructor(){
     this.$window = null;
@@ -16,11 +14,12 @@ export default class ResizeManager {
   }
 
   init(){
-    this.$window = $(window);
+    this.$window = window;
 
     this.update();
 
-    this.$window.on('resize.resizeManager orientationchange.resizeManager', this.onResize.bind(this));
+    this.$window.addEventListener('resize', this.onResize.bind(this), false);
+    this.$window.addEventListener('orientationchange', this.onResize.bind(this), false);
   }
 
   add(name, func){
@@ -36,7 +35,7 @@ export default class ResizeManager {
 
     this.isResizing = true;
 
-    if (window.requestAnimationFrame) {
+    if (this.$window.requestAnimationFrame) {
       requestAnimationFrame(this.update.bind(this));
     }
     else {
@@ -45,8 +44,8 @@ export default class ResizeManager {
   }
 
   update(){
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
+    this.windowWidth = this.$window.innerWidth;
+    this.windowHeight = this.$window.innerHeight;
 
     if (Object.keys(this.functions).length > 0) {
       for (const func in this.functions) {

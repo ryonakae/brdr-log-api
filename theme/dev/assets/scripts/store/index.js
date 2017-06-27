@@ -18,7 +18,8 @@ const state = {
   perPageMobile: 6,
   infiniteScrollLock: false,
   loadedPostItem: 0,
-  isWebfontLoaded: false
+  isWebfontLoaded: false,
+  isLogoLoading: false
 };
 
 const store = new Vuex.Store({
