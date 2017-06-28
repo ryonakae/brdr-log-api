@@ -6,7 +6,7 @@
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
         <ul v-if="hasTags" :class="$style.tags">
-          <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
+          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click="filterByTag(tag.id)">{{tag.name}}</li>
         </ul>
 
         <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
@@ -88,6 +88,10 @@ export default {
   },
 
   methods: {
+    filterByTag(tagId) {
+      this.$store.dispatch('filterByTag', tagId);
+    },
+
     onWebfontLoad() {
       // currentPostDataがある(indexから遷移した時)
       // 通信せずにcurrentPostDataをそのまま使う

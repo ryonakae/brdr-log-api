@@ -3,6 +3,7 @@
 import superagent from 'superagent';
 import {util} from '../app';
 import {scrollManager} from '../app';
+import router from '../router';
 
 // 非同期、複数のmutationsを組み合わせた処理
 export default {
@@ -275,9 +276,52 @@ export default {
     });
   },
 
+  changeIsFiltered(context, boolean) {
+    return new Promise((resolve, reject)=>{
+      context.commit('CHANGE_IS_FILTERED', boolean);
+      resolve();
+    });
+  },
+
   filterByTag(context, tagId) {
     return new Promise((resolve, reject)=>{
-      console.log(context.state.route.path);
+      // createIndexのオプションを作成
+      // tagIdが'reset'なら全記事取得
+      let options = {
+        per_page: context.state.perPage,
+        offset: 0,
+        tags: tagId
+      };
+
+      if (tagId === 'reset') {
+        options = {
+          per_page: context.state.perPage,
+          offset: 0
+        };
+      }
+
+      // タグで絞り込み
+      context.dispatch('createIndex', options)
+        .then(()=>{
+          // index以外にいる場合はindexに遷移
+          if (context.state.route.path !== '/') {
+            router.push('/');
+          }
+
+          // 一番上にスクロール
+          window.scrollTo(0,0);
+
+          // tagIdが'reset'ならisFilteredをfalseに
+          // それ以外ならtrueに
+          if (tagId === 'reset') {
+            context.dispatch('changeIsFiltered', false);
+          }
+          else {
+            context.dispatch('changeIsFiltered', true);
+          }
+
+          resolve();
+        });
     });
   }
 };

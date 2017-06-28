@@ -11,7 +11,7 @@
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
         <ul v-if="hasTags" :class="$style.tags">
-          <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
+          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click="filterByTag(tag.id)">{{tag.name}}</li>
         </ul>
       </div>
     </div>
@@ -72,6 +72,10 @@ export default {
     onLoad() {
       // PostItemがロードされたらloadedPostItemを1up
       this.$store.dispatch('changeloadedPostItem', 'increment');
+    },
+
+    filterByTag(tagId) {
+      this.$store.dispatch('filterByTag', tagId);
     }
   },
 

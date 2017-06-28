@@ -27,13 +27,11 @@
 
 <script>
 import superagent from 'superagent';
-import {scrollManager} from '../app';
 import logo from 'images/logo.svg';
 
 export default {
   data() {
     return {
-      logo: logo,
       tags: [],
       isTagsActive: false
     };
@@ -65,29 +63,13 @@ export default {
 
       // タグ一覧を閉じる
       this.isTagsActive = false;
-
-      if (this.$route.path !== '/') {
-        this.$router.push('/');
-      }
-      window.scrollTo(0,0);
-      this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0, tags:tagId});
-
-      // clearを表示
-      this.isFiltered = true;
     },
 
     clearFilter() {
+      this.$store.dispatch('filterByTag', 'reset');
+
       // タグ一覧を閉じる
       this.isTagsActive = false;
-
-      if (this.$route.path !== '/') {
-        this.$router.push('/');
-      }
-      window.scrollTo(0,0);
-      this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0});
-
-      // clearを隠す
-      this.isFiltered = false;
     },
 
     getAllTag() {
@@ -266,6 +248,7 @@ export default {
       left: 0;
       margin-top: 15px;
       display: none;
+      min-width: 100px;
 
       &.active {
         display: block;
