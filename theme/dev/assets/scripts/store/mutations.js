@@ -40,5 +40,9 @@ export default {
 
   CHANGE_IS_FILTERED(state, boolean) {
     state.isFiltered = boolean;
+  },
+
+  SET_FILTERED_TAG(state, tagName) {
+    state.filteredTag = tagName;
   }
 };

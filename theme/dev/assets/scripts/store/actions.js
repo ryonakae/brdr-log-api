@@ -219,7 +219,7 @@ export default {
             // ループの最後
             if (tags.length === index+1) {
               console.log(_tags);
-              resolve(_tags);
+              util.wait(10).then(resolve(_tags));
             }
           })
           .catch((err)=>{
@@ -276,35 +276,33 @@ export default {
     });
   },
 
-  changeIsFiltered(context, boolean) {
-    return new Promise((resolve, reject)=>{
-      context.commit('CHANGE_IS_FILTERED', boolean);
-      resolve();
-    });
-  },
-
-  filterByTag(context, tagId) {
+  filterByTag(context, options) {
     return new Promise((resolve, reject)=>{
       // createIndexのオプションを作成
       // tagIdが'reset'なら全記事取得
-      let options = {
+      let indexOptions = {
         per_page: context.state.perPage,
         offset: 0,
-        tags: tagId
+        tags: options.tagId
       };
 
-      if (tagId === 'reset') {
-        options = {
+      if (options.tagId === 'reset') {
+        indexOptions = {
           per_page: context.state.perPage,
           offset: 0
         };
       }
 
+      // タグの名前をセット
+      if (options.tagName) {
+        context.commit('SET_FILTERED_TAG', options.tagName);
+      }
+
       // タグで絞り込み
-      context.dispatch('createIndex', options)
+      context.dispatch('createIndex', indexOptions)
         .then(()=>{
-          // index以外にいる場合はindexに遷移
-          if (context.state.route.path !== '/') {
+          // transitionがtrueならindexに遷移
+          if (options.transition) {
             router.push('/');
           }
 
@@ -313,11 +311,11 @@ export default {
 
           // tagIdが'reset'ならisFilteredをfalseに
           // それ以外ならtrueに
-          if (tagId === 'reset') {
-            context.dispatch('changeIsFiltered', false);
+          if (options.tagId === 'reset') {
+            context.commit('CHANGE_IS_FILTERED', false);
           }
           else {
-            context.dispatch('changeIsFiltered', true);
+            context.commit('CHANGE_IS_FILTERED', true);
           }
 
           resolve();

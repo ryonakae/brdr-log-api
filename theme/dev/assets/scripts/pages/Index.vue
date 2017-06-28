@@ -87,7 +87,11 @@ export default {
       else {
         console.log('allPostData already exsist');
       }
-    }
+    },
+
+    clearFilter() {
+      this.$store.dispatch('filterByTag', {tagId:'reset', transition:false});
+    },
   },
 
   created() {
@@ -118,6 +122,7 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
+    this.clearFilter();
     scrollManager.remove('index.infiniteScroll');
     next();
   }

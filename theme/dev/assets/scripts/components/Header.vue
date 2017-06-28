@@ -7,13 +7,18 @@
       </div>
     </router-link>
 
-    <div v-if="isFiltered" :class="$style.clear" @click="clearFilter">Clear</div>
+    <div v-if="isFiltered" :class="$style.clear" @click="clearFilter">
+      <svg :viewBox="icon.clear.viewBox">
+        <use :xlink:href="'#'+icon.clear.id"></use>
+      </svg>
+      <span>{{filteredTag}}</span>
+    </div>
 
     <ul :class="$style.navi">
       <li :class="$style.tags">
         <span @click="toggleTags">Tags</span>
         <ul :class="{[$style.active]: isTagsActive}">
-          <li v-for="tag in tags" :key="tag.id" @click="filterByTag(tag.id)">
+          <li v-for="tag in tags" :key="tag.id" @click="filterByTag(tag.id, tag.name)">
             <span>{{tag.name}}</span>
           </li>
         </ul>
@@ -28,10 +33,14 @@
 <script>
 import superagent from 'superagent';
 import logo from 'images/logo.svg';
+import iconClear from 'images/icon-clear.svg';
 
 export default {
   data() {
     return {
+      icon: {
+        clear: iconClear
+      },
       tags: [],
       isTagsActive: false
     };
@@ -52,21 +61,23 @@ export default {
 
     isFiltered() {
       return this.$store.state.isFiltered;
+    },
+
+    filteredTag() {
+      return this.$store.state.filteredTag;
     }
   },
 
   methods: {
-    // タグで絞り込み
-    // tagのオプションを追加してgetAllPostsする (index以外にいたらindexに遷移)
-    filterByTag(tagId) {
-      this.$store.dispatch('filterByTag', tagId);
+    filterByTag(tagId, tagName) {
+      this.$store.dispatch('filterByTag', {tagId:tagId, tagName:tagName, transition:true});
 
       // タグ一覧を閉じる
       this.isTagsActive = false;
     },
 
     clearFilter() {
-      this.$store.dispatch('filterByTag', 'reset');
+      this.$store.dispatch('filterByTag', {tagId:'reset', transition:true});
 
       // タグ一覧を閉じる
       this.isTagsActive = false;
@@ -135,7 +146,6 @@ export default {
   width: 100%;
   padding: 0 $margin_page;
   pointer-events: none;
-  text-align: center;
 }
 
 .logo {
@@ -204,13 +214,21 @@ export default {
 }
 
 .clear {
-  display: inline-block;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: $fontSize_small;
   pointer-events: auto;
   @extend %link;
 
-  :global(body.pc) &:hover {
-    opacity: 0.7;
+  svg {
+    display: inline;
+    fill: $color_key;
+    width: 10px;
+    height: 10px;
+    vertical-align: text-top;
+    margin-right: 5px;
   }
 }
 
@@ -222,10 +240,6 @@ export default {
 
   span {
     @extend %link;
-
-    :global(body.pc) &:hover {
-      opacity: 0.7;
-    }
   }
 
   > li {
@@ -256,7 +270,7 @@ export default {
     }
 
     li {
-      margin-top: 5px;
+      margin-top: 4px;
 
       &:first-child {
         margin-top: 0;

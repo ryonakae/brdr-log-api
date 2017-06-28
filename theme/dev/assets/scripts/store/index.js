@@ -20,7 +20,8 @@ const state = {
   loadedPostItem: 0,
   isWebfontLoaded: false,
   isLogoLoading: false,
-  isFiltered: false
+  isFiltered: false,
+  filteredTag: ''
 };
 
 const store = new Vuex.Store({

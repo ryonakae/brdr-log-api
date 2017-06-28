@@ -52,7 +52,7 @@ export default class Util {
     return Math.floor( new Date().getTime() / 1000 );
   }
 
-  // Promise用wait関数
+  // wait for promise
   wait(delay) {
     return new Promise((resolve, reject)=>{
       setTimeout(resolve, delay);

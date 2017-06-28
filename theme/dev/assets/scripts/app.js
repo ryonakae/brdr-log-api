@@ -19,12 +19,8 @@ import Vue from 'vue';
 import App from './App.vue';
 
 // import vuex store & router
-import {sync} from 'vuex-router-sync';
 import store from './store';
 import router from './router';
-
-// sync store & router
-sync(store, router);
 
 // create app
 new Vue({

@@ -6,7 +6,7 @@
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
         <ul v-if="hasTags" :class="$style.tags">
-          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click="filterByTag(tag.id)">{{tag.name}}</li>
+          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click="filterByTag(tag.id, tag.name)">{{tag.name}}</li>
         </ul>
 
         <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
@@ -24,7 +24,7 @@
 
       <small :class="$style.copyright">&copy;Ryo Nakae</small>
 
-      <router-link :to="'/'" tag="div" :class="$style.backTop">
+      <router-link :to="'/'" tag="div" :class="$style.backIndex">
         <span :class="$style.arrow">←</span>
         <span>Index</span>
       </router-link>
@@ -88,8 +88,8 @@ export default {
   },
 
   methods: {
-    filterByTag(tagId) {
-      this.$store.dispatch('filterByTag', tagId);
+    filterByTag(tagId, tagName) {
+      this.$store.dispatch('filterByTag', {tagId:tagId, tagName:tagName, transition:true});
     },
 
     onWebfontLoad() {
@@ -232,45 +232,47 @@ export default {
   margin: 100px $margin_page $margin_page;
   line-height: 1;
   @include clearfix();
-  text-align: center;
-}
+  position: relative;
 
-.share {
-  display: inline-block;
-}
-
-.copyright {
-  display: block;
-  float: right;
-  color: $textColor_lightGray;
-  font-size: $fontSize_xSmall;
-  line-height: 1;
-  margin-top: 4px;
-}
-
-.backTop {
-  cursor: pointer;
-  position: fixed;
-  bottom: $margin_page + 3px;
-  left: $margin_page;
-  font-size: $fontSize_small;
-  line-height: 1;
-  transition: all $duration_quick $easing;
-
-  span {
-    display: inline-block;
+  .share {
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
-  .arrow {
+  .copyright {
+    display: block;
+    float: right;
+    color: $textColor_lightGray;
+    font-size: $fontSize_xSmall;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .backIndex {
+    cursor: pointer;
+    position: fixed;
+    bottom: $margin_page;
+    left: $margin_page;
+    font-size: $fontSize_small;
+    line-height: 1;
     transition: all $duration_quick $easing;
-  }
+    @extend %link;
 
-  :global(body.pc) & {
-    &:hover {
-      opacity: 0.7;
+    span {
+      display: inline-block;
+    }
 
-      .arrow {
-        transform: translateX(-3px);
+    .arrow {
+      transition: all $duration_quick $easing;
+    }
+
+    :global(body.pc) & {
+      &:hover {
+        .arrow {
+          transform: translateX(-3px);
+        }
       }
     }
   }
