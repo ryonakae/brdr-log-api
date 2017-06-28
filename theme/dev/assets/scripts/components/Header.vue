@@ -1,11 +1,13 @@
 <template>
   <header :class="$style.header">
-    <router-link :to="'/'" tag="h1" :class="[$style.logo, {[$style.ready]: !isLogoLoading}]">
-      <div :class="$style.inner">
-        <div :class="$style.loading"></div>
-        <div :class="$style.default"></div>
-      </div>
-    </router-link>
+    <h1 :class="[$style.logo, {[$style.ready]: !isLogoLoading}]" @mouseenter="onEnter" @mouseleave="onLeave" @touchstart="onEnter" @touchend="onLeave">
+      <router-link :to="'/'">
+        <div :class="$style.inner">
+          <div :class="$style.loading"></div>
+          <div :class="$style.default"></div>
+        </div>
+      </router-link>
+    </h1>
 
     <div v-if="isFiltered" :class="$style.clear" @click="clearFilter">
       <svg :viewBox="icon.clear.viewBox">
@@ -112,6 +114,16 @@ export default {
       else {
         this.isTagsActive = true;
       }
+    },
+
+    onEnter() {
+      console.log('onEnter');
+      this.$store.dispatch('logoLoading', {boolean:true, wait:0});
+    },
+
+    onLeave() {
+      console.log('onLeave');
+      this.$store.dispatch('logoLoading', {boolean:false, wait:0});
     }
   },
 
@@ -229,6 +241,13 @@ export default {
     height: 10px;
     vertical-align: text-top;
     margin-right: 5px;
+    transition: all $duration_quick $easing;
+  }
+
+  :global(body.pc) &:hover {
+    svg {
+      transform: rotate(90deg);
+    }
   }
 }
 

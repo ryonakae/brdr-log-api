@@ -278,6 +278,9 @@ export default {
 
   filterByTag(context, options) {
     return new Promise((resolve, reject)=>{
+      // logoのローディング開始
+      context.dispatch('logoLoading', {boolean:true, wait:0});
+
       // createIndexのオプションを作成
       // tagIdが'reset'なら全記事取得
       let indexOptions = {
@@ -317,6 +320,9 @@ export default {
           else {
             context.commit('CHANGE_IS_FILTERED', true);
           }
+
+          // logoのローディング終了
+          context.dispatch('logoLoading', {boolean:false, wait:350});
 
           resolve();
         });
