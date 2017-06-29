@@ -38,7 +38,7 @@ services:
       - data
     volumes:
       - ./setting/php:/usr/local/etc/php:ro
-      - ./theme/public:/var/www/html/wp-content/themes/l:ro
+      - ./theme/dist:/var/www/html/wp-content/themes/l:ro
     networks:
       - back-brdr-log
 

@@ -5,8 +5,9 @@
     ]
   },
   "scripts": {
-    "start": "gulp --env=development",
-    "build": "gulp --env=production"
+    "clean": "rm -rfv ./dist/fonts ./dist/images ./dist/scripts ./dist/styles",
+    "start": "npm run clean && webpack -w",
+    "bs": "browser-sync start"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",
@@ -18,7 +19,7 @@
     "browser-sync": "^2.18.12",
     "css-loader": "^0.28.4",
     "del": "^3.0.0",
-    "eslint": "^4.1.1",
+    "eslint": "^3.19.0",
     "eslint-loader": "^1.8.0",
     "eslint-plugin-html": "^3.0.0",
     "file-loader": "^0.11.2",

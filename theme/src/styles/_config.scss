@@ -1,0 +1,87 @@
+// color
+$color_key: #162140;
+
+
+// bg color;
+$bgColor_default: #fff;
+$bgColor_gray: rgba($color_key, 0.1);
+
+
+// border color;
+$borderColor_default: rgba($color_key, 0.08);
+
+
+// text color;
+$textColor_default: $color_key;
+$textColor_inverse: #fff;
+$textColor_gray: rgba($color_key, 0.6);
+$textColor_lightGray: rgba($color_key, 0.3);
+
+
+// font family;
+$fontFamily_default: "Neue Frutiger", "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+$fontFamily_code: "Source Code Pro", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+
+
+// font size;
+$fontSize_default: 1.6rem;
+$fontSize_default_sp: 1.5rem;
+$fontSize_small: 1.2rem;
+$fontSize_small_sp: 1.1rem;
+$fontSize_xSmall: 1rem;
+$fontSize_h1: 2.8rem;
+$fontSize_h2: 2.2rem;
+$fontSize_h3: 1.8rem;
+$fontSize_h4: 1.5rem;
+$fontSize_h5: 1.3rem;
+$fontSize_h6: 1.3rem;
+$fontSize_code: 1.4rem;
+$fontSize_code_sp: 1.3rem;
+
+
+// line height;
+$lineHeight_default: 1.75;
+$lineHeight_title: 1.4;
+$lineHeight_code: 1.5;
+$lineHeight_caption: 1.5;
+
+
+// letter spacing;
+$letterSpacing_default: 0.075em;
+$letterSpacing_title: 0.075em;
+$letterSpacing_code: 0;
+
+
+// media query;
+$mq_pcXLarge:    "only screen and (max-width: 1599px)";
+$mq_pcLarge:     "only screen and (max-width: 1399px)";
+$mq_pc:          "only screen and (max-width: 1199px)";
+$mq_tabletLarge: "only screen and (max-width: 979px)";
+$mq_tablet:      "only screen and (max-width: 899px)";
+$mq_tabletSmall: "only screen and (max-width: 759px)";
+$mq_spLarge:     "only screen and (max-width: 639px)";
+$mq_sp:          "only screen and (max-width: 399px)";
+$mq_spSmall:     "only screen and (max-width: 349px)";
+$mq_retina:      "only screen and (-webkit-min-device-pixel-ratio: 1.5),
+                  only screen and (min--moz-device-pixel-ratio: 1.5),
+                  only screen and (-o-min-device-pixel-ratio: 1.5/1),
+                  only screen and (min-resolution: 144dpi),
+                  only screen and (min-resolution: 1.5dppx)";
+
+
+// transition;
+$duration: 1000ms;
+$duration_quick: 350ms;
+$duration_image: 550ms;
+$easing: $ease-out-quart;
+
+
+// margin
+$margin_page: 40px;
+$margin_page_sp: 20px;
+
+
+// width
+$width_index: 900px;
+$width_single: 1000px;
+$width_content: 700px;

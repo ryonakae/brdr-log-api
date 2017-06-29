@@ -1,21 +1,21 @@
 export default {
   dev: {
     root: './dev/',
-    assets:  './dev/assets/',
-    styles:  './dev/assets/styles/',
-    scripts: './dev/assets/scripts/',
-    images:  './dev/assets/images/',
-    sprite:  './dev/assets/images/sprite/',
-    fonts:   './dev/assets/fonts/'
+    assets:  './src/',
+    styles:  './src/styles/',
+    scripts: './src/scripts/',
+    images:  './src/images/',
+    sprite:  './src/images/sprite/',
+    fonts:   './src/fonts/'
   },
 
   public: {
-    root:    './public/',
-    assets:  './public/assets/',
-    styles:  './public/assets/styles/',
-    scripts: './public/assets/scripts/',
-    images:  './public/assets/images/',
-    fonts:   './public/assets/fonts/'
+    root:    './dist/',
+    assets:  './dist/',
+    styles:  './dist/styles/',
+    scripts: './dist/scripts/',
+    images:  './dist/images/',
+    fonts:   './dist/fonts/'
   },
 
   theme: {

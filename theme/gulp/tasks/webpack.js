@@ -9,10 +9,10 @@ import plumber from 'gulp-plumber';
 let webpackConfig;
 
 if (env === 'development') {
-  webpackConfig = require('../../webpack/webpack.config.development');
+  webpackConfig = require('../../webpack/webpack.config.dev.babel');
 }
 else if (env === 'production') {
-  webpackConfig = require('../../webpack/webpack.config.production');
+  webpackConfig = require('../../webpack/webpack.config.prod.babel');
 }
 
 

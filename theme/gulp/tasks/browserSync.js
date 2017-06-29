@@ -8,7 +8,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 
-const webpackConfig = require('../../webpack/webpack.config.development');
+const webpackConfig = require('../../webpack/webpack.config.dev.babel');
 const bundler = webpack(webpackConfig);
 
 
