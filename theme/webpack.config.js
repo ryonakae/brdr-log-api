@@ -1,8 +1,8 @@
-import webpack from 'webpack';
-import merge from 'webpack-merge';
-import path from 'path';
-import autoprefixer from 'autoprefixer';
-import bourbon from 'node-bourbon';
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const path = require('path');
+const autoprefixer = require('autoprefixer');
+const bourbon = require('node-bourbon');
 
 
 // theme path
@@ -106,12 +106,11 @@ const common = {
 // development config
 const dev = {
   entry: [
-    // 'webpack-hot-middleware/client?noinfo=true&quiet=true'
-    'webpack-hot-middleware/client'
+    'webpack-hot-middleware/client?noinfo=true&quiet=true'
   ],
 
   output: {
-    publicPath: '/'
+    publicPath: themePath
   },
 
   plugins: [
@@ -152,4 +151,4 @@ const config = process.env.NODE_ENV === 'production' ? prod : dev;
 
 
 // exports
-export default merge(common, config);
+module.exports = merge(common, config);

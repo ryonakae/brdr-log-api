@@ -8,7 +8,9 @@ npm-debug.log*
 backup
 
 node_modules
-theme/dist/assets
+theme/dist/fonts
+theme/dist/images
+theme/dist/scripts
 theme/dist/*hot-update*
 _sprite.*
 

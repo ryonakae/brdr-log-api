@@ -6,7 +6,6 @@
 </template>
 
 <script>
-const $ = require('jquery');
 import HeaderComponent from './components/Header.vue';
 import {util} from './app';
 import {resizeManager} from './app';
@@ -25,7 +24,6 @@ export default {
   },
 
   created() {
-    console.log('hello');
     // ページタイトルを変更
     this.$store.dispatch('changeTitle', '');
 

@@ -5,9 +5,10 @@
     ]
   },
   "scripts": {
-    "clean": "rm -rfv ./dist/fonts ./dist/images ./dist/scripts ./dist/styles",
-    "start": "npm run clean && webpack -w",
-    "bs": "browser-sync start"
+    "clean": "rm -rfv ./dist/fonts ./dist/images ./dist/scripts ./dist/styles ./dist/*hot-update*",
+    "server": "browser-sync start -c './bs-config.js'",
+    "watch": "webpack -w",
+    "start": "npm run clean && npm run watch & npm run server"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

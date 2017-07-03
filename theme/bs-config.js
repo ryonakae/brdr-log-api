@@ -1,12 +1,12 @@
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
-import webpackConfig from './webpack.config.babel';
+const webpackConfig = require('./webpack.config');
 const bundler = webpack(webpackConfig);
 
 
-export default {
+module.exports = {
   open: false,
   notify: false,
   port: 3000,
@@ -17,7 +17,8 @@ export default {
     middleware: [
       webpackDevMiddleware(bundler, {
         publicPath: webpackConfig.output.publicPath,
-        noInfo: false,
+        noInfo: true,
+        quiet: true,
         stats: {
           colors: true
         }
