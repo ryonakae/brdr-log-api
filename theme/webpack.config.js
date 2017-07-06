@@ -56,15 +56,16 @@ const common = {
       // eslint
       {
         test: /\.(js|vue)$/,
-        enforce: 'pre',
         loader: 'eslint-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        enforce: 'pre'
       },
 
       // babel js
       {
         test: /\.js$/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
         options: {
           presets: [['es2015', {modules: false}]]
         }
@@ -99,6 +100,10 @@ const common = {
       images:  path.resolve(__dirname, 'src/images'),
       fonts:   path.resolve(__dirname, 'src/fonts')
     }
+  },
+
+  stats: {
+    colors: true
   }
 };
 
@@ -118,11 +123,14 @@ const dev = {
       "process.env.NODE_ENV": JSON.stringify('development')
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      debug: true
+    })
   ],
 
+  cache: true,
   devtool: 'inline-source-map',
-  cache: true
 };
 
 
