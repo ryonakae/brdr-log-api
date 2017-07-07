@@ -1,7 +1,9 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
-const autoprefixer = require('autoprefixer');
+// const autoprefixer = require('autoprefixer');
+const cssnext = require('postcss-cssnext');
+const postcssImport = require('postcss-import');
 const bourbon = require('node-bourbon');
 
 
@@ -77,7 +79,11 @@ const common = {
         loader: 'vue-loader',
         options: {
           postcss: [
-            autoprefixer({
+            postcssImport({
+              addDependencyTo: webpack
+            }),
+            cssnext({
+              // Autoprefixer
               browsers: [
                 'last 2 versions',
                 'ie > 11',
