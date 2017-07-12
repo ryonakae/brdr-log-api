@@ -1,12 +1,11 @@
-@import "~bourbon";
-@import "_config";
-@import "_mixin";
-@import "_extend";
+@import "config";
+@import "mixin";
+@import "extend";
 
-// reset / normalize
+/*reset / normalize*/
 @import "_reset";
 
-// reset box-sizing
+/*reset box-sizing*/
 html {
   box-sizing: border-box;
 }
@@ -17,8 +16,8 @@ html {
 }
 
 
-// web fonts
-// webpackのaliasで解決するために、`~fonts/...`というパスにする
+/*web fonts*/
+/*webpackのaliasで解決するために、`~fonts/...`というパスにする*/
 @include font-face("Neue Frutiger", "~fonts/NeueFrutiger-Book", $file-formats: woff2 woff);
 @include font-face("Neue Frutiger", "~fonts/NeueFrutiger-Bold", bold, $file-formats: woff2 woff);
 @include font-face("Noto Sans Japanese", "~fonts/NotoSansCJKjp-DemiLight", $file-formats: woff2 woff);
@@ -27,20 +26,20 @@ html {
 
 
 html {
-  // font-size: 62.5%;
+  /*font-size: 62.5%;*/
   font-size: 10px;
 }
 
 
 body {
-  background-color: $bgColor_default;
-  font-family: $fontFamily_default;
-  font-size: $fontSize_default;
-  line-height: $lineHeight_default;
-  letter-spacing: $letterSpacing_default;
+  background-color: var(--bgColor_default);
+  font-family: var(--fontFamily_default);
+  font-size: var(--fontSize_default);
+  line-height: var(--lineHeight_default);
+  letter-spacing: var(--letterSpacing_default);
   font-kerning: normal;
   font-feature-settings: "palt" on;
-  color: $textColor_default;
+  color: var(--textColor_default);
   word-wrap: break-word;
   overflow-wrap: break-word;
   -webkit-text-size-adjust: 100%;
@@ -48,12 +47,12 @@ body {
   -moz-osx-font-smoothing: unset;
 
   & ::-moz-selection {
-    background-color: rgba($textColor_default, 0.85);
-    color: $bgColor_default;
+    background-color: rgba(var(--textColor_default), 0.85);
+    color: var(--bgColor_default);
   }
   & ::selection {
-    background-color: rgba($textColor_default, 0.85);
-    color: $bgColor_default;
+    background-color: rgba(var(--textColor_default), 0.85);
+    color: var(--bgColor_default);
   }
 
   @include mq($mq_retina) {
@@ -61,7 +60,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
   }
   @include mq($mq_spLarge) {
-    font-size: $fontSize_default_sp;
+    font-size: var(--fontSize_default_sp);
   }
 }
 
@@ -76,6 +75,6 @@ a {
 
 
 h1, h2, h3, h4, h5, h6 {
-  line-height: $lineHeight_title;
-  letter-spacing: $letterSpacing_title;
+  line-height: var(--lineHeight_title);
+  letter-spacing: var(--letterSpacing_title);
 }

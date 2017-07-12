@@ -1,10 +1,8 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
-// const autoprefixer = require('autoprefixer');
 const cssnext = require('postcss-cssnext');
 const postcssImport = require('postcss-import');
-const bourbon = require('node-bourbon');
 
 
 // theme path
@@ -101,7 +99,6 @@ const common = {
   resolve: {
     alias: {
       // webpackでheadに挿入したりbase64エンコードしてcssに入れるファイルがあるパスを記述する
-      bourbon: path.resolve(bourbon.includePaths[0], '_bourbon.scss'),
       styles:  path.resolve(__dirname, 'src/styles'),
       images:  path.resolve(__dirname, 'src/images'),
       fonts:   path.resolve(__dirname, 'src/fonts')
