@@ -171,29 +171,27 @@ export default {
 };
 </script>
 
-<style lang='scss' module>
-@import "~bourbon";
-@import "~styles/config";
-@import "~styles/mixin";
-@import "~styles/extend";
+<style module>
+@import "properties";
+@import "propertySets";
 
 .page {
-  max-width: $width_single;
-  margin: 150px auto $margin_page;
+  max-width: var(--width_single);
+  margin: 150px auto var(--margin_page);
 }
 
 .header {
-  max-width: $width_content;
+  max-width: var(--width_content);
   margin: 150px auto 70px;
 
   .title {
-    font-size: $fontSize_h1;
+    font-size: var(--fontSize_h1);
   }
 
   .info {
-    @extend %info;
+    @apply --info;
     margin-top: 25px;
-    @include clearfix();
+    @apply --clearfix;
 
     .share {
       float: right;
@@ -204,8 +202,8 @@ export default {
 
 .eyecatch {
   display: table;
-  border: 1px solid $color_key;
-  max-width: $width_single;
+  border: 1px solid var(--color_key);
+  max-width: var(--width_single);
   margin: 0 auto 3em;
   text-align: center;
 
@@ -213,7 +211,7 @@ export default {
     max-width: 100%;
     height: auto;
     vertical-align: top;
-    transition: all $duration_quick $easing;
+    transition: all var(--duration_quick) var(--easing);
     opacity: 0;
 
     &:global(.ready) {
@@ -223,15 +221,15 @@ export default {
 }
 
 .content {
-  max-width: $width_content;
+  max-width: var(--width_content);
   margin: 0 auto;
   @extend %content;
 }
 
 .footer {
-  margin: 100px $margin_page $margin_page;
+  margin: 100px var(--margin_page) var(--margin_page);
   line-height: 1;
-  @include clearfix();
+  @apply --clearfix;
   position: relative;
 
   .share {
@@ -244,8 +242,8 @@ export default {
   .copyright {
     display: block;
     float: right;
-    color: $textColor_lightGray;
-    font-size: $fontSize_xSmall;
+    color: var(--textColor_lightGray);
+    font-size: var(--fontSize_xSmall);
     line-height: 1;
     margin-bottom: 2px;
   }
@@ -253,26 +251,24 @@ export default {
   .backIndex {
     cursor: pointer;
     position: fixed;
-    bottom: $margin_page;
-    left: $margin_page;
-    font-size: $fontSize_small;
+    bottom: var(--margin_page);
+    left: var(--margin_page);
+    font-size: var(--fontSize_small);
     line-height: 1;
-    transition: all $duration_quick $easing;
-    @extend %link;
+    transition: all var(--duration_quick) var(--easing);
+    @apply --link;
 
     span {
       display: inline-block;
     }
 
     .arrow {
-      transition: all $duration_quick $easing;
+      transition: all var(--duration_quick) var(--easing);
     }
 
-    :global(body.pc) & {
-      &:hover {
-        .arrow {
-          transform: translateX(-3px);
-        }
+    @nest :global(body.pc) &:hover {
+      .arrow {
+        transform: translateX(-3px);
       }
     }
   }

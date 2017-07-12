@@ -1,0 +1,10 @@
+@custom-media --mq_pcXLarge    only screen and (max-width: 1599px);
+@custom-media --mq_pcLarge     only screen and (max-width: 1399px);
+@custom-media --mq_pc          only screen and (max-width: 1199px);
+@custom-media --mq_tabletLarge only screen and (max-width: 979px);
+@custom-media --mq_tablet      only screen and (max-width: 899px);
+@custom-media --mq_tabletSmall only screen and (max-width: 759px);
+@custom-media --mq_spLarge     only screen and (max-width: 639px);
+@custom-media --mq_sp          only screen and (max-width: 399px);
+@custom-media --mq_spSmall     only screen and (max-width: 349px);
+@custom-media --mq_retina      only screen and (-webkit-min-device-pixel-ratio: 1.5) and (min--moz-device-pixel-ratio: 1.5) and (-o-min-device-pixel-ratio: 1.5/1) and (min-resolution: 144dpi) and (min-resolution: 1.5dppx);

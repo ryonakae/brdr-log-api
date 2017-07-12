@@ -58,11 +58,9 @@ export default {
 };
 </script>
 
-<style lang='scss' module>
-@import "~bourbon";
-@import "~styles/config";
-@import "~styles/mixin";
-@import "~styles/extend";
+<style module>
+@import "properties";
+@import "propertySets";
 
 .share {
   line-height: 1;
@@ -72,14 +70,14 @@ export default {
   display: inline-block;
   vertical-align: middle;
   margin-left: 16px;
-  @extend %link;
+  @apply --link;
 
   &:first-child {
     margin-left: 0;
   }
 
   svg {
-    fill: $color_key;
+    fill: var(--color_key);
   }
 }
 

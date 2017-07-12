@@ -6,7 +6,13 @@ const postcssImport = require('postcss-import');
 
 
 // theme path
-const themePath = '/wp-content/themes/l/';
+const filePath = {
+  theme: '/wp-content/themes/l/',
+  dist: path.resolve(__dirname, 'dist'),
+  styles: path.resolve(__dirname, './src/styles'),
+  images: path.resolve(__dirname, './src/images'),
+  fonts: path.resolve(__dirname, './src/fonts')
+};
 
 
 // common config
@@ -17,7 +23,7 @@ const common = {
 
   output: {
     filename: './scripts/app.js',
-    path: path.resolve(__dirname, 'dist')
+    path: filePath.dist
   },
 
   module: {
@@ -32,7 +38,7 @@ const common = {
           limit: 200000,
           name: '[name].[ext]',
           outputPath: 'images/',
-          publicPath: themePath
+          publicPath: filePath.theme
         }
       },
       // images(svg)
@@ -49,7 +55,7 @@ const common = {
           limit: 200000,
           name: '[name].[ext]',
           outputPath: 'fonts/',
-          publicPath: themePath
+          publicPath: filePath.theme
         }
       },
 
@@ -78,7 +84,8 @@ const common = {
         options: {
           postcss: [
             postcssImport({
-              addDependencyTo: webpack
+              addDependencyTo: webpack,
+              path: [filePath.styles]
             }),
             cssnext({
               // Autoprefixer
@@ -97,11 +104,12 @@ const common = {
   },
 
   resolve: {
+    extensions: ['*', '.js', '.jsx', '.css'],
     alias: {
       // webpackでheadに挿入したりbase64エンコードしてcssに入れるファイルがあるパスを記述する
-      styles:  path.resolve(__dirname, 'src/styles'),
-      images:  path.resolve(__dirname, 'src/images'),
-      fonts:   path.resolve(__dirname, 'src/fonts')
+      styles:  filePath.styles,
+      images:  filePath.images,
+      fonts:   filePath.fonts
     }
   },
 
@@ -118,7 +126,7 @@ const dev = {
   ],
 
   output: {
-    publicPath: themePath
+    publicPath: filePath.theme
   },
 
   plugins: [

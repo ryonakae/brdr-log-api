@@ -5,18 +5,18 @@
 
   /*bg color*/
   --bgColor_default: #fff;
-  --bgColor_gray: rgba(--color_key, 0.1);
+  --bgColor_gray: rgba(var(--color_key), 0.1);
 
 
   /*border color*/
-  --borderColor_default: rgba(--color_key, 0.08);
+  --borderColor_default: rgba(var(--color_key), 0.08);
 
 
   /*text color*/
-  --textColor_default: --color_key;
-  --textColor_inverse: #fff;
-  --textColor_gray: rgba(--color_key, 0.6);
-  --textColor_lightGray: rgba(--color_key, 0.3);
+  --textColor_default: var(--color_key);
+  --textColor_inverse: var(--bgColor_default);
+  --textColor_gray: rgba(var(--color_key), 0.6);
+  --textColor_lightGray: rgba(var(--color_key), 0.3);
 
 
   /*font family*/
@@ -51,19 +51,6 @@
   --letterSpacing_default: 0.075em;
   --letterSpacing_title: 0.075em;
   --letterSpacing_code: 0;
-
-
-  /*media query*/
-  --mq_pcXLarge:    "only screen and (max-width: 1599px)";
-  --mq_pcLarge:     "only screen and (max-width: 1399px)";
-  --mq_pc:          "only screen and (max-width: 1199px)";
-  --mq_tabletLarge: "only screen and (max-width: 979px)";
-  --mq_tablet:      "only screen and (max-width: 899px)";
-  --mq_tabletSmall: "only screen and (max-width: 759px)";
-  --mq_spLarge:     "only screen and (max-width: 639px)";
-  --mq_sp:          "only screen and (max-width: 399px)";
-  --mq_spSmall:     "only screen and (max-width: 349px)";
-  --mq_retina:      "only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 1.5/1), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx)";
 
 
   /*transition*/

@@ -124,13 +124,11 @@ export default {
 };
 </script>
 
-<style lang='scss' module>
-@import "~bourbon";
-@import "~styles/config";
-@import "~styles/mixin";
+<style module>
+@import "properties";
 
 .page {
-  max-width: $width_index;
+  max-width: var(--width_index);
   padding: 150px 0;
   margin: 0 auto;
 }

@@ -1,28 +1,40 @@
-@import "config";
-@import "mixin";
-@import "extend";
+@import "properties";
+@import "propertySets";
+@import "media";
 
 /*reset / normalize*/
-@import "_reset";
-
-/*reset box-sizing*/
-html {
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+@import "reset";
 
 
 /*web fonts*/
 /*webpackのaliasで解決するために、`~fonts/...`というパスにする*/
-@include font-face("Neue Frutiger", "~fonts/NeueFrutiger-Book", $file-formats: woff2 woff);
-@include font-face("Neue Frutiger", "~fonts/NeueFrutiger-Bold", bold, $file-formats: woff2 woff);
-@include font-face("Noto Sans Japanese", "~fonts/NotoSansCJKjp-DemiLight", $file-formats: woff2 woff);
-@include font-face("Noto Sans Japanese", "~fonts/NotoSansCJKjp-Bold", bold, $file-formats: woff2 woff);
-@include font-face("Source Code Pro", "~fonts/SourceCodePro-Regular", $file-formats: woff2 woff);
+@font-face {
+  font-family: "Neue Frutiger";
+  src: url("~fonts/NeueFrutiger-Book.woff2") format("woff2"),
+       url("~fonts/NeueFrutiger-Book.woff") format("woff");
+}
+@font-face {
+  font-family: "Neue Frutiger";
+  src: url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"),
+       url("~fonts/NeueFrutiger-Bold.woff") format("woff");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Noto Sans Japanese";
+  src: url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"),
+       url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
+}
+@font-face {
+  font-family: "Noto Sans Japanese";
+  src: url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"),
+       url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("~fonts/SourceCodePro-Regular.woff2") format("woff2"),
+       url("~fonts/SourceCodePro-Regular.woff") format("woff");
+}
 
 
 html {
@@ -55,11 +67,11 @@ body {
     color: var(--bgColor_default);
   }
 
-  @include mq($mq_retina) {
+  @media (--mq_retina) {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  @include mq($mq_spLarge) {
+  @media (--mq_spLarge) {
     font-size: var(--fontSize_default_sp);
   }
 }

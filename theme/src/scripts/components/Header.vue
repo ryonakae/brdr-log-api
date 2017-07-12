@@ -139,11 +139,9 @@ export default {
 };
 </script>
 
-<style lang='scss' module>
-@import "~bourbon";
-@import "~styles/config";
-@import "~styles/mixin";
-@import "~styles/extend";
+<style module>
+@import "properties";
+@import "propertySets";
 
 @keyframes loading {
   0%   { transform: translateX(20%); }
@@ -151,12 +149,12 @@ export default {
 }
 
 .header {
-  @include clearfix();
+  @apply --clearfix;
   position: fixed;
   z-index: 100;
   top: 40px;
   width: 100%;
-  padding: 0 $margin_page;
+  padding: 0 var(--margin_page);
   pointer-events: none;
 }
 
@@ -209,8 +207,8 @@ export default {
   }
 
   .default {
-    background-color: $color_key;
-    transition: all $duration_quick $ease-out-quad;
+    background-color: var(--color_key);
+    transition: all var(--duration_quick) cubic-bezier(0.25, 0.46, 0.45, 0.94); /*easeOutQuad*/
     opacity: 0;
   }
 
@@ -230,21 +228,21 @@ export default {
   top: 6px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: $fontSize_small;
+  font-size: var(--fontSize_small);
   pointer-events: auto;
-  @extend %link;
+  @apply --link;
 
   svg {
     display: inline;
-    fill: $color_key;
+    fill: var(--color_key);
     width: 10px;
     height: 10px;
     vertical-align: text-top;
     margin-right: 5px;
-    transition: all $duration_quick $easing;
+    transition: all var(--duration_quick) var(--easing);
   }
 
-  :global(body.pc) &:hover {
+  @nest :global(body.pc) &:hover {
     svg {
       transform: rotate(90deg);
     }
@@ -255,17 +253,17 @@ export default {
   text-align: left;
   float: right;
   margin-top: 6px;
-  @include clearfix();
+  @apply --clearfix;
 
   span {
-    @extend %link;
+    @apply --link;
   }
 
   > li {
     float: left;
     margin-left: 30px;
     pointer-events: auto;
-    font-size: $fontSize_small;
+    font-size: var(--fontSize_small);
 
     &:first-child {
       margin-left: 0;

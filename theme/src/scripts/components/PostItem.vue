@@ -118,34 +118,32 @@ export default {
 };
 </script>
 
-<style lang='scss' module>
-@import "~bourbon";
-@import "~styles/config";
-@import "~styles/mixin";
-@import "~styles/extend";
+<style module>
+@import "properties";
+@import "propertySets";
 
 .post {
   position: relative;
-  padding-left: (($width_index - $width_content) / 2);
-  padding-right: (($width_index - $width_content) / 2);
+  padding-left: calc(var(--width_index) - var(--width_content)) / 2;
+  padding-right: calc(var(--width_index) - var(--width_content)) / 2;
   cursor: pointer;
 
   .text {
-    transition: all $duration_quick $easing;
+    transition: all var(--duration_quick) var(--easing);
   }
 
   .title {
-    font-size: $fontSize_h1;
+    font-size: var(fontSize_h1);
   }
 
   .info {
-    @extend %info;
+    @apply --info;
     margin-top: 25px;
   }
 }
 
 .post.noeyecatch {
-  :global(body.pc) & {
+  @nest :global(body.pc) & {
     &:hover {
       .text {
         opacity: 0.7;
@@ -158,8 +156,8 @@ export default {
   padding: 0;
 
   .bg {
-    border: 1px solid $color_key;
-    background-color: $color_key;
+    border: 1px solid var(--color_key);
+    background-color: var(--color_key);
     position: absolute;
     top: 0;
     left: 0;
@@ -176,7 +174,7 @@ export default {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     z-index: 0;
-    transition: all $duration_image $easing;
+    transition: all var(--duration_image) var(--easing);
     opacity: 0;
 
     &.ready {
@@ -191,10 +189,10 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: $color_key;
+    background-color: var(--color_key);
     opacity: 0;
     mix-blend-mode: multiply;
-    transition: all $duration_quick $easing;
+    transition: all var(--duration_quick) var(--easing);
 
     &.ready {
       opacity: 0.35;
@@ -202,10 +200,10 @@ export default {
   }
 
   .text {
-    padding: 90px (($width_index - $width_content) / 2) 45px;
+    padding: 90px calc((var(--width_index) - var(--width_content)) / 2) 45px;
     position: relative;
     z-index: 2;
-    color: $textColor_inverse;
+    color: var(textColor_inverse);
   }
 
   :global(body.pc) & {

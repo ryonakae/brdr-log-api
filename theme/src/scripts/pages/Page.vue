@@ -39,9 +39,5 @@ export default {
 };
 </script>
 
-<style lang='scss' module>
-@import "~bourbon";
-@import "~styles/config";
-@import "~styles/mixin";
-@import "~styles/extend";
+<style module>
 </style>
