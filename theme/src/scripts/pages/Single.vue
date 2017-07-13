@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import {util} from '../app';
 import moment from 'moment';
 import imagesLoaded from 'imagesloaded';
 import ShareComponent from '../components/Share.vue';

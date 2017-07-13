@@ -9,10 +9,8 @@
 </template>
 
 <script>
-const $ = require('jquery');
 import PostItemComponent from '../components/PostItem.vue';
 import {scrollManager} from '../app';
-import {util} from '../app';
 
 export default {
   components: {

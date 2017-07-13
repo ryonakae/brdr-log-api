@@ -1,11 +1,3 @@
-@import "properties";
-@import "propertySets";
-@import "media";
-
-/*reset / normalize*/
-@import "reset";
-
-
 /*web fonts*/
 /*webpackのaliasで解決するために、`~fonts/...`というパスにする*/
 @font-face {

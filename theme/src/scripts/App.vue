@@ -8,8 +8,6 @@
 <script>
 import HeaderComponent from './components/Header.vue';
 import {util} from './app';
-import {resizeManager} from './app';
-import {scrollManager} from './app';
 const webFont = require('webfontloader');
 
 export default {
@@ -56,5 +54,9 @@ export default {
 </script>
 
 <style>
+@import "properties";
+@import "propertySets";
+@import "media";
+@import "reset";
 @import "base";
 </style>

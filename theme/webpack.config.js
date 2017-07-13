@@ -67,16 +67,6 @@ const common = {
         enforce: 'pre'
       },
 
-      // babel js
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        options: {
-          presets: [['es2015', {modules: false}]]
-        }
-      },
-
       // vuejs
       {
         test: /\.vue$/,
@@ -84,7 +74,6 @@ const common = {
         options: {
           postcss: [
             postcssImport({
-              addDependencyTo: webpack,
               path: [filePath.styles]
             }),
             cssnext({
@@ -104,7 +93,6 @@ const common = {
   },
 
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.css'],
     alias: {
       // webpackでheadに挿入したりbase64エンコードしてcssに入れるファイルがあるパスを記述する
       styles:  filePath.styles,
