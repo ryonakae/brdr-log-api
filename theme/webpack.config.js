@@ -28,8 +28,6 @@ const common = {
 
   module: {
     rules: [
-      // 画像とフォントはlimit(byte)以下ならbase64エンコード
-      // それ以上ならファイルパスを記述+ファイルをコピー
       // images
       {
         test: /\.(jpg|png|gif)$/,
@@ -67,6 +65,13 @@ const common = {
         enforce: 'pre'
       },
 
+      // js
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      },
+
       // vuejs
       {
         test: /\.vue$/,
@@ -94,15 +99,10 @@ const common = {
 
   resolve: {
     alias: {
-      // webpackでheadに挿入したりbase64エンコードしてcssに入れるファイルがあるパスを記述する
       styles:  filePath.styles,
       images:  filePath.images,
       fonts:   filePath.fonts
     }
-  },
-
-  stats: {
-    colors: true
   }
 };
 
