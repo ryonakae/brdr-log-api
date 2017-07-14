@@ -128,15 +128,15 @@ export default {
   padding-right: calc(var(--width_index) - var(--width_content)) / 2;
   cursor: pointer;
 
-  .text {
+  & .text {
     transition: all var(--duration_quick) var(--easing);
   }
 
-  .title {
-    font-size: var(fontSize_h1);
+  & .title {
+    font-size: var(--fontSize_h1);
   }
 
-  .info {
+  & .info {
     @apply --info;
     margin-top: 25px;
   }
@@ -145,7 +145,7 @@ export default {
 .post.noeyecatch {
   @nest :global(body.pc) & {
     &:hover {
-      .text {
+      & .text {
         opacity: 0.7;
       }
     }
@@ -155,7 +155,7 @@ export default {
 .post.eyecatch {
   padding: 0;
 
-  .bg {
+  & .bg {
     border: 1px solid var(--color_key);
     background-color: var(--color_key);
     position: absolute;
@@ -167,7 +167,7 @@ export default {
     pointer-events: none;
   }
 
-  .image {
+  & .image {
     width: 100%;
     height: 100%;
     background-size: cover;
@@ -182,7 +182,7 @@ export default {
     }
   }
 
-  .overlay {
+  & .overlay {
     position: absolute;
     z-index: 1;
     top: 0;
@@ -199,22 +199,20 @@ export default {
     }
   }
 
-  .text {
+  & .text {
     padding: 90px calc((var(--width_index) - var(--width_content)) / 2) 45px;
     position: relative;
     z-index: 2;
-    color: var(textColor_inverse);
+    color: var(--textColor_inverse);
   }
 
-  :global(body.pc) & {
-    &:hover {
-      .overlay {
-        opacity: 0.75;
-      }
+  @nest :global(body.pc) &:hover {
+    & .overlay {
+      opacity: 0.75;
+    }
 
-      .image {
-        transform: scale(1.05);
-      }
+    & .image {
+      transform: scale(1.05);
     }
   }
 }

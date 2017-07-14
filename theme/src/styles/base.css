@@ -70,11 +70,11 @@ body {
 
 
 a {
-  @extend %link;
+  @apply --link;
 }
 
 .link {
-  @extend %link;
+  @apply --link;
 }
 
 

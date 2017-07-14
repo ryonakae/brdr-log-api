@@ -165,7 +165,7 @@ export default {
   width: 22px;
   height: 30px;
 
-  .inner {
+  & .inner {
     width: 100%;
     height: 100%;
     clip-path: url(#logo_clippingPath);
@@ -174,8 +174,8 @@ export default {
     background-color: #6da3f2;
   }
 
-  .loading,
-  .default {
+  & .loading,
+  & .default {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -183,15 +183,14 @@ export default {
     left: 0;
   }
 
-  .loading {
+  & .loading {
     width: 500%;
     animation-name: loading;
     animation-duration: 1.2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: normal;
-    background: linear-gradient(
-      105deg,
+    background: linear-gradient(105deg,
       #6da3f2 0%,
       #6da3f2 5%,
       #af9bde 13%,
@@ -206,18 +205,18 @@ export default {
     );
   }
 
-  .default {
+  & .default {
     background-color: var(--color_key);
     transition: all var(--duration_quick) cubic-bezier(0.25, 0.46, 0.45, 0.94); /*easeOutQuad*/
     opacity: 0;
   }
 
   &.ready {
-    .loading {
+    & .loading {
       animation-name: none;
     }
 
-    .default {
+    & .default {
       opacity: 1;
     }
   }
@@ -232,7 +231,7 @@ export default {
   pointer-events: auto;
   @apply --link;
 
-  svg {
+  & svg {
     display: inline;
     fill: var(--color_key);
     width: 10px;
@@ -243,7 +242,7 @@ export default {
   }
 
   @nest :global(body.pc) &:hover {
-    svg {
+    & svg {
       transform: rotate(90deg);
     }
   }
@@ -255,11 +254,11 @@ export default {
   margin-top: 6px;
   @apply --clearfix;
 
-  span {
+  & span {
     @apply --link;
   }
 
-  > li {
+  & > li {
     float: left;
     margin-left: 30px;
     pointer-events: auto;
@@ -270,10 +269,10 @@ export default {
     }
   }
 
-  .tags {
+  & .tags {
     position: relative;
 
-    ul {
+    & ul {
       position: absolute;
       top: 100%;
       left: 0;
@@ -286,7 +285,7 @@ export default {
       }
     }
 
-    li {
+    & li {
       margin-top: 4px;
 
       &:first-child {

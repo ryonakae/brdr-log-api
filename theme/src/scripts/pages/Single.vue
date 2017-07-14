@@ -183,16 +183,16 @@ export default {
   max-width: var(--width_content);
   margin: 150px auto 70px;
 
-  .title {
+  & .title {
     font-size: var(--fontSize_h1);
   }
 
-  .info {
-    @apply --info;
+  & .info {
     margin-top: 25px;
+    @apply --info;
     @apply --clearfix;
 
-    .share {
+    & .share {
       float: right;
       margin-top: 1px;
     }
@@ -206,7 +206,7 @@ export default {
   margin: 0 auto 3em;
   text-align: center;
 
-  img {
+  & img {
     max-width: 100%;
     height: auto;
     vertical-align: top;
@@ -222,7 +222,7 @@ export default {
 .content {
   max-width: var(--width_content);
   margin: 0 auto;
-  @extend %content;
+  @apply --content;
 }
 
 .footer {
@@ -231,14 +231,14 @@ export default {
   @apply --clearfix;
   position: relative;
 
-  .share {
+  & .share {
     position: absolute;
     top: -3px;
     left: 50%;
     transform: translateX(-50%);
   }
 
-  .copyright {
+  & .copyright {
     display: block;
     float: right;
     color: var(--textColor_lightGray);
@@ -247,7 +247,7 @@ export default {
     margin-bottom: 2px;
   }
 
-  .backIndex {
+  & .backIndex {
     cursor: pointer;
     position: fixed;
     bottom: var(--margin_page);
@@ -257,16 +257,16 @@ export default {
     transition: all var(--duration_quick) var(--easing);
     @apply --link;
 
-    span {
+    & span {
       display: inline-block;
     }
 
-    .arrow {
+    & .arrow {
       transition: all var(--duration_quick) var(--easing);
     }
 
     @nest :global(body.pc) &:hover {
-      .arrow {
+      & .arrow {
         transform: translateX(-3px);
       }
     }
