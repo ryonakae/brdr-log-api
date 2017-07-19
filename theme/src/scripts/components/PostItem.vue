@@ -124,8 +124,8 @@ export default {
 
 .post {
   position: relative;
-  padding-left: calc(var(--width_index) - var(--width_content)) / 2;
-  padding-right: calc(var(--width_index) - var(--width_content)) / 2;
+  padding-left: calc((var(--width_index) - var(--width_content)) / 2);
+  padding-right: calc((var(--width_index) - var(--width_content)) / 2);
   cursor: pointer;
 
   & .text {

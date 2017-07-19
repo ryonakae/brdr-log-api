@@ -14,7 +14,7 @@ const state = {
   siteUrl: location.protocol + '//' + location.host,
   allPostData: [],
   currentPostData: {},
-  perPage: 2,
+  perPage: 10,
   perPageMobile: 6,
   infiniteScrollLock: false,
   loadedPostItem: 0,
