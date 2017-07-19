@@ -75,23 +75,19 @@ export default {
   &:first-child {
     margin-left: 0;
   }
-
-  svg {
-    fill: var(--color_key);
-  }
 }
 
-.twitter {
-  svg {
-    width: 14px;
-    height: 11px;
-  }
+svg {
+  fill: var(--color_key);
 }
 
-.facebook {
-  svg {
-    width: 8px;
-    height: 14px;
-  }
+.twitter svg {
+  width: 14px;
+  height: 11px;
+}
+
+.facebook svg {
+  width: 8px;
+  height: 14px;
 }
 </style>
