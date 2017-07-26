@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {util} from '../app';
+import {util} from '../';
 import moment from 'moment';
 import imagesLoaded from 'imagesloaded';
 

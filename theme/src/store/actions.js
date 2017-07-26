@@ -1,8 +1,7 @@
 'use strict';
 
 import superagent from 'superagent';
-import {util} from '../app';
-import {scrollManager} from '../app';
+import {util, scrollManager} from '../';
 import router from '../router';
 
 // 非同期、複数のmutationsを組み合わせた処理

@@ -1,10 +1,11 @@
 {
   "scripts": {
-    "clean": "rm -rfv ./dist/fonts ./dist/images ./dist/scripts ./dist/styles ./dist/*hot-update*",
+    "clean": "rm -rfv ./dist",
+    "copy": "rsync -ahvr ./public/ ./dist/ --exclude .DS_Store",
     "server": "browser-sync start -c './bs-config.js'",
     "watch": "webpack -w",
-    "start": "npm run clean && npm run watch & npm run server",
-    "build": "npm run clean && NODE_ENV=production webpack"
+    "start": "npm run clean && npm run copy && npm run watch & npm run server",
+    "build": "npm run clean && npm run copy && NODE_ENV=production webpack"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

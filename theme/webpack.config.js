@@ -5,24 +5,24 @@ const cssnext = require('postcss-cssnext');
 const postcssImport = require('postcss-import');
 
 
-// theme path
+// file path
 const filePath = {
   theme: '/wp-content/themes/l/',
+  src: path.resolve(__dirname, 'src'),
   dist: path.resolve(__dirname, 'dist'),
-  styles: path.resolve(__dirname, './src/styles'),
-  images: path.resolve(__dirname, './src/images'),
-  fonts: path.resolve(__dirname, './src/fonts')
+  public: path.resolve(__dirname, 'public'),
+  assets: path.resolve(__dirname, path.join('src', 'assets'))
 };
 
 
 // common config
 const common = {
   entry: [
-    './src/scripts/app.js'
+    path.join(filePath.src, 'index.js')
   ],
 
   output: {
-    filename: './scripts/app.js',
+    filename: 'index.js',
     path: filePath.dist
   },
 
@@ -79,7 +79,7 @@ const common = {
         options: {
           postcss: [
             postcssImport({
-              path: [filePath.styles]
+              path: [path.join(filePath.assets, 'styles')]
             }),
             cssnext({
               // Autoprefixer
@@ -99,9 +99,9 @@ const common = {
 
   resolve: {
     alias: {
-      styles:  filePath.styles,
-      images:  filePath.images,
-      fonts:   filePath.fonts
+      styles: path.join(filePath.assets, 'styles'),
+      images: path.join(filePath.assets, 'images'),
+      fonts:  path.join(filePath.assets, 'fonts')
     }
   }
 };

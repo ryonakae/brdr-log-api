@@ -6,15 +6,15 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 // import pages
-import Index from './pages/Index.vue';
-import Page from './pages/Page.vue';
-import Single from './pages/Single.vue';
+import index from './pages/index.vue';
+import page from './pages/page.vue';
+import single from './pages/single.vue';
 
 // detect routes
 const routes = [
-  {path:'/', component: Index},
-  {path:'/:slug', component: Page},
-  {path:'/post/:id', component: Single}
+  {path:'/', component: index},
+  {path:'/:slug', component: page},
+  {path:'/post/:id', component: single}
 ];
 
 // detect scroll behavior

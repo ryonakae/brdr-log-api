@@ -7,7 +7,7 @@
 
 <script>
 import HeaderComponent from './components/Header.vue';
-import {util} from './app';
+import {util} from './';
 const webFont = require('webfontloader');
 
 export default {

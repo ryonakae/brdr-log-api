@@ -1,13 +1,14 @@
 'use strict';
 
-// import, initialize and export manager
 import 'es6-promise/auto';
+
+// import and initialize manager
 import Util from './manager/Util';
 import ResizeManager from './manager/ResizeManager';
 import ScrollManager from './manager/ScrollManager';
-export const util = new Util();
-export const resizeManager = new ResizeManager();
-export const scrollManager = new ScrollManager({
+const util = new Util();
+const resizeManager = new ResizeManager();
+const scrollManager = new ScrollManager({
   resizeManager: resizeManager,
   util: util
 });
@@ -32,3 +33,6 @@ new Vue({
 
 // Hot Module Replacementに対応させる
 if (module.hot) module.hot.accept();
+
+// export manager
+export {util, resizeManager, scrollManager};

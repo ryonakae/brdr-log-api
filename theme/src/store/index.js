@@ -4,7 +4,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import mutations from './mutations';
 import actions from './actions';
-import {util} from '../app';
+import {util} from '../App.vue';
 
 Vue.use(Vuex);
 
