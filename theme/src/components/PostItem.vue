@@ -24,7 +24,7 @@
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
         <ul v-if="hasTags" :class="$style.tags">
-          <li v-for="tag in tags" :key="tag.id" :class="$style.tag">{{tag.name}}</li>
+          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click.stop="filterByTag(tag.id, tag.name)">{{tag.name}}</li>
         </ul>
       </div>
     </div>
@@ -128,12 +128,9 @@ export default {
   padding-right: calc((var(--width_index) - var(--width_content)) / 2);
   cursor: pointer;
 
-  & .text {
-    transition: all var(--duration_quick) var(--easing);
-  }
-
   & .title {
     font-size: var(--fontSize_h1);
+    transition: all var(--duration_quick) var(--easing);
   }
 
   & .info {
@@ -145,7 +142,7 @@ export default {
 .post.noeyecatch {
   @nest :global(body.pc) & {
     &:hover {
-      & .text {
+      & .title {
         opacity: 0.7;
       }
     }
@@ -212,7 +209,7 @@ export default {
     }
 
     & .image {
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
   }
 }

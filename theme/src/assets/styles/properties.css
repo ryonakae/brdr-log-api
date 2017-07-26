@@ -6,6 +6,7 @@
   /*bg color*/
   --bgColor_default: #fff;
   --bgColor_gray: rgba(var(--color_key), 0.1);
+  --bgColor_selection: #f4754e;
 
 
   /*border color*/
@@ -66,7 +67,7 @@
 
 
   /*width*/
-  --width_index: 900px;
+  --width_index: 1000px;
   --width_single: 1000px;
   --width_content: 700px;
 }

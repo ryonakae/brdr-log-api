@@ -51,11 +51,11 @@ body {
   -moz-osx-font-smoothing: unset;
 
   & ::-moz-selection {
-    background-color: rgba(var(--textColor_default), 0.85);
+    background-color: color(var(--bgColor_selection) alpha(90%));
     color: var(--bgColor_default);
   }
   & ::selection {
-    background-color: rgba(var(--textColor_default), 0.85);
+    background-color: color(var(--bgColor_selection) alpha(90%));
     color: var(--bgColor_default);
   }
 

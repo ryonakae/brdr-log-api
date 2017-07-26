@@ -13,6 +13,9 @@ const scrollManager = new ScrollManager({
   util: util
 });
 
+// export manager
+export {util, resizeManager, scrollManager};
+
 // import vue
 import Vue from 'vue';
 
@@ -33,6 +36,3 @@ new Vue({
 
 // Hot Module Replacementに対応させる
 if (module.hot) module.hot.accept();
-
-// export manager
-export {util, resizeManager, scrollManager};
