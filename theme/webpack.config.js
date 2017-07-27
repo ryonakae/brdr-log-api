@@ -61,7 +61,7 @@ const common = {
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
-        exclude: /node_modules/,
+        exclude: /(node_modules|library)/,
         enforce: 'pre'
       },
 

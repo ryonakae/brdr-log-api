@@ -36,6 +36,7 @@
 import moment from 'moment';
 import imagesLoaded from 'imagesloaded';
 import ShareComponent from '../components/Share.vue';
+import '../library/twitter_widgets';
 
 export default {
   components: {
@@ -122,12 +123,25 @@ export default {
           });
       }
 
-      // 本文の画像の親要素にaddClass
       this.$content = this.$refs.content;
+
+      // 本文の画像の親要素にaddClass
       const $images = this.$content.getElementsByTagName('img');
       for (let i = 0; i < $images.length; i++) {
         const $img = $images[i];
         $img.parentNode.classList.add('img');
+      }
+
+      // Twitterの埋め込みツイートがあったら関数実行
+      if (this.$content.getElementsByClassName('twitter-tweet').length > 0) {
+        twttr.widgets.load(document.body);
+      }
+
+      // iframeをdivで囲う
+      const $iframes = this.$content.getElementsByTagName('iframe');
+      console.log($iframes);
+      for (let i = 0; i < $iframes.length; i++) {
+        $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>';
       }
 
       // ページ内の画像全部ロードしたらlogoのローディング終了
