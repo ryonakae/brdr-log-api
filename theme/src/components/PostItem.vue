@@ -121,21 +121,37 @@ export default {
 <style module>
 @import "properties";
 @import "propertySets";
+@import "media";
 
 .post {
   position: relative;
-  padding-left: calc((var(--width_index) - var(--width_content)) / 2);
-  padding-right: calc((var(--width_index) - var(--width_content)) / 2);
   cursor: pointer;
+
+   & .text {
+     max-width: var(--width_content);
+     margin: 0 auto;
+
+     @media (--mq_sp) {
+       margin: 0 var(--margin_page_sp);
+     }
+   }
 
   & .title {
     font-size: var(--fontSize_h1);
     transition: all var(--duration_quick) var(--easing);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h1_sp);
+    }
   }
 
   & .info {
     @apply --info;
     margin-top: 25px;
+
+    @media (--mq_sp) {
+      margin-top: 15px;
+    }
   }
 }
 
@@ -197,10 +213,14 @@ export default {
   }
 
   & .text {
-    padding: 90px calc((var(--width_index) - var(--width_content)) / 2) 45px;
+    padding: 90px 0 45px;
     position: relative;
     z-index: 2;
     color: var(--textColor_inverse);
+
+    @media (--mq_sp) {
+      padding: 60px 0 25px;
+    }
   }
 
   @nest :global(body.pc) &:hover {

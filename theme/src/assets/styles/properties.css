@@ -5,19 +5,19 @@
 
   /*bg color*/
   --bgColor_default: #fff;
-  --bgColor_gray: rgba(var(--color_key), 0.1);
+  --bgColor_gray: color(var(--color_key) alpha(10%));
   --bgColor_selection: #f4754e;
 
 
   /*border color*/
-  --borderColor_default: rgba(var(--color_key), 0.08);
+  --borderColor_default: color(var(--color_key) alpha(8%));
 
 
   /*text color*/
   --textColor_default: var(--color_key);
   --textColor_inverse: var(--bgColor_default);
-  --textColor_gray: rgba(var(--color_key), 0.6);
-  --textColor_lightGray: rgba(var(--color_key), 0.3);
+  --textColor_gray: color(var(--color_key) alpha(60%));
+  --textColor_lightGray: color(var(--color_key) alpha(30%));
 
 
   /*font family*/
@@ -37,6 +37,12 @@
   --fontSize_h4: 1.5rem;
   --fontSize_h5: 1.3rem;
   --fontSize_h6: 1.3rem;
+  --fontSize_h1_sp: 2.4rem;
+  --fontSize_h2_sp: 2.0rem;
+  --fontSize_h3_sp: 1.7rem;
+  --fontSize_h4_sp: 1.4rem;
+  --fontSize_h5_sp: 1.2rem;
+  --fontSize_h6_sp: 1.2rem;
   --fontSize_code: 1.4rem;
   --fontSize_code_sp: 1.3rem;
 
@@ -56,14 +62,18 @@
 
   /*transition*/
   --duration: 1000ms;
-  --duration_quick: 350ms;
-  --duration_image: 550ms;
+  --duration_quick: 300ms;
+  --duration_image: 600ms;
   --easing: cubic-bezier(0.165, 0.84, 0.44, 1); /*easeOutQuart*/
 
 
   /*margin*/
   --margin_page: 40px;
   --margin_page_sp: 20px;
+  --margin_top: 150px;
+  --margin_top_sp: 100px;
+  --margin_bottom: 100px;
+  --margin_bottom_sp: 50px;
 
 
   /*width*/

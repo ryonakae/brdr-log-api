@@ -72,7 +72,7 @@ export default {
       // loadedCountが記事数と同じになったらlogoのローディング終了
       if (this.posts.length === this.loadedPostItem) {
         console.log('all postitem loaded');
-        this.$store.dispatch('logoLoading', {boolean:false, wait:350});
+        this.$store.dispatch('logoLoading', {boolean:false, wait:300});
       }
     },
 
@@ -124,11 +124,16 @@ export default {
 
 <style module>
 @import "properties";
+@import "media";
 
 .page {
   max-width: var(--width_index);
-  padding: 150px 0;
+  padding: var(--margin_top) 0 var(--margin_bottom);
   margin: 0 auto;
+
+  @media (--mq_sp) {
+    padding: var(--margin_top_sp) 0 var(--margin_bottom_sp);
+  }
 }
 
 .item {
@@ -136,6 +141,10 @@ export default {
 
   &:first-child {
     margin-top: 0;
+  }
+
+  @media (--mq_sp) {
+    margin-top: 45px;
   }
 }
 </style>

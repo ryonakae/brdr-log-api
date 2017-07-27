@@ -6,6 +6,12 @@
           <div :class="$style.loading"></div>
           <div :class="$style.default"></div>
         </div>
+
+        <div :class="$style.logoForFirefox">
+          <svg :viewBox="logo.viewBox">
+            <use :xlink:href="'#'+logo.id"></use>
+          </svg>
+        </div>
       </router-link>
     </h1>
 
@@ -35,6 +41,7 @@
 <script>
 import superagent from 'superagent';
 import logo from 'images/logo.svg';
+import logoClipPath from 'images/logo-clipPath.svg';
 import iconClear from 'images/icon-clear.svg';
 
 export default {
@@ -43,6 +50,7 @@ export default {
       icon: {
         clear: iconClear
       },
+      logo: logo,
       tags: [],
       isTagsActive: false
     };
@@ -142,6 +150,7 @@ export default {
 <style module>
 @import "properties";
 @import "propertySets";
+@import "media";
 
 @keyframes loading {
   0%   { transform: translateX(20%); }
@@ -156,6 +165,11 @@ export default {
   width: 100%;
   padding: 0 var(--margin_page);
   pointer-events: none;
+
+  @media (--mq_sp) {
+    top: var(--margin_page_sp);
+    padding: 0 var(--margin_page_sp);
+  }
 }
 
 .logo {
@@ -168,7 +182,7 @@ export default {
   & .inner {
     width: 100%;
     height: 100%;
-    clip-path: url(#logo_clippingPath);
+    clip-path: url(#logo-clipPath_clipPath);
     position: relative;
     overflow: hidden;
     background-color: #6da3f2;
@@ -212,12 +226,33 @@ export default {
   }
 
   &.ready {
-    & .loading {
-      animation-name: none;
-    }
-
     & .default {
       opacity: 1;
+    }
+  }
+
+  & .logoForFirefox {
+    display: none;
+  }
+}
+
+/* Firefox Hack */
+@-moz-document url-prefix(){
+  .logo {
+    & .inner {
+      display: none;
+    }
+
+    & .logoForFirefox {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    & .logoForFirefox svg {
+      fill: var(--color_key);
+      width: 22px;
+      height: 30px;
     }
   }
 }
@@ -248,6 +283,16 @@ export default {
   }
 }
 
+@-moz-document url-prefix(){
+  .clear {
+    @nest :global(body.pc) &:hover {
+      & svg {
+        transform: none;
+      }
+    }
+  }
+}
+
 .navi {
   text-align: left;
   float: right;
@@ -267,6 +312,10 @@ export default {
     &:first-child {
       margin-left: 0;
     }
+
+    @media (--mq_sp) {
+      margin-left: 20px;
+    }
   }
 
   & .tags {
@@ -282,6 +331,10 @@ export default {
 
       &.active {
         display: block;
+      }
+
+      @media (--mq_sp) {
+        margin-top: 10px;
       }
     }
 

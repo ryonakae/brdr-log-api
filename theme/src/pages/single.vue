@@ -22,7 +22,9 @@
     <footer :class="$style.footer">
       <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
 
-      <small :class="$style.copyright">&copy;Ryo Nakae</small>
+      <small :class="$style.copyright">
+        <a href="https://twitter.com/ryo_dg" target="_blank">&copy;Ryo Nakae</a>
+      </small>
 
       <router-link :to="'/'" tag="div" :class="$style.backIndex">
         <span :class="$style.arrow">←</span>
@@ -153,7 +155,7 @@ export default {
       });
       // done
       this.imgLoad.on('done', (instance)=>{
-        this.$store.dispatch('logoLoading', {boolean:false, wait:350});
+        this.$store.dispatch('logoLoading', {boolean:false, wait:300});
       });
     }
   },
@@ -187,18 +189,22 @@ export default {
 <style module>
 @import "properties";
 @import "propertySets";
-
-.page {
-  max-width: var(--width_single);
-  margin: 150px auto var(--margin_page);
-}
+@import "media";
 
 .header {
   max-width: var(--width_content);
-  margin: 150px auto 70px;
+  margin: var(--margin_top) auto 70px;
+
+  @media (--mq_sp) {
+    margin: var(--margin_top_sp) var(--margin_page_sp) 45px;
+  }
 
   & .title {
     font-size: var(--fontSize_h1);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h1_sp);
+    }
   }
 
   & .info {
@@ -209,6 +215,10 @@ export default {
     & .share {
       float: right;
       margin-top: 1px;
+    }
+
+    @media (--mq_sp) {
+      margin-top: 15px;
     }
   }
 }
@@ -237,13 +247,21 @@ export default {
   max-width: var(--width_content);
   margin: 0 auto;
   @apply --content;
+
+  @media (--mq_sp) {
+    margin: 0 var(--margin_page_sp);
+  }
 }
 
 .footer {
-  margin: 100px var(--margin_page) var(--margin_page);
+  margin: var(--margin_bottom) var(--margin_page) var(--margin_page);
   line-height: 1;
   @apply --clearfix;
   position: relative;
+
+  @media (--mq_sp) {
+    margin: var(--margin_bottom_sp) var(--margin_page_sp) var(--margin_page_sp);
+  }
 
   & .share {
     position: absolute;
@@ -255,10 +273,9 @@ export default {
   & .copyright {
     display: block;
     float: right;
-    color: var(--textColor_lightGray);
     font-size: var(--fontSize_xSmall);
     line-height: 1;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
   }
 
   & .backIndex {
@@ -281,8 +298,13 @@ export default {
 
     @nest :global(body.pc) &:hover {
       & .arrow {
-        transform: translateX(-3px);
+        transform: translateX(-2px);
       }
+    }
+
+    @media (--mq_sp) {
+      bottom: var(--margin_page_sp);
+      left: var(--margin_page_sp);
     }
   }
 }

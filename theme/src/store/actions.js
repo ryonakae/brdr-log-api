@@ -95,7 +95,7 @@ export default {
           context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
           // logoのローディング終了
-          context.dispatch('logoLoading', {boolean:false, wait:350});
+          context.dispatch('logoLoading', {boolean:false, wait:300});
         });
     }
   },
@@ -321,7 +321,7 @@ export default {
           }
 
           // logoのローディング終了
-          context.dispatch('logoLoading', {boolean:false, wait:350});
+          context.dispatch('logoLoading', {boolean:false, wait:300});
 
           resolve();
         });

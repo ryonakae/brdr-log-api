@@ -63,7 +63,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  @media (--mq_spLarge) {
+  @media (--mq_sp) {
     font-size: var(--fontSize_default_sp);
   }
 }
