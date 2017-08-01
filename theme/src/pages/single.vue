@@ -39,6 +39,7 @@ import moment from 'moment';
 import imagesLoaded from 'imagesloaded';
 import ShareComponent from '../components/Share.vue';
 import '../library/twitter_widgets';
+import '../library/prettify';
 
 export default {
   components: {
@@ -129,21 +130,31 @@ export default {
 
       // 本文の画像の親要素にaddClass
       const $images = this.$content.getElementsByTagName('img');
-      for (let i = 0; i < $images.length; i++) {
-        const $img = $images[i];
-        $img.parentNode.classList.add('img');
+      if ($images.length > 0) {
+        for (let i = 0; i < $images.length; i++) {
+          $images[i].parentNode.classList.add('img');
+        }
       }
 
       // Twitterの埋め込みツイートがあったら関数実行
-      if (this.$content.getElementsByClassName('twitter-tweet').length > 0) {
-        twttr.widgets.load(document.body);
+      const $tweet = this.$content.getElementsByClassName('twitter-tweet');
+      if ($tweet.length > 0) twttr.widgets.load(document.body);
+
+      // コードスニペットがあったらprettify実行
+      const $code = this.$content.getElementsByTagName('pre');
+      if ($code.length > 0) {
+        for (let i = 0; i < $code.length; i++) {
+          $code[i].classList.add('prettyprint');
+        }
+        prettyPrint();
       }
 
       // iframeをdivで囲う
       const $iframes = this.$content.getElementsByTagName('iframe');
-      console.log($iframes);
-      for (let i = 0; i < $iframes.length; i++) {
-        $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>';
+      if ($iframes.length > 0) {
+        for (let i = 0; i < $iframes.length; i++) {
+          $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>';
+        }
       }
 
       // ページ内の画像全部ロードしたらlogoのローディング終了
@@ -308,4 +319,8 @@ export default {
     }
   }
 }
+</style>
+
+<style>
+@import "prettify";
 </style>
