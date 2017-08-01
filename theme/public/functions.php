@@ -100,7 +100,7 @@ function my_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $s
   $html = preg_replace('/" \/>/', '">', $html);
 
   if ($caption) {
-    $html = "\n" . '<p class="img">' . "\n" .
+    $html = '<p class="img">' . "\n" .
             $html . "\n" .
             '</p>' . "\n" .
             '<p class="caption"><small>' . $caption . '</small></p>';
@@ -112,4 +112,15 @@ function my_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $s
   return $html;
 }
 add_action('image_send_to_editor', 'my_image_send_to_editor', 10 ,7);
+
+// 画像をアップロードしたときにファイル名をタイムスタンプに変更
+function rename_mediafile($filename) {
+	$info = pathinfo($filename);
+	$ext  = empty($info['extension']) ? '' : '.' . $info['extension'];
+	if( $info['filename'] != 'sitemap' ){
+		$filename = strtolower(time().$ext);
+	}
+    return $filename;
+}
+add_filter('sanitize_file_name', 'rename_mediafile', 10);
 ?>
