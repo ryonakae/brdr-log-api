@@ -3,6 +3,17 @@
 <head>
   <?php include('meta.php'); ?>
   <?php wp_head(); ?>
+
+  <?php
+    $wp_api_settings = json_encode(array(
+      nonce => wp_create_nonce('wp_rest'),
+      is_preview => is_preview()
+    ));
+    echo the_content();
+  ?>
+  <script>
+    var wpApiSettings = <?php echo $wp_api_settings; ?>;
+  </script>
 </head>
 <body>
   <div id="app"></div>

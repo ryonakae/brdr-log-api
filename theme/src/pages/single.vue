@@ -104,13 +104,32 @@ export default {
       // currentPostDataがない場合(url直接叩いたとき)
       // →getPost()実行してcurrentPostDataにデータを入れる
       else {
-        this.$store.dispatch('getPost', this.$route.params.id)
-          .then((result)=>{
-            return this.$store.dispatch('setCurrentPost', result);
-          })
-          .then(()=>{
-            return this.init();
-          });
+        // 通常時
+        if (!wpApiSettings.is_preview) {
+          this.$store.dispatch('getPost', this.$route.params.id)
+            .then((result)=>{
+              return this.$store.dispatch('setCurrentPost', result);
+            })
+            .then(()=>{
+              return this.init();
+            });
+        }
+        // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
+        else {
+          Promise.all([
+            this.$store.dispatch('getPost', this.$route.params.id),
+            this.$store.dispatch('getPostRevisions', this.$route.params.id)
+          ])
+            .then((results)=>{
+              const _result = results[0];
+              _result.content = results[1].content;
+              console.log(_result);
+              return this.$store.dispatch('setCurrentPost', _result);
+            })
+            .then(()=>{
+              return this.init();
+            });
+        }
       }
     },
 

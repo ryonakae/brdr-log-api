@@ -115,6 +115,20 @@ export default {
     }
   },
 
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // /?p=[id]&preview=true というクエリがある場合は、singleに遷移する
+      // 遷移時にp(id)を渡す
+      const query = vm.$route.query;
+
+      if (Object.keys(query).length > 0) {
+        if (Object.keys(query.p).length > 0 && query.preview) {
+          vm.$router.replace({path: '/post/'+query.p});
+        }
+      }
+    });
+  },
+
   beforeRouteLeave(to, from, next) {
     scrollManager.remove('index.infiniteScroll');
     next();

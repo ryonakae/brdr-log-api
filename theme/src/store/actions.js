@@ -40,6 +40,7 @@ export default {
       superagent
         .get(getUrl)
         .query(queryOptions)
+        .set('X-WP-Nonce', wpApiSettings.nonce)
         .timeout({
           response: 10000,
           deadline: 60000
@@ -137,6 +138,7 @@ export default {
       superagent
         .get(getUrl)
         .query(queryOptions)
+        .set('X-WP-Nonce', wpApiSettings.nonce)
         .timeout({
           response: 10000,
           deadline: 60000
@@ -148,6 +150,30 @@ export default {
           else {
             console.log(res.body);
             resolve(res.body);
+          }
+        });
+    });
+  },
+
+  // 投稿のリビジョンを取得
+  getPostRevisions(context, id) {
+    return new Promise((resolve, reject)=>{
+      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/posts/' + id + '/revisions';
+
+      superagent
+        .get(getUrl)
+        .set('X-WP-Nonce', wpApiSettings.nonce)
+        .timeout({
+          response: 10000,
+          deadline: 60000
+        })
+        .end((err, res) => {
+          if (err) {
+            console.log(err);
+          }
+          else {
+            console.log(res.body[0]);
+            resolve(res.body[0]);
           }
         });
     });
@@ -165,6 +191,7 @@ export default {
       superagent
         .get(getUrl)
         .query(queryOptions)
+        .set('X-WP-Nonce', wpApiSettings.nonce)
         .timeout({
           response: 10000,
           deadline: 60000

@@ -21,8 +21,7 @@ docker-compose run --rm wpcli plugin install --activate \
   update-control \
   wp-multibyte-patch \
   jetpack-markdown \
-  disable-comments \
-  disable-post-revision
+  disable-comments
 
 # docker-compose run --rm wpcli plugin install --activate \
 #   acf-to-rest-api \
