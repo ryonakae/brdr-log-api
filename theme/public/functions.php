@@ -75,14 +75,20 @@ add_action('load-post-new.php', 'disable_visual_editor_mypost');
 function disable_autosave() {
   wp_deregister_script('autosave');
 }
-add_action('wp_print_scripts', 'disable_autosave');
+// add_action('wp_print_scripts', 'disable_autosave');
 
 // カテゴリーを無効化(非表示)
 function unregister_categories() {
   register_taxonomy('category', array());
 }
-add_action('init', 'unregister_categories');
-unregister_widget( 'WP_Widget_Categories' );
+// add_action('init', 'unregister_categories');
+// unregister_widget( 'WP_Widget_Categories' );
+
+// タグを無効化
+function unregister_tags() {
+  unregister_taxonomy_for_object_type('post_tag', 'post');
+}
+add_action('init', 'unregister_tags');
 
 // 投稿に画像を挿入するときのフォーマットを変更
 function my_remove_img_attr($html, $id, $alt, $title, $align, $size){

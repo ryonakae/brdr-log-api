@@ -21,7 +21,7 @@ const state = {
   isWebfontLoaded: false,
   isLogoLoading: false,
   isFiltered: false,
-  filteredTag: ''
+  filteredCategory: ''
 };
 
 const store = new Vuex.Store({

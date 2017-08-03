@@ -96,7 +96,7 @@ export default {
     this.clearCurrentPost();
 
     // loadedPostItemをリセット
-    this.$store.dispatch('changeloadedPostItem', 'reset');
+    this.$store.dispatch('changeLoadedPostItem', 'reset');
 
     // logoのローディング開始
     this.$store.dispatch('logoLoading', {boolean:true, wait:0});

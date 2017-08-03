@@ -42,7 +42,7 @@ export default {
     state.isFiltered = boolean;
   },
 
-  SET_FILTERED_TAG(state, tagName) {
-    state.filteredTag = tagName;
+  SET_FILTERED_CATEGORY(state, categoryName) {
+    state.filteredCategory = categoryName;
   }
 };

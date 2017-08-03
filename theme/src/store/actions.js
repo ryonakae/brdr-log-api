@@ -31,6 +31,41 @@ export default {
     });
   },
 
+  setAllPost(context, data) {
+    return new Promise((resolve, reject)=>{
+      context.commit('SET_ALL_POST_DATA', data);
+      util.wait(10).then(resolve);
+    });
+  },
+
+  // currentPostDataにpostオブジェクトをセット
+  setCurrentPost(context, data) {
+    return new Promise((resolve, reject)=>{
+      context.commit('SET_CURRENT_POST_DATA', data);
+      util.wait(10).then(resolve);
+    });
+  },
+
+  clearCurrentPost(context) {
+    return new Promise((resolve, reject)=>{
+      context.commit('SET_CURRENT_POST_DATA', {});
+      util.wait(10).then(resolve);
+    });
+  },
+
+  changeLoadedPostItem(context, arg) {
+    return new Promise((resolve, reject)=>{
+      if (arg === 'increment') {
+        context.commit('INCREMENT_LOADED_POST_ITEM');
+      }
+      else if (arg === 'reset') {
+        context.commit('RESET_LOADED_POST_ITEM');
+      }
+
+      util.wait(10).then(resolve);
+    });
+  },
+
   // 記事一覧を取得
   getAllPosts(context, options) {
     return new Promise((resolve, reject)=>{
@@ -208,11 +243,11 @@ export default {
     });
   },
 
-  // タグidからタグの名前を取得
-  // resolveの引数にタグ情報を入れて、thenに渡す
-  getTagName(context, id) {
+  // カテゴリidからカテゴリの名前を取得
+  // resolveの引数にカテゴリ情報を入れて、thenに渡す
+  getCategoryName(context, id) {
     return new Promise((resolve, reject)=>{
-      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/tags/' + id;
+      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/categories/' + id;
 
       superagent
         .get(getUrl)
@@ -231,21 +266,21 @@ export default {
     });
   },
 
-  // すべてのタグの名前を取得
-  getAllTagName(context, tags) {
+  // すべてのカテゴリの名前を取得
+  getAllCategoryName(context, categories) {
     return new Promise((resolve, reject)=>{
-      const _tags = [];
+      const _categories = [];
 
-      tags.forEach((tagId, index)=>{
-        context.dispatch('getTagName', tagId)
+      categories.forEach((categoryId, index)=>{
+        context.dispatch('getCategoryName', categoryId)
           .then((result)=>{
-            // 管理画面で追加した順番にタグを配列に追加
-            _tags.splice(index, 0, result);
+            // 管理画面で追加した順番にカテゴリを配列に追加
+            _categories.splice(index, 0, result);
 
             // ループの最後
-            if (tags.length === index+1) {
-              console.log(_tags);
-              util.wait(10).then(resolve(_tags));
+            if (categories.length === index+1) {
+              console.log(_categories);
+              util.wait(10).then(resolve(_categories));
             }
           })
           .catch((err)=>{
@@ -255,38 +290,57 @@ export default {
     });
   },
 
-  setAllPost(context, data) {
+  // カテゴリで絞り込む
+  filterByCategory(context, options) {
     return new Promise((resolve, reject)=>{
-      context.commit('SET_ALL_POST_DATA', data);
-      util.wait(10).then(resolve);
-    });
-  },
+      // logoのローディング開始
+      context.dispatch('logoLoading', {boolean:true, wait:0});
 
-  // currentPostDataにpostオブジェクトをセット
-  setCurrentPost(context, data) {
-    return new Promise((resolve, reject)=>{
-      context.commit('SET_CURRENT_POST_DATA', data);
-      util.wait(10).then(resolve);
-    });
-  },
+      // createIndexのオプションを作成
+      // categoryIdが'reset'なら全記事取得
+      let indexOptions = {
+        per_page: context.state.perPage,
+        offset: 0,
+        categories: options.categoryId
+      };
 
-  clearCurrentPost(context) {
-    return new Promise((resolve, reject)=>{
-      context.commit('SET_CURRENT_POST_DATA', {});
-      util.wait(10).then(resolve);
-    });
-  },
-
-  changeloadedPostItem(context, arg) {
-    return new Promise((resolve, reject)=>{
-      if (arg === 'increment') {
-        context.commit('INCREMENT_LOADED_POST_ITEM');
-      }
-      else if (arg === 'reset') {
-        context.commit('RESET_LOADED_POST_ITEM');
+      if (options.categoryId === 'reset') {
+        indexOptions = {
+          per_page: context.state.perPage,
+          offset: 0
+        };
       }
 
-      util.wait(10).then(resolve);
+      // カテゴリの名前をセット
+      if (options.categoryName) {
+        context.commit('SET_FILTERED_CATEGORY', options.categoryName);
+      }
+
+      // カテゴリで絞り込み
+      context.dispatch('createIndex', indexOptions)
+        .then(()=>{
+          // transitionがtrueならindexに遷移
+          if (options.transition) {
+            router.push('/');
+          }
+
+          // 一番上にスクロール
+          window.scrollTo(0,0);
+
+          // categoryIdが'reset'ならisFilteredをfalseに
+          // それ以外ならtrueに
+          if (options.categoryId === 'reset') {
+            context.commit('CHANGE_IS_FILTERED', false);
+          }
+          else {
+            context.commit('CHANGE_IS_FILTERED', true);
+          }
+
+          // logoのローディング終了
+          context.dispatch('logoLoading', {boolean:false, wait:300});
+
+          resolve();
+        });
     });
   },
 
@@ -301,57 +355,4 @@ export default {
         });
     });
   },
-
-  filterByTag(context, options) {
-    return new Promise((resolve, reject)=>{
-      // logoのローディング開始
-      context.dispatch('logoLoading', {boolean:true, wait:0});
-
-      // createIndexのオプションを作成
-      // tagIdが'reset'なら全記事取得
-      let indexOptions = {
-        per_page: context.state.perPage,
-        offset: 0,
-        tags: options.tagId
-      };
-
-      if (options.tagId === 'reset') {
-        indexOptions = {
-          per_page: context.state.perPage,
-          offset: 0
-        };
-      }
-
-      // タグの名前をセット
-      if (options.tagName) {
-        context.commit('SET_FILTERED_TAG', options.tagName);
-      }
-
-      // タグで絞り込み
-      context.dispatch('createIndex', indexOptions)
-        .then(()=>{
-          // transitionがtrueならindexに遷移
-          if (options.transition) {
-            router.push('/');
-          }
-
-          // 一番上にスクロール
-          window.scrollTo(0,0);
-
-          // tagIdが'reset'ならisFilteredをfalseに
-          // それ以外ならtrueに
-          if (options.tagId === 'reset') {
-            context.commit('CHANGE_IS_FILTERED', false);
-          }
-          else {
-            context.commit('CHANGE_IS_FILTERED', true);
-          }
-
-          // logoのローディング終了
-          context.dispatch('logoLoading', {boolean:false, wait:300});
-
-          resolve();
-        });
-    });
-  }
 };

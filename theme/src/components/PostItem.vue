@@ -10,8 +10,8 @@
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
-        <ul v-if="hasTags" :class="$style.tags">
-          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click.stop="filterByTag(tag.id, tag.name)">{{tag.name}}</li>
+        <ul v-if="hasCategories" :class="$style.categories">
+          <li v-for="category in categories" :key="category.id" :class="$style.category" @click.stop="filterByCategory(category.id, category.name)">{{category.name}}</li>
         </ul>
       </div>
     </div>
@@ -23,8 +23,8 @@
       <h1 :class="$style.title" v-html="post.title.rendered"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
-        <ul v-if="hasTags" :class="$style.tags">
-          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click.stop="filterByTag(tag.id, tag.name)">{{tag.name}}</li>
+        <ul v-if="hasCategories" :class="$style.categories">
+          <li v-for="category in categories" :key="category.id" :class="$style.category" @click.stop="filterByCategory(category.id, category.name)">{{category.name}}</li>
         </ul>
       </div>
     </div>
@@ -41,13 +41,13 @@ export default {
 
   data() {
     return {
-      tags: []
+      categories: []
     };
   },
 
   computed: {
-    hasTags() {
-      return this.post.tags.length >= 1 ? true : false;
+    hasCategories() {
+      return this.post.categories.length >= 1 ? true : false;
     },
 
     hasEyecatch() {
@@ -71,11 +71,11 @@ export default {
   methods: {
     onLoad() {
       // PostItemがロードされたらloadedPostItemを1up
-      this.$store.dispatch('changeloadedPostItem', 'increment');
+      this.$store.dispatch('changeLoadedPostItem', 'increment');
     },
 
-    filterByTag(tagId, tagName) {
-      this.$store.dispatch('filterByTag', {tagId:tagId, tagName:tagName, transition:false});
+    filterByCategory(categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {categoryId:categoryId, categoryName:categoryName, transition:false});
     },
   },
 
@@ -86,11 +86,11 @@ export default {
   },
 
   mounted() {
-    // タグがある場合はタグ取得
-    if (this.hasTags) {
-      this.$store.dispatch('getAllTagName', this.post.tags)
+    // カテゴリがある場合はカテゴリ取得
+    if (this.hasCategories) {
+      this.$store.dispatch('getAllCategoryName', this.post.categories)
         .then((result)=>{
-          this.tags = result;
+          this.categories = result;
         });
     }
 

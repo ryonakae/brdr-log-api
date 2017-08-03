@@ -5,8 +5,8 @@
 
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
-        <ul v-if="hasTags" :class="$style.tags">
-          <li v-for="tag in tags" :key="tag.id" :class="$style.tag" @click="filterByTag(tag.id, tag.name)">{{tag.name}}</li>
+        <ul v-if="hasCategories" :class="$style.categories">
+          <li v-for="category in categories" :key="category.id" :class="$style.category" @click="filterByCategory(category.id, category.name)">{{category.name}}</li>
         </ul>
 
         <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
@@ -48,7 +48,7 @@ export default {
 
   data() {
     return {
-      tags: [],
+      categories: [],
       $content: null,
       $article: null,
       imgLoad: null,
@@ -68,8 +68,8 @@ export default {
       return this.post.content.rendered !== '' ? true : false;
     },
 
-    hasTags() {
-      return this.post.tags.length >= 1 ? true : false;
+    hasCategories() {
+      return this.post.categories.length >= 1 ? true : false;
     },
 
     hasEyecatch() {
@@ -91,8 +91,8 @@ export default {
   },
 
   methods: {
-    filterByTag(tagId, tagName) {
-      this.$store.dispatch('filterByTag', {tagId:tagId, tagName:tagName, transition:true});
+    filterByCategory(categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {categoryId:categoryId, categoryName:categoryName, transition:true});
     },
 
     onWebfontLoad() {
@@ -137,11 +137,11 @@ export default {
       // ページタイトルを変更
       this.$store.dispatch('changeTitle', this.post.title.rendered);
 
-      // タグがある場合はタグ取得
-      if (this.hasTags) {
-        this.$store.dispatch('getAllTagName', this.post.tags)
+      // カテゴリがある場合はカテゴリ取得
+      if (this.hasCategories) {
+        this.$store.dispatch('getAllCategoryName', this.post.categories)
           .then((result)=>{
-            return this.tags = result;
+            return this.categories = result;
           });
       }
 

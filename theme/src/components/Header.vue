@@ -19,15 +19,15 @@
       <svg :viewBox="icon.clear.viewBox">
         <use :xlink:href="'#'+icon.clear.id"></use>
       </svg>
-      <span>{{filteredTag}}</span>
+      <span>{{filteredCategory}}</span>
     </div>
 
     <ul :class="$style.navi">
-      <li :class="$style.tags">
-        <span @click="toggleTags">Tags</span>
-        <ul :class="{[$style.active]: isTagsActive}">
-          <li v-for="tag in tags" :key="tag.id" @click="filterByTag(tag.id, tag.name)">
-            <span>{{tag.name}}</span>
+      <li :class="$style.categories">
+        <span @click="toggleCategories">Category</span>
+        <ul :class="{[$style.active]: isCategoriesActive}">
+          <li v-for="category in categories" v-if="category.count > 0" :key="category.id" @click="filterByCategory(category.id, category.name)">
+            <span>{{category.name}}</span>
           </li>
         </ul>
       </li>
@@ -51,8 +51,8 @@ export default {
         clear: iconClear
       },
       logo: logo,
-      tags: [],
-      isTagsActive: false
+      categories: [],
+      isCategoriesActive: false
     };
   },
 
@@ -73,29 +73,29 @@ export default {
       return this.$store.state.isFiltered;
     },
 
-    filteredTag() {
-      return this.$store.state.filteredTag;
+    filteredCategory() {
+      return this.$store.state.filteredCategory;
     }
   },
 
   methods: {
-    filterByTag(tagId, tagName) {
-      this.$store.dispatch('filterByTag', {tagId:tagId, tagName:tagName, transition:true});
+    filterByCategory(categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {categoryId:categoryId, categoryName:categoryName, transition:true});
 
-      // タグ一覧を閉じる
-      this.isTagsActive = false;
+      // カテゴリ一覧を閉じる
+      this.isCategoriesActive = false;
     },
 
     clearFilter() {
-      this.$store.dispatch('filterByTag', {tagId:'reset', transition:true});
+      this.$store.dispatch('filterByCategory', {categoryId:'reset', transition:true});
 
-      // タグ一覧を閉じる
-      this.isTagsActive = false;
+      // カテゴリ一覧を閉じる
+      this.isCategoriesActive = false;
     },
 
-    getAllTag() {
+    getAllCategories() {
       return new Promise((resolve, reject)=>{
-        const getUrl = this.$store.state.siteUrl + '/wp-json/wp/v2/tags';
+        const getUrl = this.$store.state.siteUrl + '/wp-json/wp/v2/categories';
 
         superagent
           .get(getUrl)
@@ -115,12 +115,12 @@ export default {
       });
     },
 
-    toggleTags() {
-      if (this.isTagsActive) {
-        this.isTagsActive = false;
+    toggleCategories() {
+      if (this.isCategoriesActive) {
+        this.isCategoriesActive = false;
       }
       else {
-        this.isTagsActive = true;
+        this.isCategoriesActive = true;
       }
     },
 
@@ -136,10 +136,10 @@ export default {
   },
 
   mounted() {
-    this.getAllTag()
+    this.getAllCategories()
       .then((result)=>{
         return new Promise((resolve, reject)=>{
-          this.tags = result;
+          this.categories = result;
           resolve();
         });
       });
@@ -318,7 +318,7 @@ export default {
     }
   }
 
-  & .tags {
+  & .categories {
     position: relative;
 
     & ul {

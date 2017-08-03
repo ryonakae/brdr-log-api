@@ -38,12 +38,12 @@
       display: inline-block;
     }
 
-    & .tags {
+    & .categories {
       display: inline-block;
       margin-left: 14px;
     }
 
-    & .tag {
+    & .category {
       display: inline-block;
       @apply --link;
 
