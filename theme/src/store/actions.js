@@ -70,12 +70,18 @@ export default {
   getAllPosts(context, options) {
     return new Promise((resolve, reject)=>{
       const getUrl = context.state.siteUrl + '/wp-json/wp/v2/posts';
-      const queryOptions = Object.assign({_embed: null}, options);
+
+      const _queryOptions = {
+        _embed: null
+      };
+      if (context.state.isUserLoggedIn) _queryOptions.status = 'any';
+
+      const queryOptions = Object.assign(_queryOptions, options);
 
       superagent
         .get(getUrl)
         .query(queryOptions)
-        .set('X-WP-Nonce', wpApiSettings.nonce)
+        .set('X-WP-Nonce', context.state.nonce)
         .timeout({
           response: 10000,
           deadline: 60000
@@ -173,7 +179,7 @@ export default {
       superagent
         .get(getUrl)
         .query(queryOptions)
-        .set('X-WP-Nonce', wpApiSettings.nonce)
+        .set('X-WP-Nonce', context.state.nonce)
         .timeout({
           response: 10000,
           deadline: 60000
@@ -197,7 +203,7 @@ export default {
 
       superagent
         .get(getUrl)
-        .set('X-WP-Nonce', wpApiSettings.nonce)
+        .set('X-WP-Nonce', context.state.nonce)
         .timeout({
           response: 10000,
           deadline: 60000
@@ -226,7 +232,7 @@ export default {
       superagent
         .get(getUrl)
         .query(queryOptions)
-        .set('X-WP-Nonce', wpApiSettings.nonce)
+        .set('X-WP-Nonce', context.state.nonce)
         .timeout({
           response: 10000,
           deadline: 60000

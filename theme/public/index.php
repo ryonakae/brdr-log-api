@@ -7,6 +7,7 @@
   <?php
     $wp_api_settings = json_encode(array(
       nonce => wp_create_nonce('wp_rest'),
+      is_logged_in => is_user_logged_in(),
       is_preview => is_preview()
     ));
     echo the_content();

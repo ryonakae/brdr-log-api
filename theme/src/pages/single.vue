@@ -1,7 +1,7 @@
 <template>
   <article v-if="hasPost" ref="article">
     <header :class="$style.header">
-      <h1 :class="$style.title" v-html="post.title.rendered"></h1>
+      <h1 :class="$style.title" v-html="postTitle"></h1>
 
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
@@ -9,7 +9,7 @@
           <li v-for="category in categories" :key="category.id" :class="$style.category" @click="filterByCategory(category.id, category.name)">{{category.name}}</li>
         </ul>
 
-        <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
+        <share-component :permalink="post.link" :title="postTitle" :class="$style.share"></share-component>
       </div>
     </header>
 
@@ -17,10 +17,10 @@
       <img :src="eyecatch">
     </div>
 
-    <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered" ref="content"></div>
+    <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered"></div>
 
     <footer :class="$style.footer">
-      <share-component :permalink="post.link" :title="post.title.rendered" :class="$style.share"></share-component>
+      <share-component :permalink="post.link" :title="postTitle" :class="$style.share"></share-component>
 
       <small :class="$style.copyright">
         <a href="https://twitter.com/ryo_dg" target="_blank">&copy;Ryo Nakae</a>
@@ -49,7 +49,6 @@ export default {
   data() {
     return {
       categories: [],
-      $content: null,
       $article: null,
       imgLoad: null,
     };
@@ -87,6 +86,23 @@ export default {
 
     isWebfontLoaded() {
       return this.$store.state.isWebfontLoaded;
+    },
+
+    isPreview() {
+      return this.$store.state.isPreview;
+    },
+
+    postTitle() {
+      let title;
+
+      if (this.post.status === 'draft') {
+        title = 'Draft: ' + this.post.title.rendered;
+      }
+      else {
+        title = this.post.title.rendered;
+      }
+
+      return title;
     }
   },
 
@@ -105,7 +121,7 @@ export default {
       // →getPost()実行してcurrentPostDataにデータを入れる
       else {
         // 通常時
-        if (!wpApiSettings.is_preview) {
+        if (!this.isPreview) {
           this.$store.dispatch('getPost', this.$route.params.id)
             .then((result)=>{
               return this.$store.dispatch('setCurrentPost', result);
@@ -145,10 +161,8 @@ export default {
           });
       }
 
-      this.$content = this.$refs.content;
-
       // 本文の画像の親要素にaddClass
-      const $images = this.$content.getElementsByTagName('img');
+      const $images = document.getElementsByTagName('img');
       if ($images.length > 0) {
         for (let i = 0; i < $images.length; i++) {
           $images[i].parentNode.classList.add('img');
@@ -156,11 +170,11 @@ export default {
       }
 
       // Twitterの埋め込みツイートがあったら関数実行
-      const $tweet = this.$content.getElementsByClassName('twitter-tweet');
+      const $tweet = document.getElementsByClassName('twitter-tweet');
       if ($tweet.length > 0) twttr.widgets.load(document.body);
 
       // コードスニペットがあったらprettify実行
-      const $code = this.$content.getElementsByTagName('pre');
+      const $code = document.getElementsByTagName('pre');
       if ($code.length > 0) {
         for (let i = 0; i < $code.length; i++) {
           $code[i].classList.add('prettyprint');
@@ -169,7 +183,7 @@ export default {
       }
 
       // iframeをdivで囲う
-      const $iframes = this.$content.getElementsByTagName('iframe');
+      const $iframes = document.getElementsByTagName('iframe');
       if ($iframes.length > 0) {
         for (let i = 0; i < $iframes.length; i++) {
           $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>';

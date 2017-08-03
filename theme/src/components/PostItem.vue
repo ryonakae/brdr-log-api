@@ -7,7 +7,7 @@
     </div>
 
     <div :class="$style.text">
-      <h1 :class="$style.title" v-html="post.title.rendered"></h1>
+      <h1 :class="$style.title" v-html="postTitle"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
         <ul v-if="hasCategories" :class="$style.categories">
@@ -20,7 +20,7 @@
   <!-- アイキャッチがない -->
   <router-link v-else :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.noeyecatch]">
     <div :class="$style.text">
-      <h1 :class="$style.title" v-html="post.title.rendered"></h1>
+      <h1 :class="$style.title" v-html="postTitle"></h1>
       <div :class="$style.info">
         <div :class="$style.date">{{post.date | moment}}</div>
         <ul v-if="hasCategories" :class="$style.categories">
@@ -65,6 +65,19 @@ export default {
       }
 
       return eyecatch;
+    },
+
+    postTitle() {
+      let title;
+
+      if (this.post.status === 'draft') {
+        title = 'Draft: ' + this.post.title.rendered;
+      }
+      else {
+        title = this.post.title.rendered;
+      }
+
+      return title;
     }
   },
 

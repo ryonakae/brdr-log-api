@@ -21,7 +21,10 @@ const state = {
   isWebfontLoaded: false,
   isLogoLoading: false,
   isFiltered: false,
-  filteredCategory: ''
+  filteredCategory: '',
+  isPreview: wpApiSettings.is_preview,
+  nonce: wpApiSettings.nonce,
+  isUserLoggedIn: wpApiSettings.is_logged_in,
 };
 
 const store = new Vuex.Store({
