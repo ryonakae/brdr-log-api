@@ -1,6 +1,7 @@
 'use strict';
 
 import superagent from 'superagent';
+import axios from 'axios';
 import {util, scrollManager} from '../';
 import router from '../router';
 
@@ -78,29 +79,19 @@ export default {
 
       const queryOptions = Object.assign(_queryOptions, options);
 
-      superagent
-        .get(getUrl)
-        .query(queryOptions)
-        .set('X-WP-Nonce', context.state.nonce)
-        .timeout({
-          response: 10000,
-          deadline: 60000
+      axios.get(getUrl, {
+        params: queryOptions,
+        timeout: 10000,
+        headers: {'X-WP-Nonce': context.state.nonce}
+      })
+        .then((res)=>{
+          console.log(res);
+          // res.bodyが空(これ以上記事ない)ときはrejectを返す
+          res.data.length > 0 ? resolve(res.data) : reject();
         })
-        .end((err, res) => {
-          if (err) {
-            console.log(err);
-            reject(err);
-          }
-          else {
-            console.log(res.body);
-            // res.bodyが空(これ以上記事ない)ときはrejectを返す
-            if (res.body.length === 0) {
-              reject();
-            }
-            else {
-              resolve(res.body);
-            }
-          }
+        .catch((err)=>{
+          console.log(err);
+          reject(err);
         });
     });
   },
@@ -175,6 +166,11 @@ export default {
       const queryOptions = {
         _embed: null
       };
+
+      axios.get(getUrl, {
+        params: queryOptions,
+        timeout: 10000
+      });
 
       superagent
         .get(getUrl)
