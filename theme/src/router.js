@@ -9,12 +9,14 @@ Vue.use(VueRouter);
 import index from './pages/index.vue';
 import page from './pages/page.vue';
 import single from './pages/single.vue';
+import notFound from './pages/notFound.vue';
 
 // detect routes
 const routes = [
   {path:'/', component: index},
   {path:'/:slug', component: page},
-  {path:'/post/:id', component: single}
+  {path:'/post/:id', component: single},
+  {path:'/*', component: notFound}
 ];
 
 // detect scroll behavior

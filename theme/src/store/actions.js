@@ -187,6 +187,7 @@ export default {
         .end((err, res) => {
           if (err) {
             console.log(err);
+            reject(err);
           }
           else {
             console.log(res.body);
@@ -211,6 +212,7 @@ export default {
         .end((err, res) => {
           if (err) {
             console.log(err);
+            reject(err);
           }
           else {
             console.log(res.body[0]);
@@ -240,9 +242,13 @@ export default {
         .end((err, res) => {
           if (err) {
             console.log(err);
+            reject(err);
+          }
+          else if (res.body.length === 0) {
+            reject();
           }
           else {
-            console.log(res.body[0]);
+            console.log(res);
             resolve(res.body[0]);
           }
         });
@@ -360,5 +366,5 @@ export default {
           resolve();
         });
     });
-  },
+  }
 };

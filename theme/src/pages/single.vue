@@ -27,23 +27,29 @@
       </small>
 
       <router-link :to="'/'" tag="div" :class="$style.backIndex">
-        <span :class="$style.arrow">←</span>
+        <span :class="$style.arrow">&lt;-</span>
         <span>Index</span>
       </router-link>
     </footer>
   </article>
+
+  <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
+    <not-found-component></not-found-component>
+  </div>
 </template>
 
 <script>
 import moment from 'moment';
 import imagesLoaded from 'imagesloaded';
 import ShareComponent from '../components/Share.vue';
+import NotFoundComponent from '../components/NotFound.vue';
 import '../library/twitter_widgets';
 import '../library/prettify';
 
 export default {
   components: {
-    ShareComponent
+    ShareComponent,
+    NotFoundComponent
   },
 
   data() {
@@ -119,16 +125,18 @@ export default {
       }
       // currentPostDataがない場合(url直接叩いたとき)
       // →getPost()実行してcurrentPostDataにデータを入れる
+      // エラー返ってきたらnotFoundを表示
       else {
         // 通常時
         if (!this.isPreview) {
           this.$store.dispatch('getPost', this.$route.params.id)
             .then((result)=>{
-              return this.$store.dispatch('setCurrentPost', result);
+              this.$store.dispatch('setCurrentPost', result);
             })
             .then(()=>{
-              return this.init();
-            });
+              this.init();
+            })
+            .catch(this.onNotFound);
         }
         // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
         else {
@@ -140,11 +148,12 @@ export default {
               const _result = results[0];
               _result.content = results[1].content;
               console.log(_result);
-              return this.$store.dispatch('setCurrentPost', _result);
+              this.$store.dispatch('setCurrentPost', _result);
             })
             .then(()=>{
-              return this.init();
-            });
+              this.init();
+            })
+            .catch(this.onNotFound);
         }
       }
     },
@@ -201,6 +210,15 @@ export default {
       this.imgLoad.on('done', (instance)=>{
         this.$store.dispatch('logoLoading', {boolean:false, wait:300});
       });
+    },
+
+    // 404の時
+    onNotFound() {
+      this.$store.dispatch('changeTitle', 'Page Not Found');
+      this.$store.dispatch('logoLoading', {boolean:false, wait:300});
+
+      const $notFound = this.$refs.notFound;
+      $notFound.classList.remove(this.$style.hidden);
     }
   },
 
@@ -350,6 +368,12 @@ export default {
       bottom: var(--margin_page_sp);
       left: var(--margin_page_sp);
     }
+  }
+}
+
+.notFound {
+  &.hidden {
+    display: none;
   }
 }
 </style>

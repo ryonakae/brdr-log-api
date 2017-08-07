@@ -17,12 +17,6 @@ export default {
     PostItemComponent
   },
 
-  data() {
-    return {
-      $logo: null
-    };
-  },
-
   computed: {
     siteUrl() {
       return this.$store.state.siteUrl;
