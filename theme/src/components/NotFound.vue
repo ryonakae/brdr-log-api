@@ -15,7 +15,7 @@
 
 .title {
   width: 100%;
-  font-size: 8rem;
+  font-size: 7rem;
   letter-spacing: 0;
   text-align: center;
   position: fixed;
@@ -33,32 +33,8 @@
 }
 
 .backIndex {
-  position: fixed;
-  bottom: var(--margin_page);
+  @apply --backIndex;
   left: 50%;
   transform: translateX(-50%);
-  cursor: pointer;
-  font-size: var(--fontSize_small);
-  line-height: 1;
-  transition: all var(--duration_quick) var(--easing);
-  @apply --link;
-
-  & span {
-    display: inline-block;
-  }
-
-  & .arrow {
-    transition: all var(--duration_quick) var(--easing);
-  }
-
-  @nest :global(body.pc) &:hover {
-    & .arrow {
-      transform: translateX(-2px);
-    }
-  }
-
-  @media (--mq_sp) {
-    bottom: var(--margin_page_sp);
-  }
 }
 </style>

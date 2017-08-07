@@ -6,7 +6,7 @@
   /*bg color*/
   --bgColor_default: #fff;
   --bgColor_gray: color(var(--color_key) alpha(10%));
-  --bgColor_selection: #f4754e;
+  --bgColor_selection: #162140;
 
 
   /*border color*/

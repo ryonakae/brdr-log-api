@@ -81,94 +81,21 @@ export default {
 <style module>
 @import "properties";
 @import "propertySets";
-@import "media";
 
 .header {
-  max-width: var(--width_content);
-  margin: var(--margin_top) auto 70px;
-
-  @media (--mq_sp) {
-    margin: var(--margin_top_sp) var(--margin_page_sp) 45px;
-  }
-
-  & .title {
-    font-size: var(--fontSize_h1);
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h1_sp);
-    }
-  }
+  @apply --header;
 }
 
 .eyecatch {
-  display: table;
-  border: 1px solid var(--color_key);
-  max-width: var(--width_single);
-  margin: 0 auto 3em;
-  text-align: center;
-
-  & img {
-    max-width: 100%;
-    height: auto;
-    vertical-align: top;
-    transition: all var(--duration_quick) var(--easing);
-    opacity: 0;
-
-    &:global(.ready) {
-      opacity: 1;
-    }
-  }
+  @apply --eyecatch;
 }
 
 .content {
-  max-width: var(--width_content);
-  margin: 0 auto;
   @apply --content;
-
-  @media (--mq_sp) {
-    margin: 0 var(--margin_page_sp);
-  }
 }
 
 .footer {
-  margin: var(--margin_bottom) var(--margin_page) var(--margin_page);
-  line-height: 1;
-  @apply --clearfix;
-  position: relative;
-
-  @media (--mq_sp) {
-    margin: var(--margin_bottom_sp) var(--margin_page_sp) var(--margin_page_sp);
-  }
-
-  & .backIndex {
-    cursor: pointer;
-    position: fixed;
-    bottom: var(--margin_page);
-    left: var(--margin_page);
-    font-size: var(--fontSize_small);
-    line-height: 1;
-    transition: all var(--duration_quick) var(--easing);
-    @apply --link;
-
-    & span {
-      display: inline-block;
-    }
-
-    & .arrow {
-      transition: all var(--duration_quick) var(--easing);
-    }
-
-    @nest :global(body.pc) &:hover {
-      & .arrow {
-        transform: translateX(-2px);
-      }
-    }
-
-    @media (--mq_sp) {
-      bottom: var(--margin_page_sp);
-      left: var(--margin_page_sp);
-    }
-  }
+  @apply --footer;
 }
 
 .notFound {
