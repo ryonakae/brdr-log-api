@@ -1,89 +1,90 @@
 'use strict';
 
-import superagent from 'superagent';
 import axios from 'axios';
 import {util, scrollManager} from '../';
 import router from '../router';
 
+// axiosのインスタンスの設定
+const client = axios.create();
+export {client};
+
 // 非同期、複数のmutationsを組み合わせた処理
 export default {
-  changeTitle(context, title) {
+  changeTitle({commit, state}, title) {
     return new Promise((resolve, reject)=>{
       // pageTitleを変更
-      context.commit('SET_PAGE_TITLE', title);
+      commit('SET_PAGE_TITLE', title);
 
       // document.titleも変更
       // 引数が「''」ならサイトタイトルだけにする
       if (title === '') {
-        document.title = context.state.siteTitle;
+        document.title = state.siteTitle;
       }
       else {
-        document.title = title + ' - ' + context.state.siteTitle;
+        document.title = title + ' - ' + state.siteTitle;
       }
 
       util.wait(10).then(resolve);
     });
   },
 
-  changePerPage(context, count) {
+  changePerPage({commit}, count) {
     return new Promise((resolve, reject)=>{
-      context.commit('SET_PER_PAGE', count);
+      commit('SET_PER_PAGE', count);
       util.wait(10).then(resolve);
     });
   },
 
-  setAllPost(context, data) {
+  setAllPost({commit}, data) {
     return new Promise((resolve, reject)=>{
-      context.commit('SET_ALL_POST_DATA', data);
+      commit('SET_ALL_POST_DATA', data);
       util.wait(10).then(resolve);
     });
   },
 
   // currentPostDataにpostオブジェクトをセット
-  setCurrentPost(context, data) {
+  setCurrentPost({commit}, data) {
     return new Promise((resolve, reject)=>{
-      context.commit('SET_CURRENT_POST_DATA', data);
+      commit('SET_CURRENT_POST_DATA', data);
       util.wait(10).then(resolve);
     });
   },
 
-  clearCurrentPost(context) {
+  clearCurrentPost({commit}) {
     return new Promise((resolve, reject)=>{
-      context.commit('SET_CURRENT_POST_DATA', {});
+      commit('SET_CURRENT_POST_DATA', {});
       util.wait(10).then(resolve);
     });
   },
 
-  changeLoadedPostItem(context, arg) {
+  changeLoadedPostItem({commit}, arg) {
     return new Promise((resolve, reject)=>{
       if (arg === 'increment') {
-        context.commit('INCREMENT_LOADED_POST_ITEM');
+        commit('INCREMENT_LOADED_POST_ITEM');
       }
       else if (arg === 'reset') {
-        context.commit('RESET_LOADED_POST_ITEM');
+        commit('RESET_LOADED_POST_ITEM');
       }
 
       util.wait(10).then(resolve);
     });
+  },
+
+  // axiosのクライアントをセットアップ
+  initClient({state}) {
+    client.defaults.baseURL = state.siteUrl + '/wp-json/wp/v2';
+    client.defaults.timeout = 10000;
+    client.defaults.headers = {'X-WP-Nonce': state.nonce};
   },
 
   // 記事一覧を取得
-  getAllPosts(context, options) {
+  getAllPosts({state}, options) {
     return new Promise((resolve, reject)=>{
-      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/posts';
-
-      const _queryOptions = {
-        _embed: null
-      };
-      if (context.state.isUserLoggedIn) _queryOptions.status = 'any';
-
+      const _queryOptions = {_embed: null};
+      if (state.isUserLoggedIn) _queryOptions.status = 'any';
       const queryOptions = Object.assign(_queryOptions, options);
 
-      axios.get(getUrl, {
-        params: queryOptions,
-        timeout: 10000,
-        headers: {'X-WP-Nonce': context.state.nonce}
-      })
+      client.get('/posts', {params: queryOptions})
         .then((res)=>{
           console.log(res);
           // res.bodyが空(これ以上記事ない)ときはrejectを返す
@@ -97,61 +98,61 @@ export default {
   },
 
   // スクロールでさらに記事一覧を取得
-  infiniteScroll(context, options) {
+  infiniteScroll({dispatch, commit, state}, options) {
     console.log('fire infiniteScroll');
     const documentHeight = document.body.clientHeight;
 
     // スクロールが7割位になったら次のポストロード
     if (scrollManager.scrollBottom > documentHeight * 0.7) {
-      if (context.state.infiniteScrollLock) return;
+      if (state.infiniteScrollLock) return;
 
-      context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
+      commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
       // logoをローディング中にする
-      context.dispatch('logoLoading', {boolean:true, wait:0});
+      dispatch('logoLoading', {boolean:true, wait:0});
 
       // getAllPostsする（optionsはそのまま渡す）
-      context.dispatch('getAllPosts', options)
+      dispatch('getAllPosts', options)
         .then((result)=>{
           // 現在のallPostDataとresultを結合する
-          const newData = context.state.allPostData.concat(result);
+          const newData = state.allPostData.concat(result);
           console.log('infiniteScroll', newData);
           // 結合した配列をallPostDataにセット
-          return context.dispatch('setAllPost', newData);
+          return dispatch('setAllPost', newData);
         })
         .then(()=>{
-          context.commit('CHANGE_INFINITE_SCROLL_LOCK', false);
+          commit('CHANGE_INFINITE_SCROLL_LOCK', false);
         })
         .catch((err)=>{
           // エラーか、これ以上投稿ないとき
           console.log('error or nomore posts', err);
-          context.commit('CHANGE_INFINITE_SCROLL_LOCK', true);
+          commit('CHANGE_INFINITE_SCROLL_LOCK', true);
 
           // logoのローディング終了
-          context.dispatch('logoLoading', {boolean:false, wait:300});
+          dispatch('logoLoading', {boolean:false, wait:300});
         });
     }
   },
 
   // 記事一覧を作成
   // getAllPosts→setAllPost→infiniteScroll
-  createIndex(context, options) {
+  createIndex({dispatch, commit, state}, options) {
     return new Promise((resolve, reject)=>{
       // infiniteScrollをリセット
       scrollManager.remove('index.infiniteScroll');
-      context.commit('CHANGE_INFINITE_SCROLL_LOCK', false);
+      commit('CHANGE_INFINITE_SCROLL_LOCK', false);
 
       // getAllPostsする→setAllPostする→infiniteScroll開始
-      context.dispatch('getAllPosts', options)
+      dispatch('getAllPosts', options)
         .then((result)=>{
-          context.dispatch('setAllPost', result);
+          dispatch('setAllPost', result);
         })
         .then(()=>{
           // infiniteScroll
           scrollManager.add('index.infiniteScroll', ()=>{
             // getAllPostsのoptionに、offsetの値をmergeして、infiniteScroll actionを実行
-            const infiniteScrollOptions = Object.assign(options, {offset:context.state.allPostData.length});
-            context.dispatch('infiniteScroll', infiniteScrollOptions);
+            const infiniteScrollOptions = Object.assign(options, {offset:state.allPostData.length});
+            dispatch('infiniteScroll', infiniteScrollOptions);
           });
 
           resolve();
@@ -160,127 +161,84 @@ export default {
   },
 
   // 単一の投稿を取得
-  getPost(context, id) {
+  getPost({state}, id) {
     return new Promise((resolve, reject)=>{
-      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/posts/' + id;
       const queryOptions = {
         _embed: null
       };
 
-      axios.get(getUrl, {
-        params: queryOptions,
-        timeout: 10000
-      });
-
-      superagent
-        .get(getUrl)
-        .query(queryOptions)
-        .set('X-WP-Nonce', context.state.nonce)
-        .timeout({
-          response: 10000,
-          deadline: 60000
+      client.get('/posts/' + id, {params: queryOptions})
+        .then((res)=>{
+          console.log(res);
+          resolve(res.data);
         })
-        .end((err, res) => {
-          if (err) {
-            console.log(err);
-            reject(err);
-          }
-          else {
-            console.log(res.body);
-            resolve(res.body);
-          }
+        .catch((err)=>{
+          console.log(err);
+          reject(err);
         });
     });
   },
 
   // 投稿のリビジョンを取得
-  getPostRevisions(context, id) {
+  getPostRevisions({state}, id) {
     return new Promise((resolve, reject)=>{
-      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/posts/' + id + '/revisions';
-
-      superagent
-        .get(getUrl)
-        .set('X-WP-Nonce', context.state.nonce)
-        .timeout({
-          response: 10000,
-          deadline: 60000
+      client.get('/posts/' + id + '/revisions')
+        .then((res)=>{
+          console.log(res);
+          resolve(res.data[0]);
         })
-        .end((err, res) => {
-          if (err) {
-            console.log(err);
-            reject(err);
-          }
-          else {
-            console.log(res.body[0]);
-            resolve(res.body[0]);
-          }
+        .catch((err)=>{
+          console.log(err);
+          reject(err);
         });
     });
   },
 
   // 固定ページを取得
-  getPage(context, slug) {
+  getPage({state}, slug) {
     return new Promise((resolve, reject)=>{
-      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/pages';
       const queryOptions = {
         _embed: null,
         slug: slug
       };
 
-      superagent
-        .get(getUrl)
-        .query(queryOptions)
-        .set('X-WP-Nonce', context.state.nonce)
-        .timeout({
-          response: 10000,
-          deadline: 60000
+      client.get('/pages', {params: queryOptions})
+        .then((res)=>{
+          console.log(res);
+          res.data.length > 0 ? resolve(res.data[0]) : reject();
         })
-        .end((err, res) => {
-          if (err) {
-            console.log(err);
-            reject(err);
-          }
-          else if (res.body.length === 0) {
-            reject();
-          }
-          else {
-            console.log(res);
-            resolve(res.body[0]);
-          }
+        .catch((err)=>{
+          console.log(err);
+          reject(err);
         });
     });
   },
 
   // カテゴリidからカテゴリの名前を取得
   // resolveの引数にカテゴリ情報を入れて、thenに渡す
-  getCategoryName(context, id) {
+  getCategoryName({state}, id) {
     return new Promise((resolve, reject)=>{
-      const getUrl = context.state.siteUrl + '/wp-json/wp/v2/categories/' + id;
+      const getUrl = state.siteUrl + '/wp-json/wp/v2/categories/' + id;
 
-      superagent
-        .get(getUrl)
-        .timeout({
-          response: 10000,
-          deadline: 60000
+      client.get('/categories/' + id)
+        .then((res)=>{
+          console.log(res);
+          resolve(res.data);
         })
-        .end((err, res) => {
-          if (err) {
-            console.log(err);
-          }
-          else {
-            resolve(res.body);
-          }
+        .catch((err)=>{
+          console.log(err);
+          reject(err);
         });
     });
   },
 
   // すべてのカテゴリの名前を取得
-  getAllCategoryName(context, categories) {
+  getAllCategoryName({dispatch}, categories) {
     return new Promise((resolve, reject)=>{
       const _categories = [];
 
       categories.forEach((categoryId, index)=>{
-        context.dispatch('getCategoryName', categoryId)
+        dispatch('getCategoryName', categoryId)
           .then((result)=>{
             // 管理画面で追加した順番にカテゴリを配列に追加
             _categories.splice(index, 0, result);
@@ -299,33 +257,33 @@ export default {
   },
 
   // カテゴリで絞り込む
-  filterByCategory(context, options) {
+  filterByCategory({dispatch, commit, state}, options) {
     return new Promise((resolve, reject)=>{
       // logoのローディング開始
-      context.dispatch('logoLoading', {boolean:true, wait:0});
+      dispatch('logoLoading', {boolean:true, wait:0});
 
       // createIndexのオプションを作成
       // categoryIdが'reset'なら全記事取得
       let indexOptions = {
-        per_page: context.state.perPage,
+        per_page: state.perPage,
         offset: 0,
         categories: options.categoryId
       };
 
       if (options.categoryId === 'reset') {
         indexOptions = {
-          per_page: context.state.perPage,
+          per_page: state.perPage,
           offset: 0
         };
       }
 
       // カテゴリの名前をセット
       if (options.categoryName) {
-        context.commit('SET_FILTERED_CATEGORY', options.categoryName);
+        commit('SET_FILTERED_CATEGORY', options.categoryName);
       }
 
       // カテゴリで絞り込み
-      context.dispatch('createIndex', indexOptions)
+      dispatch('createIndex', indexOptions)
         .then(()=>{
           // transitionがtrueならindexに遷移
           if (options.transition) {
@@ -338,14 +296,14 @@ export default {
           // categoryIdが'reset'ならisFilteredをfalseに
           // それ以外ならtrueに
           if (options.categoryId === 'reset') {
-            context.commit('CHANGE_IS_FILTERED', false);
+            commit('CHANGE_IS_FILTERED', false);
           }
           else {
-            context.commit('CHANGE_IS_FILTERED', true);
+            commit('CHANGE_IS_FILTERED', true);
           }
 
           // logoのローディング終了
-          context.dispatch('logoLoading', {boolean:false, wait:300});
+          dispatch('logoLoading', {boolean:false, wait:300});
 
           resolve();
         });
@@ -353,12 +311,12 @@ export default {
   },
 
   // logoのloading
-  logoLoading(context, options) {
+  logoLoading({commit, state}, options) {
     return new Promise((resolve, reject)=>{
       util.wait(options.wait)
         .then(()=>{
-          context.commit('CHANGE_IS_LOGO_LOADING', options.boolean);
-          console.log('isLogoLoading', context.state.isLogoLoading);
+          commit('CHANGE_IS_LOGO_LOADING', options.boolean);
+          console.log('isLogoLoading', state.isLogoLoading);
           resolve();
         });
     });

@@ -52,27 +52,24 @@ export default {
   },
 
   methods: {
+    onLoad(result) {
+      this.$store.dispatch('changeTitle', result.title.rendered.toUpperCase());
+      this.page = result;
+      this.$store.dispatch('logoLoading', {boolean:false, wait:300});
+    },
+
     // 404
     onNotFound() {
       this.$store.dispatch('changeTitle', 'Page Not Found');
-      this.$store.dispatch('logoLoading', {boolean:false, wait:300});
-
       const $notFound = this.$refs.notFound;
       $notFound.classList.remove(this.$style.hidden);
+      this.$store.dispatch('logoLoading', {boolean:false, wait:300});
     }
-  },
-
-  beforeRouteEnter(to, from, next) {
-    next((vm)=>{
-    });
   },
 
   mounted() {
     this.$store.dispatch('getPage', this.$route.params.slug)
-      .then((result)=>{
-        this.page = result;
-        this.$store.dispatch('changeTitle', result.title.rendered.toUpperCase());
-      })
+      .then(this.onLoad)
       .catch(this.onNotFound);
   }
 };

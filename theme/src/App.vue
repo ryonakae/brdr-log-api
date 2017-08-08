@@ -49,6 +49,9 @@ export default {
         });
       }
     });
+
+    // axiosのクライアントをセットアップ
+    this.$store.dispatch('initClient');
   }
 };
 </script>

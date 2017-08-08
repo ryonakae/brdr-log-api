@@ -4,33 +4,13 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import mutations from './mutations';
 import actions from './actions';
+import state from './state';
 import {util} from '../App.vue';
 
 Vue.use(Vuex);
 
-const state = {
-  pageTitle: '',
-  siteTitle: document.title,
-  siteUrl: location.protocol + '//' + location.host,
-  allPostData: [],
-  currentPostData: {},
-  perPage: 10,
-  perPageMobile: 6,
-  infiniteScrollLock: false,
-  loadedPostItem: 0,
-  isWebfontLoaded: false,
-  isLogoLoading: false,
-  isFiltered: false,
-  filteredCategory: '',
-  isPreview: wpApiSettings.is_preview,
-  nonce: wpApiSettings.nonce,
-  isUserLoggedIn: wpApiSettings.is_logged_in,
-};
-
 const store = new Vuex.Store({
-  // development時のみ厳格モード有効
-  strict: process.env.NODE_ENV !== 'production',
-
+  strict: process.env.NODE_ENV !== 'production', // development時のみ厳格モード有効
   state,
   mutations,
   actions

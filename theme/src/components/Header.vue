@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import superagent from 'superagent';
+import {client} from '../store/actions';
 import logo from 'images/logo.svg';
 import logoClipPath from 'images/logo-clipPath.svg';
 import iconClear from 'images/icon-clear.svg';
@@ -95,22 +95,14 @@ export default {
 
     getAllCategories() {
       return new Promise((resolve, reject)=>{
-        const getUrl = this.$store.state.siteUrl + '/wp-json/wp/v2/categories';
-
-        superagent
-          .get(getUrl)
-          .timeout({
-            response: 10000,
-            deadline: 60000
+        client.get('/categories')
+          .then((res)=>{
+            console.log(res);
+            resolve(res.data);
           })
-          .end((err, res) => {
-            if (err) {
-              console.log(err);
-            }
-            else {
-              console.log(res.body);
-              resolve(res.body);
-            }
+          .catch((err)=>{
+            console.log(err);
+            reject(err);
           });
       });
     },
