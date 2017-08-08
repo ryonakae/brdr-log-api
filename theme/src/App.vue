@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import HeaderComponent from './components/Header.vue';
-import {util} from './';
-const webFont = require('webfontloader');
+import HeaderComponent from './components/Header.vue'
+import {util} from './'
+const webFont = require('webfontloader')
 
 export default {
   components: {
@@ -16,25 +16,25 @@ export default {
   },
 
   computed: {
-    perPageMobile() {
-      return this.$store.state.perPageMobile;
+    perPageMobile () {
+      return this.$store.state.perPageMobile
     }
   },
 
-  created() {
+  created () {
     // ページタイトルを変更
-    this.$store.dispatch('changeTitle', '');
+    this.$store.dispatch('changeTitle', '')
 
     // デバイスによってbodyにaddClass
-    document.body.classList.add(util.getDevice());
+    document.body.classList.add(util.getDevice())
 
     // mobileのときだけperPageを少なくする
     if (util.getDevice() === 'mobile') {
-      this.$store.dispatch('changePerPage', this.perPageMobile);
+      this.$store.dispatch('changePerPage', this.perPageMobile)
     }
 
     // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean:true, wait:0});
+    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
 
     // webfontの読み込み検知
     webFont.load({
@@ -42,18 +42,18 @@ export default {
       custom: {
         families: ['Neue Frutiger', 'Noto Sans Japanese', 'Source Code Pro']
       },
-      active: ()=>{
-        util.wait(50).then(()=>{
-          console.log('all webfont loaded');
-          this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true);
-        });
+      active: () => {
+        util.wait(50).then(() => {
+          console.log('all webfont loaded')
+          this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
+        })
       }
-    });
+    })
 
     // axiosのクライアントをセットアップ
-    this.$store.dispatch('initClient');
+    this.$store.dispatch('initClient')
   }
-};
+}
 </script>
 
 <style>

@@ -19,43 +19,33 @@
 </template>
 
 <script>
-import iconTwitter from 'images/icon-twitter.svg';
-import iconFacebook from 'images/icon-facebook.svg';
+import iconTwitter from 'images/icon-twitter.svg'
+import iconFacebook from 'images/icon-facebook.svg'
 
 export default {
   props: ['permalink', 'title'],
 
-  data() {
+  data () {
     return {
       icon: {
         twitter: iconTwitter,
         facebook: iconFacebook
       }
-    };
+    }
   },
 
   computed: {
-    twitterUrl() {
-      const url =
-        'https://twitter.com/share?url=' +
-        encodeURIComponent(this.permalink) +
-        '&text=' +
-        encodeURIComponent(this.title) +
-        ' - ' +
-        this.$store.state.siteTitle;
-
-      return url;
+    twitterUrl () {
+      const url = 'https://twitter.com/share?url=' + encodeURIComponent(this.permalink) + '&text=' + encodeURIComponent(this.title) + ' - ' + this.$store.state.siteTitle
+      return url
     },
 
-    facebookUrl() {
-      const url =
-        'https://www.facebook.com/sharer/sharer.php?u=' +
-        encodeURIComponent(this.permalink);
-
-      return url;
+    facebookUrl () {
+      const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(this.permalink)
+      return url
     }
   }
-};
+}
 </script>
 
 <style module>

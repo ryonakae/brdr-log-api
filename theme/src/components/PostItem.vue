@@ -32,103 +32,100 @@
 </template>
 
 <script>
-import {util} from '../';
-import moment from 'moment';
-import imagesLoaded from 'imagesloaded';
+import {util} from '../'
+import moment from 'moment'
+import imagesLoaded from 'imagesloaded'
 
 export default {
   props: ['post'],
 
-  data() {
+  data () {
     return {
       categories: []
-    };
+    }
   },
 
   computed: {
-    hasCategories() {
-      return this.post.categories.length >= 1 ? true : false;
+    hasCategories () {
+      return this.post.categories.length >= 1
     },
 
-    hasEyecatch() {
-      return this.post.featured_media > 0 ? true : false;
+    hasEyecatch () {
+      return this.post.featured_media > 0
     },
 
-    eyecatch() {
-      let eyecatch;
+    eyecatch () {
+      let eyecatch
 
       if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
-      }
-      else {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url;
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url
+      } else {
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url
       }
 
-      return eyecatch;
+      return eyecatch
     },
 
-    postTitle() {
-      let title;
+    postTitle () {
+      let title
 
       if (this.post.status === 'draft') {
-        title = 'Draft: ' + this.post.title.rendered;
-      }
-      else {
-        title = this.post.title.rendered;
+        title = 'Draft: ' + this.post.title.rendered
+      } else {
+        title = this.post.title.rendered
       }
 
-      return title;
+      return title
     }
   },
 
   methods: {
-    onLoad() {
+    onLoad () {
       // PostItemがロードされたらloadedPostItemを1up
-      this.$store.dispatch('changeLoadedPostItem', 'increment');
+      this.$store.dispatch('changeLoadedPostItem', 'increment')
     },
 
-    filterByCategory(categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {categoryId:categoryId, categoryName:categoryName, transition:false});
-    },
-  },
-
-  filters: {
-    moment(date) {
-      return moment(date).format('YYYY.M.D');
+    filterByCategory (categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: false})
     }
   },
 
-  mounted() {
+  filters: {
+    moment (date) {
+      return moment(date).format('YYYY.M.D')
+    }
+  },
+
+  mounted () {
     // カテゴリがある場合はカテゴリ取得
     if (this.hasCategories) {
       this.$store.dispatch('getAllCategoryName', this.post.categories)
-        .then((result)=>{
-          this.categories = result;
-        });
+        .then((result) => {
+          this.categories = result
+        })
     }
 
     // アイキャッチがある時
     if (this.hasEyecatch) {
-      const $post = this.$refs.post.$el;
-      const $image = this.$refs.image;
-      const $overlay = this.$refs.overlay;
+      const $post = this.$refs.post.$el
+      const $image = this.$refs.image
+      const $overlay = this.$refs.overlay
 
-      imagesLoaded($post, {background: true}, ()=>{
-        util.wait(10).then(()=>{
-          $image.classList.add(this.$style.ready);
-          $overlay.classList.add(this.$style.ready);
-          this.onLoad();
-        });
-      });
-    }
-    // アイキャッチがないとき
-    else {
-      util.wait(10).then(()=>{
-        this.onLoad();
-      });
+      imagesLoaded($post, {background: true}, () => {
+        util.wait(10).then(() => {
+          $image.classList.add(this.$style.ready)
+          $overlay.classList.add(this.$style.ready)
+          this.onLoad()
+        })
+      })
+    } else {
+      // アイキャッチがないとき
+      util.wait(10).then(() => {
+        this.onLoad()
+      })
     }
   }
-};
+}
 </script>
 
 <style module>

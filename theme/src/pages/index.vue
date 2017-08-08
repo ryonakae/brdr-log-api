@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import PostItemComponent from '../components/PostItem.vue';
-import {scrollManager} from '../index';
+import PostItemComponent from '../components/PostItem.vue'
+import {scrollManager} from '../index'
 
 export default {
   components: {
@@ -18,120 +18,118 @@ export default {
   },
 
   computed: {
-    siteUrl() {
-      return this.$store.state.siteUrl;
+    siteUrl () {
+      return this.$store.state.siteUrl
     },
 
-    posts() {
-      return this.$store.state.allPostData;
+    posts () {
+      return this.$store.state.allPostData
     },
 
-    hasPosts() {
-      return this.posts.length > 0 ? true : false;
+    hasPosts () {
+      return this.posts.length > 0
     },
 
-    perPage() {
-      return this.$store.state.perPage;
+    perPage () {
+      return this.$store.state.perPage
     },
 
-    loadedPostItem() {
-      return this.$store.state.loadedPostItem;
+    loadedPostItem () {
+      return this.$store.state.loadedPostItem
     },
 
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded;
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
     },
 
-    isPreview() {
-      return this.$store.state.isPreview;
+    isPreview () {
+      return this.$store.state.isPreview
     }
   },
 
   watch: {
-    loadedPostItem() {
-      this.onLoad();
+    loadedPostItem () {
+      this.onLoad()
     }
   },
 
   methods: {
-    setCurrentPost(post) {
+    setCurrentPost (post) {
       if (this.$route.path === '/') {
-        this.$store.dispatch('setCurrentPost', post);
+        this.$store.dispatch('setCurrentPost', post)
       }
     },
 
-    clearCurrentPost() {
+    clearCurrentPost () {
       if (this.$route.path === '/') {
-        this.$store.dispatch('clearCurrentPost');
+        this.$store.dispatch('clearCurrentPost')
       }
     },
 
-    onLoad() {
+    onLoad () {
       // loadedCountが記事数と同じになったらlogoのローディング終了
       if (this.posts.length === this.loadedPostItem) {
-        console.log('all postitem loaded');
-        this.$store.dispatch('logoLoading', {boolean:false, wait:300});
+        console.log('all postitem loaded')
+        this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
       }
     },
 
-    init() {
+    init () {
       // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
       // allPostDataがない時だけgetAllPostsする
       if (!this.hasPosts) {
-        this.$store.dispatch('createIndex', {per_page:this.perPage, offset:0});
-      }
-      else {
-        console.log('allPostData already exsist');
+        this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0})
+      } else {
+        console.log('allPostData already exsist')
       }
     }
   },
 
-  created() {
+  created () {
     // ページタイトルを変更
-    this.$store.dispatch('changeTitle', '');
+    this.$store.dispatch('changeTitle', '')
 
     // currentPostDataを空にする
-    this.clearCurrentPost();
+    this.clearCurrentPost()
 
     // loadedPostItemをリセット
-    this.$store.dispatch('changeLoadedPostItem', 'reset');
+    this.$store.dispatch('changeLoadedPostItem', 'reset')
 
     // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean:true, wait:0});
+    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
   },
 
-  mounted() {
+  mounted () {
     // webfontのロードが終わってない→isWebfontLoadedを監視して、読み込み後init関数実行
     if (!this.isWebfontLoaded) {
-      this.$watch('isWebfontLoaded', ()=>{
-        this.init();
-      });
-    }
-    // webfontのローディングが終わってる(他のページから遷移した時とか)→そのままinit関数実行
-    else {
-      this.init();
+      this.$watch('isWebfontLoaded', () => {
+        this.init()
+      })
+    } else {
+      // webfontのローディングが終わってる(他のページから遷移した時とか)→そのままinit関数実行
+      this.init()
     }
   },
 
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     next((vm) => {
       // プレビュー時、かつ /?p=[id]&preview=true というクエリがある場合は、singleに遷移する
       // 遷移時にp(id)を渡す
-      const query = vm.$route.query;
+      const query = vm.$route.query
 
       if (vm.isPreview && Object.keys(query).length > 0) {
         if (Object.keys(query.p).length > 0 && query.preview) {
-          vm.$router.replace({path: '/post/'+query.p});
+          vm.$router.replace({path: '/post/' + query.p})
         }
       }
-    });
+    })
   },
 
-  beforeRouteLeave(to, from, next) {
-    scrollManager.remove('index.infiniteScroll');
-    next();
+  beforeRouteLeave (to, from, next) {
+    scrollManager.remove('index.infiniteScroll')
+    next()
   }
-};
+}
 </script>
 
 <style module>

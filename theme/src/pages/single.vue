@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import moment from 'moment';
-import imagesLoaded from 'imagesloaded';
-import ShareComponent from '../components/Share.vue';
-import NotFoundComponent from '../components/NotFound.vue';
-import '../library/twitter_widgets';
-import '../library/prettify';
+import moment from 'moment'
+import imagesLoaded from 'imagesloaded'
+import ShareComponent from '../components/Share.vue'
+import NotFoundComponent from '../components/NotFound.vue'
+import '../library/twitter_widgets'
+import '../library/prettify'
 
 export default {
   components: {
@@ -52,200 +52,195 @@ export default {
     NotFoundComponent
   },
 
-  data() {
+  data () {
     return {
       categories: [],
       $article: null,
-      imgLoad: null,
-    };
+      imgLoad: null
+    }
   },
 
   computed: {
-    post() {
-      return this.$store.state.currentPostData;
+    post () {
+      return this.$store.state.currentPostData
     },
 
-    hasPost() {
-      return Object.keys(this.post).length > 0 ? true : false;
+    hasPost () {
+      return Object.keys(this.post).length > 0
     },
 
-    hasContent() {
-      return this.post.content.rendered !== '' ? true : false;
+    hasContent () {
+      return this.post.content.rendered !== ''
     },
 
-    hasCategories() {
-      return this.post.categories.length >= 1 ? true : false;
+    hasCategories () {
+      return this.post.categories.length >= 1
     },
 
-    hasEyecatch() {
-      return this.post.featured_media > 0 ? true : false;
+    hasEyecatch () {
+      return this.post.featured_media > 0
     },
 
-    eyecatch() {
+    eyecatch () {
       if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url;
+        return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url
+      } else {
+        return this.post._embedded['wp:featuredmedia'][0].source_url
       }
-      else {
-        return this.post._embedded['wp:featuredmedia'][0].source_url;
-      }
     },
 
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded;
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
     },
 
-    isPreview() {
-      return this.$store.state.isPreview;
+    isPreview () {
+      return this.$store.state.isPreview
     },
 
-    postTitle() {
-      let title;
+    postTitle () {
+      let title
 
       if (this.post.status === 'draft') {
-        title = 'Draft: ' + this.post.title.rendered;
-      }
-      else {
-        title = this.post.title.rendered;
+        title = 'Draft: ' + this.post.title.rendered
+      } else {
+        title = this.post.title.rendered
       }
 
-      return title;
+      return title
     }
   },
 
   methods: {
-    filterByCategory(categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {categoryId:categoryId, categoryName:categoryName, transition:true});
+    filterByCategory (categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: true})
     },
 
-    onWebfontLoad() {
+    onWebfontLoad () {
       // currentPostDataがある(indexから遷移した時)
       // 通信せずにcurrentPostDataをそのまま使う
       if (this.hasPost) {
-        this.init();
-      }
-      // currentPostDataがない場合(url直接叩いたとき)
-      // →getPost()実行してcurrentPostDataにデータを入れる
-      // エラー返ってきたらnotFoundを表示
-      else {
+        this.init()
+      } else {
+        // currentPostDataがない場合(url直接叩いたとき)
+        // →getPost()実行してcurrentPostDataにデータを入れる
+        // エラー返ってきたらnotFoundを表示
         // 通常時
         if (!this.isPreview) {
           this.$store.dispatch('getPost', this.$route.params.id)
-            .then((result)=>{
-              this.$store.dispatch('setCurrentPost', result);
+            .then((result) => {
+              this.$store.dispatch('setCurrentPost', result)
             })
-            .then(()=>{
-              this.init();
+            .then(() => {
+              this.init()
             })
-            .catch(this.onNotFound);
-        }
-        // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
-        else {
+            .catch(this.onNotFound)
+        } else {
+          // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
           Promise.all([
             this.$store.dispatch('getPost', this.$route.params.id),
             this.$store.dispatch('getPostRevisions', this.$route.params.id)
           ])
-            .then((results)=>{
-              const _result = results[0];
-              _result.content = results[1].content;
-              console.log(_result);
-              this.$store.dispatch('setCurrentPost', _result);
+            .then((results) => {
+              const _result = results[0]
+              _result.content = results[1].content
+              console.log(_result)
+              this.$store.dispatch('setCurrentPost', _result)
             })
-            .then(()=>{
-              this.init();
+            .then(() => {
+              this.init()
             })
-            .catch(this.onNotFound);
+            .catch(this.onNotFound)
         }
       }
     },
 
-    init() {
+    init () {
       // ページタイトルを変更
-      this.$store.dispatch('changeTitle', this.post.title.rendered);
+      this.$store.dispatch('changeTitle', this.post.title.rendered)
 
       // カテゴリがある場合はカテゴリ取得
       if (this.hasCategories) {
         this.$store.dispatch('getAllCategoryName', this.post.categories)
-          .then((result)=>{
-            return this.categories = result;
-          });
+          .then((result) => {
+            this.categories = result
+          })
       }
 
       // 本文の画像の親要素にaddClass
-      const $images = document.getElementsByTagName('img');
+      const $images = document.getElementsByTagName('img')
       if ($images.length > 0) {
         for (let i = 0; i < $images.length; i++) {
-          $images[i].parentNode.classList.add('img');
+          $images[i].parentNode.classList.add('img')
         }
       }
 
       // Twitterの埋め込みツイートがあったら関数実行
-      const $tweet = document.getElementsByClassName('twitter-tweet');
-      if ($tweet.length > 0) twttr.widgets.load(document.body);
+      const $tweet = document.getElementsByClassName('twitter-tweet')
+      if ($tweet.length > 0) window.twttr.widgets.load(document.body)
 
       // コードスニペットがあったらprettify実行
-      const $code = document.getElementsByTagName('pre');
+      const $code = document.getElementsByTagName('pre')
       if ($code.length > 0) {
         for (let i = 0; i < $code.length; i++) {
-          $code[i].classList.add('prettyprint');
+          $code[i].classList.add('prettyprint')
         }
-        prettyPrint();
+        window.prettyPrint()
       }
 
       // iframeをdivで囲う
-      const $iframes = document.getElementsByTagName('iframe');
+      const $iframes = document.getElementsByTagName('iframe')
       if ($iframes.length > 0) {
         for (let i = 0; i < $iframes.length; i++) {
-          $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>';
+          $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
         }
       }
 
       // ページ内の画像全部ロードしたらlogoのローディング終了
-      this.$article = this.$refs.article;
-      this.imgLoad = imagesLoaded(this.$article, {background: true});
+      this.$article = this.$refs.article
+      this.imgLoad = imagesLoaded(this.$article, {background: true})
       // progress
-      this.imgLoad.on('progress', (instance, image)=>{
-        image.img.classList.add('ready');
-      });
+      this.imgLoad.on('progress', (instance, image) => {
+        image.img.classList.add('ready')
+      })
       // done
-      this.imgLoad.on('done', (instance)=>{
-        this.$store.dispatch('logoLoading', {boolean:false, wait:300});
-      });
+      this.imgLoad.on('done', (instance) => {
+        this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+      })
     },
 
     // 404の時
-    onNotFound() {
-      this.$store.dispatch('changeTitle', 'Page Not Found');
-      this.$store.dispatch('logoLoading', {boolean:false, wait:300});
+    onNotFound () {
+      this.$store.dispatch('changeTitle', 'Page Not Found')
+      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
 
-      const $notFound = this.$refs.notFound;
-      $notFound.classList.remove(this.$style.hidden);
+      const $notFound = this.$refs.notFound
+      $notFound.classList.remove(this.$style.hidden)
     }
   },
 
   filters: {
-    moment(date) {
-      return moment(date).format('YYYY.M.D');
+    moment (date) {
+      return moment(date).format('YYYY.M.D')
     }
   },
 
-  created() {
+  created () {
     // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean:true, wait:0});
+    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
   },
 
-  mounted() {
+  mounted () {
     // webfontのロードが終わってない→isWebfontLoadedを監視して、読み込み後onWebfontLoad関数実行
-    if (!this.isWebfontLoaded) {
-      this.$watch('isWebfontLoaded', ()=>{
-        this.onWebfontLoad();
-      });
-    }
     // webfontのローディングが終わってる(他のページから遷移した時とか)→そのままonWebfontLoad関数実行
-    else {
-      this.onWebfontLoad();
+    if (!this.isWebfontLoaded) {
+      this.$watch('isWebfontLoaded', () => {
+        this.onWebfontLoad()
+      })
+    } else {
+      this.onWebfontLoad()
     }
   }
-};
+}
 </script>
 
 <style module>

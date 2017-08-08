@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import {client} from '../store/actions';
-import logo from 'images/logo.svg';
-import logoClipPath from 'images/logo-clipPath.svg';
-import iconClear from 'images/icon-clear.svg';
+import {client} from '../store/actions'
+import logo from 'images/logo.svg'
+import logoClipPath from 'images/logo-clipPath.svg'
+import iconClear from 'images/icon-clear.svg'
 
 export default {
-  data() {
+  data () {
     return {
       icon: {
         clear: iconClear
@@ -53,90 +53,89 @@ export default {
       logo: logo,
       categories: [],
       isCategoriesActive: false
-    };
+    }
   },
 
   computed: {
-    siteTitle() {
-      return this.$store.state.siteTitle;
+    siteTitle () {
+      return this.$store.state.siteTitle
     },
 
-    perPage() {
-      return this.$store.state.perPage;
+    perPage () {
+      return this.$store.state.perPage
     },
 
-    isLogoLoading() {
-      return this.$store.state.isLogoLoading;
+    isLogoLoading () {
+      return this.$store.state.isLogoLoading
     },
 
-    isFiltered() {
-      return this.$store.state.isFiltered;
+    isFiltered () {
+      return this.$store.state.isFiltered
     },
 
-    filteredCategory() {
-      return this.$store.state.filteredCategory;
+    filteredCategory () {
+      return this.$store.state.filteredCategory
     }
   },
 
   methods: {
-    filterByCategory(categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {categoryId:categoryId, categoryName:categoryName, transition:true});
+    filterByCategory (categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: true})
 
       // カテゴリ一覧を閉じる
-      this.isCategoriesActive = false;
+      this.isCategoriesActive = false
     },
 
-    clearFilter() {
-      this.$store.dispatch('filterByCategory', {categoryId:'reset', transition:true});
+    clearFilter () {
+      this.$store.dispatch('filterByCategory', {categoryId: 'reset', transition: true})
 
       // カテゴリ一覧を閉じる
-      this.isCategoriesActive = false;
+      this.isCategoriesActive = false
     },
 
-    getAllCategories() {
-      return new Promise((resolve, reject)=>{
+    getAllCategories () {
+      return new Promise((resolve, reject) => {
         client.get('/categories')
-          .then((res)=>{
-            console.log(res);
-            resolve(res.data);
+          .then((res) => {
+            console.log(res)
+            resolve(res.data)
           })
-          .catch((err)=>{
-            console.log(err);
-            reject(err);
-          });
-      });
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
     },
 
-    toggleCategories() {
+    toggleCategories () {
       if (this.isCategoriesActive) {
-        this.isCategoriesActive = false;
-      }
-      else {
-        this.isCategoriesActive = true;
+        this.isCategoriesActive = false
+      } else {
+        this.isCategoriesActive = true
       }
     },
 
-    onEnter() {
-      console.log('onEnter');
-      this.$store.dispatch('logoLoading', {boolean:true, wait:0});
+    onEnter () {
+      console.log('onEnter')
+      this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
     },
 
-    onLeave() {
-      console.log('onLeave');
-      this.$store.dispatch('logoLoading', {boolean:false, wait:0});
+    onLeave () {
+      console.log('onLeave')
+      this.$store.dispatch('logoLoading', {boolean: false, wait: 0})
     }
   },
 
-  mounted() {
+  mounted () {
     this.getAllCategories()
-      .then((result)=>{
-        return new Promise((resolve, reject)=>{
-          this.categories = result;
-          resolve();
-        });
-      });
+      .then((result) => {
+        return new Promise((resolve, reject) => {
+          this.categories = result
+          resolve()
+        })
+      })
   }
-};
+}
 </script>
 
 <style module>

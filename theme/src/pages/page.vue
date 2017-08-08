@@ -24,55 +24,55 @@
 </template>
 
 <script>
-import NotFoundComponent from '../components/NotFound.vue';
+import NotFoundComponent from '../components/NotFound.vue'
 
 export default {
   components: {
     NotFoundComponent
   },
 
-  data() {
+  data () {
     return {
       page: {}
-    };
+    }
   },
 
   computed: {
-    hasPage() {
-      return Object.keys(this.page).length > 0 ? true : false;
+    hasPage () {
+      return Object.keys(this.page).length > 0
     },
 
-    hasContent() {
-      return this.page.content.rendered !== '' ? true : false;
+    hasContent () {
+      return this.page.content.rendered !== ''
     },
 
-    hasEyecatch() {
-      return this.page.featured_media > 0 ? true : false;
+    hasEyecatch () {
+      return this.page.featured_media > 0
     }
   },
 
   methods: {
-    onLoad(result) {
-      this.$store.dispatch('changeTitle', result.title.rendered.toUpperCase());
-      this.page = result;
-      this.$store.dispatch('logoLoading', {boolean:false, wait:300});
+    onLoad (result) {
+      this.$store.dispatch('changeTitle', result.title.rendered.toUpperCase())
+      this.page = result
+      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
     },
 
     // 404
-    onNotFound() {
-      this.$store.dispatch('changeTitle', 'Page Not Found');
-      const $notFound = this.$refs.notFound;
-      $notFound.classList.remove(this.$style.hidden);
-      this.$store.dispatch('logoLoading', {boolean:false, wait:300});
+    onNotFound () {
+      this.$store.dispatch('changeTitle', 'Page Not Found')
+      const $notFound = this.$refs.notFound
+      $notFound.classList.remove(this.$style.hidden)
+      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
     }
   },
 
-  mounted() {
+  mounted () {
     this.$store.dispatch('getPage', this.$route.params.slug)
       .then(this.onLoad)
-      .catch(this.onNotFound);
+      .catch(this.onNotFound)
   }
-};
+}
 </script>
 
 <style module>

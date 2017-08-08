@@ -59,10 +59,10 @@ const common = {
 
       // eslint
       {
+        enforce: 'pre',
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
-        exclude: /(node_modules|library)/,
-        enforce: 'pre'
+        exclude: /(node_modules|library)/
       },
 
       // js

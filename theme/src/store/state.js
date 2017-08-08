@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 export default {
   pageTitle: '',
@@ -14,8 +14,8 @@ export default {
   isLogoLoading: false,
   isFiltered: false,
   filteredCategory: '',
-  isPreview: wpApiSettings.is_preview,
-  nonce: wpApiSettings.nonce,
-  isUserLoggedIn: wpApiSettings.is_logged_in,
+  isPreview: window.wpApiSettings.is_preview,
+  nonce: window.wpApiSettings.nonce,
+  isUserLoggedIn: window.wpApiSettings.is_logged_in,
   client: null // axios client
-};
+}
