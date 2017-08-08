@@ -34,6 +34,7 @@
 
 .backIndex {
   @apply --backIndex;
+
   left: 50%;
   transform: translateX(-50%);
 }

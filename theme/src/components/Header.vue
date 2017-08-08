@@ -144,12 +144,13 @@ export default {
 @import "media";
 
 @keyframes loading {
-  0%   { transform: translateX(20%); }
+  0% { transform: translateX(20%); }
   100% { transform: translateX(-100%); }
 }
 
 .header {
   @apply --clearfix;
+
   position: fixed;
   z-index: 100;
   top: 40px;
@@ -195,24 +196,12 @@ export default {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: normal;
-    background: linear-gradient(105deg,
-      #6da3f2 0%,
-      #6da3f2 5%,
-      #af9bde 13%,
-      #fa7895 26%,
-      #ffa284 39%,
-      #efb46e 52%,
-      #efd69b 65%,
-      #aed3b0 78%,
-      #8ec9ce 91%,
-      #6da3f2 95%,
-      #6da3f2 100%
-    );
+    background: linear-gradient(105deg, #6da3f2 0%, #6da3f2 5%, #af9bde 13%, #fa7895 26%, #ffa284 39%, #efb46e 52%, #efd69b 65%, #aed3b0 78%, #8ec9ce 91%, #6da3f2 95%, #6da3f2 100%);
   }
 
   & .default {
     background-color: var(--color_key);
-    transition: all var(--duration_quick) cubic-bezier(0.25, 0.46, 0.45, 0.94); /*easeOutQuad*/
+    transition: all var(--duration_quick) cubic-bezier(0.25, 0.46, 0.45, 0.94); /* easeOutQuad */
     opacity: 0;
   }
 
@@ -228,7 +217,7 @@ export default {
 }
 
 /* Firefox Hack */
-@-moz-document url-prefix(){
+@-moz-document url-prefix() {
   .logo {
     & .inner {
       display: none;
@@ -255,6 +244,7 @@ export default {
   transform: translateX(-50%);
   font-size: var(--fontSize_small);
   pointer-events: auto;
+
   @apply --link;
 
   & svg {
@@ -274,7 +264,7 @@ export default {
   }
 }
 
-@-moz-document url-prefix(){
+@-moz-document url-prefix() {
   .clear {
     @nest :global(body.pc) &:hover {
       & svg {
@@ -288,6 +278,7 @@ export default {
   text-align: left;
   float: right;
   margin-top: 6px;
+
   @apply --clearfix;
 
   & span {

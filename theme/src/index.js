@@ -31,7 +31,6 @@ const vm = new Vue({
   store,
   render: (h) => h(App)
 })
-console.log(vm)
 
 // Hot Module Replacementに対応させる
 if (module.hot) module.hot.accept()

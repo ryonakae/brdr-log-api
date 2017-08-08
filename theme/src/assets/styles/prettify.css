@@ -12,7 +12,7 @@
 ol.linenums {
   margin-top: 0;
   margin-bottom: 0;
-  color: #cccccc;
+  color: #ccc;
 }
 
 li.L0,
@@ -31,7 +31,6 @@ li.L9 {
 }
 
 @media screen {
-
   /* string content */
 
   .str {

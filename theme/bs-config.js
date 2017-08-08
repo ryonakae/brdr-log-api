@@ -1,9 +1,9 @@
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpack = require('webpack')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackHotMiddleware = require('webpack-hot-middleware')
 
-const webpackConfig = require('./webpack.config');
-const bundler = webpack(webpackConfig);
+const webpackConfig = require('./webpack.config')
+const bundler = webpack(webpackConfig)
 
 
 module.exports = {
@@ -26,4 +26,4 @@ module.exports = {
       webpackHotMiddleware(bundler)
     ]
   }
-};
+}

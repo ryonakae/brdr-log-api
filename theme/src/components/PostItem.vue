@@ -137,14 +137,14 @@ export default {
   position: relative;
   cursor: pointer;
 
-   & .text {
-     max-width: var(--width_content);
-     margin: 0 auto;
+  & .text {
+    max-width: var(--width_content);
+    margin: 0 auto;
 
-     @media (--mq_sp) {
-       margin: 0 var(--margin_page_sp);
-     }
-   }
+    @media (--mq_sp) {
+      margin: 0 var(--margin_page_sp);
+    }
+  }
 
   & .title {
     font-size: var(--fontSize_h1);
@@ -157,6 +157,7 @@ export default {
 
   & .info {
     @apply --info;
+
     margin-top: 25px;
 
     @media (--mq_sp) {

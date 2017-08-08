@@ -60,6 +60,7 @@ export default {
   display: inline-block;
   vertical-align: middle;
   margin-left: 16px;
+
   @apply --link;
 
   &:first-child {

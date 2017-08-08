@@ -1,8 +1,10 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const path = require('path');
-const cssnext = require('postcss-cssnext');
-const postcssImport = require('postcss-import');
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const path = require('path')
+const cssnext = require('postcss-cssnext')
+const postcssImport = require('postcss-import')
+const stylelint = require('stylelint')
+const styleLintPlugin = require('stylelint-webpack-plugin')
 
 
 // file path
@@ -12,7 +14,7 @@ const filePath = {
   dist: path.resolve(__dirname, 'dist'),
   public: path.resolve(__dirname, 'public'),
   assets: path.resolve(__dirname, path.join('src', 'assets'))
-};
+}
 
 
 // common config
@@ -78,6 +80,7 @@ const common = {
         loader: 'vue-loader',
         options: {
           postcss: [
+            stylelint(),
             postcssImport({
               path: [path.join(filePath.assets, 'styles')]
             }),
@@ -90,7 +93,7 @@ const common = {
                 'Android >= 5.0'
               ],
               cascade: false
-            })
+            }),
           ]
         }
       }
@@ -103,8 +106,15 @@ const common = {
       images: path.join(filePath.assets, 'images'),
       fonts:  path.join(filePath.assets, 'fonts')
     }
-  }
-};
+  },
+
+  plugins: [
+    new styleLintPlugin({
+      emitErrors: false,
+      files: ['**/*.css', '**/*.vue']
+    })
+  ]
+}
 
 
 // development config
@@ -130,7 +140,7 @@ const dev = {
 
   cache: true,
   devtool: 'inline-source-map',
-};
+}
 
 
 // production config
@@ -150,12 +160,12 @@ const prod = {
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ]
-};
+}
 
 
 // detect config
-const config = process.env.NODE_ENV === 'production' ? prod : dev;
+const config = process.env.NODE_ENV === 'production' ? prod : dev
 
 
 // exports
-module.exports = merge(common, config);
+module.exports = merge(common, config)

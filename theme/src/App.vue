@@ -60,6 +60,6 @@ export default {
 @import "properties";
 @import "propertySets";
 @import "media";
-@import "reset";
+@import 'reset-css/reset';
 @import "base";
 </style>

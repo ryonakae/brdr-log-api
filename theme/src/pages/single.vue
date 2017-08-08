@@ -248,7 +248,7 @@ export default {
 @import "propertySets";
 
 .header {
-  @apply --header;
+  @apply --contentHeader;
 }
 
 .eyecatch {
