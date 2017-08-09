@@ -1,4 +1,4 @@
-/* web fonts, webpackのaliasで解決するために、`~fonts/...`というパスにする */
+/* web fonts */
 @font-face {
   font-family: "Neue Frutiger";
   src: url("~fonts/NeueFrutiger-Book.woff2") format("woff2"), url("~fonts/NeueFrutiger-Book.woff") format("woff");

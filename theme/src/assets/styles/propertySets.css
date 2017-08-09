@@ -39,7 +39,11 @@
 
     & .categories {
       display: inline-block;
-      margin-left: 14px;
+      margin-left: 15px;
+
+      @media (--mq_sp) {
+        margin-left: 10px;
+      }
     }
 
     & .category {
@@ -58,7 +62,7 @@
   }
 
   /*  content header  */
-  --contentHeader: {
+  --header: {
     max-width: var(--width_content);
     margin: var(--margin_top) auto 70px;
 

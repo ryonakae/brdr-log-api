@@ -78,6 +78,7 @@ export default {
 <style module>
 @import "properties";
 @import "propertySets";
+@import "media";
 
 .header {
   @apply --header;

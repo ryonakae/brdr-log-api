@@ -157,10 +157,12 @@ export default {
   width: 100%;
   padding: 0 var(--margin_page);
   pointer-events: none;
+  font-size: var(--fontSize_small);
 
   @media (--mq_sp) {
     top: var(--margin_page_sp);
     padding: 0 var(--margin_page_sp);
+    font-size: var(--fontSize_small_sp);
   }
 }
 
@@ -242,7 +244,6 @@ export default {
   top: 6px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: var(--fontSize_small);
   pointer-events: auto;
 
   @apply --link;
@@ -289,14 +290,13 @@ export default {
     float: left;
     margin-left: 30px;
     pointer-events: auto;
-    font-size: var(--fontSize_small);
 
     &:first-child {
       margin-left: 0;
     }
 
     @media (--mq_sp) {
-      margin-left: 20px;
+      margin-left: 15px;
     }
   }
 
