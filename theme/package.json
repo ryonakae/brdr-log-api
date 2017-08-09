@@ -1,15 +1,14 @@
 {
   "scripts": {
-    "clean": "rm -rfv dist",
-    "copy": "rsync -ahvr public/ dist/ --exclude .DS_Store",
-    "server": "browser-sync start -c 'bs-config.js'",
-    "webpack:watch": "webpack -w",
-    "webpack:build": "NODE_ENV=production webpack",
-    "start": "npm run clean && npm run copy && npm run server & npm run webpack:watch",
-    "build": "npm run clean && npm run copy && npm run webpack:build",
+    "clean":       "rimraf dist",
+    "copy":        "cpx public/**/* dist",
+    "watch":       "cpx public/**/* dist -vw & webpack -w",
+    "server":      "browser-sync start -c 'bs-config.js'",
+    "start":       "npm run clean && npm run copy && npm run server & npm run watch",
+    "build":       "npm run clean && npm run copy && NODE_ENV=production webpack",
     "lint:script": "eslint src/**/*.{js,vue} --ignore-pattern src/**/library",
-    "lint:style": "stylelint src/**/*.css & stylelint src/**/*.vue",
-    "lint": "npm run lint:script && npm run lint:style"
+    "lint:style":  "stylelint src/**/*.css & stylelint src/**/*.vue",
+    "lint":        "npm run lint:script && npm run lint:style"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -17,6 +16,7 @@
     "babel-loader": "^7.1.1",
     "babel-preset-env": "^1.6.0",
     "browser-sync": "^2.18.13",
+    "cpx": "^1.5.0",
     "css-loader": "^0.28.4",
     "eslint": "^4.4.1",
     "eslint-config-standard": "^10.2.1",
@@ -29,6 +29,7 @@
     "path": "^0.12.7",
     "postcss-cssnext": "^3.0.2",
     "postcss-import": "^10.0.0",
+    "rimraf": "^2.6.1",
     "stylelint": "^8.0.0",
     "stylelint-config-css-modules": "^1.1.0",
     "stylelint-config-standard": "^17.0.0",
