@@ -3,8 +3,6 @@ const merge = require('webpack-merge')
 const path = require('path')
 const cssnext = require('postcss-cssnext')
 const postcssImport = require('postcss-import')
-const stylelint = require('stylelint')
-const styleLintPlugin = require('stylelint-webpack-plugin')
 
 
 // file path
@@ -59,14 +57,6 @@ const common = {
         }
       },
 
-      // eslint
-      {
-        enforce: 'pre',
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        exclude: /(node_modules|library)/
-      },
-
       // js
       {
         test: /\.js$/,
@@ -80,7 +70,6 @@ const common = {
         loader: 'vue-loader',
         options: {
           postcss: [
-            stylelint(),
             postcssImport({
               path: [path.join(filePath.assets, 'styles')]
             }),
@@ -106,14 +95,7 @@ const common = {
       images: path.join(filePath.assets, 'images'),
       fonts:  path.join(filePath.assets, 'fonts')
     }
-  },
-
-  plugins: [
-    new styleLintPlugin({
-      emitErrors: false,
-      files: ['**/*.css', '**/*.vue']
-    })
-  ]
+  }
 }
 
 

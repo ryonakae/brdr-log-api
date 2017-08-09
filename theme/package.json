@@ -1,11 +1,15 @@
 {
   "scripts": {
-    "clean": "rm -rfv ./dist",
-    "copy": "rsync -ahvr ./public/ ./dist/ --exclude .DS_Store",
-    "server": "browser-sync start -c './bs-config.js'",
-    "watch": "webpack -w",
-    "start": "npm run clean && npm run copy && npm run watch & npm run server",
-    "build": "npm run clean && npm run copy && NODE_ENV=production webpack"
+    "clean": "rm -rfv dist",
+    "copy": "rsync -ahvr public/ dist/ --exclude .DS_Store",
+    "server": "browser-sync start -c 'bs-config.js'",
+    "webpack:watch": "webpack -w",
+    "webpack:build": "NODE_ENV=production webpack",
+    "start": "npm run clean && npm run copy && npm run server & npm run webpack:watch",
+    "build": "npm run clean && npm run copy && npm run webpack:build",
+    "lint:script": "eslint src/**/*.{js,vue} --ignore-pattern src/**/library",
+    "lint:style": "stylelint src/**/*.css & stylelint src/**/*.vue",
+    "lint": "npm run lint:script && npm run lint:style"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -16,7 +20,6 @@
     "css-loader": "^0.28.4",
     "eslint": "^4.4.1",
     "eslint-config-standard": "^10.2.1",
-    "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
@@ -30,7 +33,6 @@
     "stylelint-config-css-modules": "^1.1.0",
     "stylelint-config-standard": "^17.0.0",
     "stylelint-processor-html": "^1.0.0",
-    "stylelint-webpack-plugin": "^0.9.0",
     "svg-sprite-loader": "^3.1.3",
     "url-loader": "^0.5.9",
     "vue-loader": "^13.0.4",
