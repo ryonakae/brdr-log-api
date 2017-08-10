@@ -3,6 +3,7 @@ const merge = require('webpack-merge')
 const path = require('path')
 const cssnext = require('postcss-cssnext')
 const postcssImport = require('postcss-import')
+const cssnano = require('cssnano')
 
 
 // file path
@@ -13,6 +14,33 @@ const filePath = {
   public: path.resolve(__dirname, 'public'),
   assets: path.resolve(__dirname, path.join('src', 'assets'))
 }
+
+
+// postcss option
+const postcssOptions = {
+  common: [
+    postcssImport({
+      path: [path.join(filePath.assets, 'styles')]
+    }),
+    cssnext({
+      // Autoprefixer
+      browsers: [
+        'last 2 versions',
+        'ie > 11',
+        'iOS >= 10',
+        'Android >= 5.0'
+      ],
+      cascade: false
+    }),
+  ],
+  prod: [
+    cssnano({
+      preset: 'default',
+      autoprefixer: false
+    })
+  ]
+}
+const postcssOption = process.env.NODE_ENV !== 'production' ? postcssOptions.common : postcssOptions.common.concat(postcssOptions.prod)
 
 
 // common config
@@ -33,7 +61,7 @@ const common = {
         test: /\.(jpg|png|gif)$/,
         loader: 'url-loader',
         options: {
-          limit: 200000,
+          limit: 20000,
           name: '[name].[ext]',
           outputPath: 'images/',
           publicPath: filePath.theme
@@ -50,7 +78,7 @@ const common = {
         test: /\.(otf|eot|ttf|woff|woff2)$/,
         loader: 'url-loader',
         options: {
-          limit: 200000,
+          limit: 20000,
           name: '[name].[ext]',
           outputPath: 'fonts/',
           publicPath: filePath.theme
@@ -69,21 +97,7 @@ const common = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          postcss: [
-            postcssImport({
-              path: [path.join(filePath.assets, 'styles')]
-            }),
-            cssnext({
-              // Autoprefixer
-              browsers: [
-                'last 2 versions',
-                'ie > 11',
-                'iOS >= 10',
-                'Android >= 5.0'
-              ],
-              cascade: false
-            }),
-          ]
+          postcss: postcssOption
         }
       }
     ]
@@ -135,7 +149,7 @@ const prod = {
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        drop_console: true
+        // drop_console: true
       },
       comments: false
     }),
