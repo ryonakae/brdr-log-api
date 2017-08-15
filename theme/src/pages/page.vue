@@ -12,7 +12,9 @@
 
     <footer :class="$style.footer">
       <router-link :to="'/'" tag="div" :class="$style.backIndex">
-        <span :class="$style.arrow">&lt;-</span>
+        <svg :viewBox="icon.back.viewBox">
+          <use :xlink:href="'#'+icon.back.id"></use>
+        </svg>
         <span>Index</span>
       </router-link>
     </footer>
@@ -25,6 +27,7 @@
 
 <script>
 import NotFoundComponent from '../components/NotFound.vue'
+import iconBack from 'images/icon-back.svg'
 
 export default {
   components: {
@@ -33,7 +36,10 @@ export default {
 
   data () {
     return {
-      page: {}
+      page: {},
+      icon: {
+        back: iconBack
+      }
     }
   },
 

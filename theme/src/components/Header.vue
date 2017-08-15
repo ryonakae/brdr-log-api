@@ -254,13 +254,13 @@ export default {
     width: 10px;
     height: 10px;
     vertical-align: text-top;
-    margin-right: 5px;
+    margin-right: 3px;
     transition: all var(--duration_quick) var(--easing);
   }
 
   @nest :global(body.pc) &:hover {
     & svg {
-      transform: rotate(90deg);
+      transform: translateY(2px);
     }
   }
 }

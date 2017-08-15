@@ -27,7 +27,9 @@
       </small>
 
       <router-link :to="'/'" tag="div" :class="$style.backIndex">
-        <span :class="$style.arrow">&lt;-</span>
+        <svg :viewBox="icon.back.viewBox">
+          <use :xlink:href="'#'+icon.back.id"></use>
+        </svg>
         <span>Index</span>
       </router-link>
     </footer>
@@ -43,6 +45,7 @@ import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
 import ShareComponent from '../components/Share.vue'
 import NotFoundComponent from '../components/NotFound.vue'
+import iconBack from 'images/icon-back.svg'
 import '../library/twitter_widgets'
 import '../library/prettify'
 
@@ -55,8 +58,10 @@ export default {
   data () {
     return {
       categories: [],
-      $article: null,
-      imgLoad: null
+      imgLoad: null,
+      icon: {
+        back: iconBack
+      }
     }
   },
 
@@ -196,8 +201,7 @@ export default {
       }
 
       // ページ内の画像全部ロードしたらlogoのローディング終了
-      this.$article = this.$refs.article
-      this.imgLoad = imagesLoaded(this.$article, {background: true})
+      this.imgLoad = imagesLoaded(this.$refs.article, {background: true})
       // progress
       this.imgLoad.on('progress', (instance, image) => {
         image.img.classList.add('ready')
