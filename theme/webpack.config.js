@@ -4,43 +4,7 @@ const path = require('path')
 const cssnext = require('postcss-cssnext')
 const postcssImport = require('postcss-import')
 const cssnano = require('cssnano')
-
-
-// file path
-const filePath = {
-  theme: '/wp-content/themes/l/',
-  src: path.resolve(__dirname, 'src'),
-  dist: path.resolve(__dirname, 'dist'),
-  public: path.resolve(__dirname, 'public'),
-  assets: path.resolve(__dirname, path.join('src', 'assets'))
-}
-
-
-// postcss option
-const postcssOptions = {
-  common: [
-    postcssImport({
-      path: [path.join(filePath.assets, 'styles')]
-    }),
-    cssnext({
-      // Autoprefixer
-      browsers: [
-        'last 2 versions',
-        'ie > 11',
-        'iOS >= 10',
-        'Android >= 5.0'
-      ],
-      cascade: false
-    }),
-  ],
-  prod: [
-    cssnano({
-      preset: 'default',
-      autoprefixer: false
-    })
-  ]
-}
-const postcssOption = process.env.NODE_ENV !== 'production' ? postcssOptions.common : postcssOptions.common.concat(postcssOptions.prod)
+const filePath = require('./file-path')
 
 
 // common config
@@ -58,7 +22,7 @@ const common = {
     rules: [
       // images
       {
-        test: /\.(jpg|png|gif)$/,
+        test: /\.(jpg|png|bmp|gif)$/,
         loader: 'url-loader',
         options: {
           limit: 20000,
@@ -92,13 +56,10 @@ const common = {
         exclude: /node_modules/
       },
 
-      // vuejs
+      // vue
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          postcss: postcssOption
-        }
+        loader: 'vue-loader'
       }
     ]
   },
@@ -149,7 +110,7 @@ const prod = {
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        // drop_console: true
+        drop_console: true
       },
       comments: false
     }),

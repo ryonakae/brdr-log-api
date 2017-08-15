@@ -139,9 +139,9 @@ export default {
 </script>
 
 <style module>
-@import "properties";
-@import "propertySets";
-@import "media";
+@import "properties.css";
+@import "propertySets.css";
+@import "media.css";
 
 @keyframes loading {
   0% { transform: translateX(20%); }

@@ -133,8 +133,8 @@ export default {
 </script>
 
 <style module>
-@import "properties";
-@import "media";
+@import "properties.css";
+@import "media.css";
 
 .page {
   max-width: var(--width_index);

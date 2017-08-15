@@ -49,8 +49,8 @@ export default {
 </script>
 
 <style module>
-@import "properties";
-@import "propertySets";
+@import "properties.css";
+@import "propertySets.css";
 
 .share {
   line-height: 1;

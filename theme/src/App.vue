@@ -57,9 +57,9 @@ export default {
 </script>
 
 <style>
-@import "properties";
-@import "propertySets";
-@import "media";
-@import 'reset-css/reset';
-@import "base";
+@import "reset-css";
+@import "properties.css";
+@import "propertySets.css";
+@import "media.css";
+@import "base.css";
 </style>

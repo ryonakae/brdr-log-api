@@ -12,18 +12,18 @@
 
 @font-face {
   font-family: "Noto Sans Japanese";
-  src: url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
+  src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
 }
 
 @font-face {
   font-family: "Noto Sans Japanese";
-  src: url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
+  src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
   font-weight: bold;
 }
 
 @font-face {
   font-family: "Source Code Pro";
-  src: url("~fonts/SourceCodePro-Regular.woff2") format("woff2"), url("~fonts/SourceCodePro-Regular.woff") format("woff");
+  src: local("Source Code Pro"), url("~fonts/SourceCodePro-Regular.woff2") format("woff2"), url("~fonts/SourceCodePro-Regular.woff") format("woff");
 }
 
 /* reset box-sizing */

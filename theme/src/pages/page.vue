@@ -76,9 +76,9 @@ export default {
 </script>
 
 <style module>
-@import "properties";
-@import "propertySets";
-@import "media";
+@import "properties.css";
+@import "propertySets.css";
+@import "media.css";
 
 .header {
   @apply --header;
