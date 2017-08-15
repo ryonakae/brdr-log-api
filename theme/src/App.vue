@@ -43,10 +43,8 @@ export default {
         families: ['Neue Frutiger', 'Noto Sans Japanese', 'Source Code Pro']
       },
       active: () => {
-        util.wait(50).then(() => {
-          console.log('all webfont loaded')
-          this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
-        })
+        console.log('all webfont loaded')
+        this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
       }
     })
 

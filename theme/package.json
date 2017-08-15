@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist/*",
     "copy": "cpx public/**/* dist",
     "watch": "cpx public/**/* dist -vw & webpack -w",
     "server": "browser-sync start -c 'bs-config.js'",

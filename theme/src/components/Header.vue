@@ -260,7 +260,7 @@ export default {
 
   @nest :global(body.pc) &:hover {
     & svg {
-      transform: translateY(2px);
+      transform: translateY(1px);
     }
   }
 }

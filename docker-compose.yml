@@ -1,7 +1,7 @@
 version: '2'
 services:
   nginx:
-    image: nginx:1.13.0-alpine
+    image: nginx:1.13.3-alpine
     container_name: brdr-log-nginx
     ports:
       - 8082:80
@@ -43,7 +43,7 @@ services:
       - back-brdr-log
 
   mysql:
-    image: mysql:5.7.18
+    image: mysql:5.7.19
     container_name: brdr-log-mysql
     ports:
       - 13308:3306
@@ -56,7 +56,7 @@ services:
       - back-brdr-log
 
   data:
-    image: busybox:1.26.2-musl
+    image: busybox:1.27.1-musl
     container_name: brdr-log-data
     volumes:
       - brdr-log-data-db:/var/lib/mysql

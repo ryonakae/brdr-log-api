@@ -23,21 +23,21 @@ export default {
         document.title = title + ' - ' + state.siteTitle
       }
 
-      util.wait(10).then(resolve)
+      resolve()
     })
   },
 
   changePerPage ({commit}, count) {
     return new Promise((resolve, reject) => {
       commit('SET_PER_PAGE', count)
-      util.wait(10).then(resolve)
+      resolve()
     })
   },
 
   setAllPost ({commit}, data) {
     return new Promise((resolve, reject) => {
       commit('SET_ALL_POST_DATA', data)
-      util.wait(10).then(resolve)
+      resolve()
     })
   },
 
@@ -45,14 +45,14 @@ export default {
   setCurrentPost ({commit}, data) {
     return new Promise((resolve, reject) => {
       commit('SET_CURRENT_POST_DATA', data)
-      util.wait(10).then(resolve)
+      resolve()
     })
   },
 
   clearCurrentPost ({commit}) {
     return new Promise((resolve, reject) => {
       commit('SET_CURRENT_POST_DATA', {})
-      util.wait(10).then(resolve)
+      resolve()
     })
   },
 
@@ -64,7 +64,7 @@ export default {
         commit('RESET_LOADED_POST_ITEM')
       }
 
-      util.wait(10).then(resolve)
+      resolve()
     })
   },
 
@@ -242,7 +242,7 @@ export default {
             // ループの最後
             if (categories.length === index + 1) {
               console.log(_categories)
-              util.wait(10).then(resolve(_categories))
+              resolve(_categories)
             }
           })
           .catch((err) => {

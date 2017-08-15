@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import {util} from '../'
 import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
 
@@ -112,17 +111,13 @@ export default {
       const $overlay = this.$refs.overlay
 
       imagesLoaded($post, {background: true}, () => {
-        util.wait(10).then(() => {
-          $image.classList.add(this.$style.ready)
-          $overlay.classList.add(this.$style.ready)
-          this.onLoad()
-        })
+        $image.classList.add(this.$style.ready)
+        $overlay.classList.add(this.$style.ready)
+        this.onLoad()
       })
     } else {
       // アイキャッチがないとき
-      util.wait(10).then(() => {
-        this.onLoad()
-      })
+      this.onLoad()
     }
   }
 }
