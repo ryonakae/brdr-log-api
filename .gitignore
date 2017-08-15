@@ -8,7 +8,7 @@ npm-debug.log*
 backup
 
 node_modules
-dist
+theme/dist/*
 _sprite.*
 
 !.gitkeep
