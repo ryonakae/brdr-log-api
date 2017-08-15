@@ -1,0 +1,11 @@
+{
+  "plugins": ["vue"],
+  "extends": "standard",
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "no-unused-vars": "warn",
+    "prefer-promise-reject-errors": "warn"
+  }
+}

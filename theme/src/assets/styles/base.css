@@ -1,0 +1,98 @@
+/* web fonts */
+@font-face {
+  font-family: "Neue Frutiger";
+  src: url("~fonts/NeueFrutiger-Book.woff2") format("woff2"), url("~fonts/NeueFrutiger-Book.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Neue Frutiger";
+  src: url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"), url("~fonts/NeueFrutiger-Bold.woff") format("woff");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Noto Sans Japanese";
+  src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Noto Sans Japanese";
+  src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: local("Source Code Pro"), url("~fonts/SourceCodePro-Regular.woff2") format("woff2"), url("~fonts/SourceCodePro-Regular.woff") format("woff");
+}
+
+/* reset box-sizing */
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* common style */
+html {
+  /* font-size: 62.5%; */
+  font-size: 10px;
+}
+
+body {
+  background-color: var(--bgColor_default);
+  font-family: var(--fontFamily_default);
+  font-size: var(--fontSize_default);
+  line-height: var(--lineHeight_default);
+  letter-spacing: var(--letterSpacing_default);
+  font-kerning: normal;
+  font-feature-settings: "palt" on;
+  color: var(--textColor_default);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: unset;
+
+  & ::-moz-selection {
+    background-color: color(var(--bgColor_selection) alpha(90%));
+    color: var(--bgColor_default);
+  }
+
+  & ::selection {
+    background-color: color(var(--bgColor_selection) alpha(90%));
+    color: var(--bgColor_default);
+  }
+
+  @media (--mq_retina) {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @media (--mq_sp) {
+    font-size: var(--fontSize_default_sp);
+  }
+}
+
+a {
+  @apply --link;
+}
+
+.link {
+  @apply --link;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  line-height: var(--lineHeight_title);
+  letter-spacing: var(--letterSpacing_title);
+}
