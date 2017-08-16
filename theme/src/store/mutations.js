@@ -30,10 +30,6 @@ export default {
     state.loadedPostItem = 0
   },
 
-  CHANGE_IS_WEBFONT_LOADED (state, boolean) {
-    state.isWebfontLoaded = boolean
-  },
-
   CHANGE_IS_LOGO_LOADING (state, boolean) {
     state.isLogoLoading = boolean
   },

@@ -2,17 +2,19 @@
   <div id="app">
     <header-component></header-component>
     <router-view></router-view>
+    <footer-component></footer-component>
   </div>
 </template>
 
 <script>
 import HeaderComponent from './components/Header.vue'
+import FooterComponent from './components/Footer.vue'
 import {util} from './'
-const webFont = require('webfontloader')
 
 export default {
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   },
 
   computed: {
@@ -35,18 +37,6 @@ export default {
 
     // logoのローディング開始
     this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
-
-    // webfontの読み込み検知
-    webFont.load({
-      classes: false,
-      custom: {
-        families: ['Neue Frutiger', 'Noto Sans Japanese', 'Source Code Pro']
-      },
-      active: () => {
-        console.log('all webfont loaded')
-        this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
-      }
-    })
 
     // axiosのクライアントをセットアップ
     this.$store.dispatch('initClient')

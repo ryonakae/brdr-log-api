@@ -79,7 +79,7 @@ export default {
   },
 
   methods: {
-    onLoad () {
+    init () {
       // PostItemがロードされたらloadedPostItemを1up
       this.$store.dispatch('changeLoadedPostItem', 'increment')
     },
@@ -113,11 +113,11 @@ export default {
       imagesLoaded($post, {background: true}, () => {
         $image.classList.add(this.$style.ready)
         $overlay.classList.add(this.$style.ready)
-        this.onLoad()
+        this.init()
       })
     } else {
       // アイキャッチがないとき
-      this.onLoad()
+      this.init()
     }
   }
 }

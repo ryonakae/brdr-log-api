@@ -9,15 +9,6 @@
     </div>
 
     <div v-if="hasContent" :class="$style.content" v-html="page.content.rendered"></div>
-
-    <footer :class="$style.footer">
-      <router-link :to="'/'" tag="div" :class="$style.backIndex">
-        <svg :viewBox="icon.back.viewBox">
-          <use :xlink:href="'#'+icon.back.id"></use>
-        </svg>
-        <span>Index</span>
-      </router-link>
-    </footer>
   </article>
 
   <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
@@ -27,7 +18,6 @@
 
 <script>
 import NotFoundComponent from '../components/NotFound.vue'
-import iconBack from 'images/icon-back.svg'
 
 export default {
   components: {
@@ -36,10 +26,7 @@ export default {
 
   data () {
     return {
-      page: {},
-      icon: {
-        back: iconBack
-      }
+      page: {}
     }
   },
 
@@ -58,7 +45,8 @@ export default {
   },
 
   methods: {
-    onLoad (result) {
+    init (result) {
+      this.$store.dispatch('setCurrentPost', result)
       this.$store.dispatch('changeTitle', result.title.rendered.toUpperCase())
       this.page = result
       this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
@@ -75,7 +63,7 @@ export default {
 
   mounted () {
     this.$store.dispatch('getPage', this.$route.params.slug)
-      .then(this.onLoad)
+      .then(this.init)
       .catch(this.onNotFound)
   }
 }
@@ -96,10 +84,6 @@ export default {
 
 .content {
   @apply --content;
-}
-
-.footer {
-  @apply --footer;
 }
 
 .notFound {
