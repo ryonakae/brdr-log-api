@@ -48,8 +48,9 @@ export default {
   },
 
   watch: {
+    // loadedPostItemの数が変わるたびにcheckOnLoad関数を実行する
     loadedPostItem () {
-      this.onLoad()
+      this.checkOnLoad()
     }
   },
 
@@ -66,7 +67,7 @@ export default {
       }
     },
 
-    onLoad () {
+    checkOnLoad () {
       // loadedCountが記事数と同じになったらlogoのローディング終了
       if (this.posts.length === this.loadedPostItem) {
         console.log('all postitem loaded')
@@ -81,6 +82,9 @@ export default {
         this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0})
       } else {
         console.log('allPostData already exsist')
+        // 既に全記事がロードされているので、loadedPostItemは変化しない→watchが動かない
+        // なので、手動でcheckOnLoad関数を実行する
+        this.checkOnLoad()
       }
     }
   },
