@@ -58,7 +58,7 @@ export default {
   },
 
   methods: {
-    onLoad (result) {
+    init (result) {
       this.$store.dispatch('changeTitle', result.title.rendered.toUpperCase())
       this.page = result
       this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
@@ -75,7 +75,7 @@ export default {
 
   mounted () {
     this.$store.dispatch('getPage', this.$route.params.slug)
-      .then(this.onLoad)
+      .then(this.init)
       .catch(this.onNotFound)
   }
 }

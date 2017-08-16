@@ -10,7 +10,6 @@ export default {
   perPageMobile: 6,
   infiniteScrollLock: false,
   loadedPostItem: 0,
-  isWebfontLoaded: false,
   isLogoLoading: false,
   isFiltered: false,
   filteredCategory: '',

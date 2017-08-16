@@ -38,10 +38,6 @@ export default {
       return this.$store.state.loadedPostItem
     },
 
-    isWebfontLoaded () {
-      return this.$store.state.isWebfontLoaded
-    },
-
     isPreview () {
       return this.$store.state.isPreview
     }
@@ -104,15 +100,7 @@ export default {
   },
 
   mounted () {
-    // webfontのロードが終わってない→isWebfontLoadedを監視して、読み込み後init関数実行
-    if (!this.isWebfontLoaded) {
-      this.$watch('isWebfontLoaded', () => {
-        this.init()
-      })
-    } else {
-      // webfontのローディングが終わってる(他のページから遷移した時とか)→そのままinit関数実行
-      this.init()
-    }
+    this.init()
   },
 
   beforeRouteEnter (to, from, next) {

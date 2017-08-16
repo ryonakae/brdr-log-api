@@ -94,10 +94,6 @@ export default {
       }
     },
 
-    isWebfontLoaded () {
-      return this.$store.state.isWebfontLoaded
-    },
-
     isPreview () {
       return this.$store.state.isPreview
     },
@@ -118,45 +114,6 @@ export default {
   methods: {
     filterByCategory (categoryId, categoryName) {
       this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: true})
-    },
-
-    onWebfontLoad () {
-      // currentPostDataがある(indexから遷移した時)
-      // 通信せずにcurrentPostDataをそのまま使う
-      if (this.hasPost) {
-        this.init()
-      } else {
-        // currentPostDataがない場合(url直接叩いたとき)
-        // →getPost()実行してcurrentPostDataにデータを入れる
-        // エラー返ってきたらnotFoundを表示
-        // 通常時
-        if (!this.isPreview) {
-          this.$store.dispatch('getPost', this.$route.params.id)
-            .then((result) => {
-              this.$store.dispatch('setCurrentPost', result)
-            })
-            .then(() => {
-              this.init()
-            })
-            .catch(this.onNotFound)
-        } else {
-          // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
-          Promise.all([
-            this.$store.dispatch('getPost', this.$route.params.id),
-            this.$store.dispatch('getPostRevisions', this.$route.params.id)
-          ])
-            .then((results) => {
-              const _result = results[0]
-              _result.content = results[1].content
-              console.log(_result)
-              this.$store.dispatch('setCurrentPost', _result)
-            })
-            .then(() => {
-              this.init()
-            })
-            .catch(this.onNotFound)
-        }
-      }
     },
 
     init () {
@@ -234,14 +191,41 @@ export default {
   },
 
   mounted () {
-    // webfontのロードが終わってない→isWebfontLoadedを監視して、読み込み後onWebfontLoad関数実行
-    // webfontのローディングが終わってる(他のページから遷移した時とか)→そのままonWebfontLoad関数実行
-    if (!this.isWebfontLoaded) {
-      this.$watch('isWebfontLoaded', () => {
-        this.onWebfontLoad()
-      })
+    // currentPostDataがある(indexから遷移した時)
+    // 通信せずにcurrentPostDataをそのまま使う
+    if (this.hasPost) {
+      this.init()
     } else {
-      this.onWebfontLoad()
+      // currentPostDataがない場合(url直接叩いたとき)
+      // →getPost()実行してcurrentPostDataにデータを入れる
+      // エラー返ってきたらnotFoundを表示
+      // 通常時
+      if (!this.isPreview) {
+        this.$store.dispatch('getPost', this.$route.params.id)
+          .then((result) => {
+            this.$store.dispatch('setCurrentPost', result)
+          })
+          .then(() => {
+            this.init()
+          })
+          .catch(this.onNotFound)
+      } else {
+        // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
+        Promise.all([
+          this.$store.dispatch('getPost', this.$route.params.id),
+          this.$store.dispatch('getPostRevisions', this.$route.params.id)
+        ])
+          .then((results) => {
+            const _result = results[0]
+            _result.content = results[1].content
+            console.log(_result)
+            this.$store.dispatch('setCurrentPost', _result)
+          })
+          .then(() => {
+            this.init()
+          })
+          .catch(this.onNotFound)
+      }
     }
   }
 }
