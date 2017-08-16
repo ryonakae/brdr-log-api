@@ -18,21 +18,6 @@
     </div>
 
     <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered"></div>
-
-    <footer :class="$style.footer">
-      <share-component :permalink="post.link" :title="postTitle" :class="$style.share"></share-component>
-
-      <small :class="$style.copyright">
-        <a href="https://twitter.com/ryo_dg" target="_blank">&copy;Ryo Nakae</a>
-      </small>
-
-      <router-link :to="'/'" tag="div" :class="$style.backIndex">
-        <svg :viewBox="icon.back.viewBox">
-          <use :xlink:href="'#'+icon.back.id"></use>
-        </svg>
-        <span>Index</span>
-      </router-link>
-    </footer>
   </article>
 
   <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
@@ -45,7 +30,6 @@ import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
 import ShareComponent from '../components/Share.vue'
 import NotFoundComponent from '../components/NotFound.vue'
-import iconBack from 'images/icon-back.svg'
 import '../library/twitter_widgets'
 import '../library/prettify'
 
@@ -58,10 +42,7 @@ export default {
   data () {
     return {
       categories: [],
-      imgLoad: null,
-      icon: {
-        back: iconBack
-      }
+      imgLoad: null
     }
   },
 
@@ -205,9 +186,7 @@ export default {
           .then((result) => {
             this.$store.dispatch('setCurrentPost', result)
           })
-          .then(() => {
-            this.init()
-          })
+          .then(this.init)
           .catch(this.onNotFound)
       } else {
         // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
@@ -221,9 +200,7 @@ export default {
             console.log(_result)
             this.$store.dispatch('setCurrentPost', _result)
           })
-          .then(() => {
-            this.init()
-          })
+          .then(this.init)
           .catch(this.onNotFound)
       }
     }
@@ -246,10 +223,6 @@ export default {
 
 .content {
   @apply --content;
-}
-
-.footer {
-  @apply --footer;
 }
 
 .notFound {

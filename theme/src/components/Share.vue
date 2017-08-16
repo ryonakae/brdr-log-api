@@ -61,11 +61,11 @@ export default {
   vertical-align: middle;
   margin-left: 16px;
 
-  @apply --link;
-
   &:first-child {
     margin-left: 0;
   }
+
+  @apply --link;
 }
 
 svg {
