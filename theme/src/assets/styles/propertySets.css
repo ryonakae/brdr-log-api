@@ -386,7 +386,7 @@
       fill: var(--color_key);
       width: 11px;
       height: 7px;
-      vertical-align: middle;
+      vertical-align: baseline;
       margin-right: 3px;
       transition: all var(--duration_quick) var(--easing);
     }
@@ -400,6 +400,7 @@
     @media (--mq_sp) {
       bottom: var(--margin_page_sp);
       left: var(--margin_page_sp);
+      font-size: var(--fontSize_small_sp);
     }
   }
 

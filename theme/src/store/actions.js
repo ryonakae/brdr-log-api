@@ -84,7 +84,7 @@ export default {
 
       client.get('/posts', {params: queryOptions})
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           // res.bodyが空(これ以上記事ない)ときはrejectを返す
           res.data.length > 0 ? resolve(res.data) : reject()
         })
@@ -167,7 +167,7 @@ export default {
 
       client.get('/posts/' + id, {params: queryOptions})
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           resolve(res.data)
         })
         .catch((err) => {
@@ -182,7 +182,7 @@ export default {
     return new Promise((resolve, reject) => {
       client.get('/posts/' + id + '/revisions')
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           resolve(res.data[0])
         })
         .catch((err) => {
@@ -202,7 +202,7 @@ export default {
 
       client.get('/pages', {params: queryOptions})
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           res.data.length > 0 ? resolve(res.data[0]) : reject()
         })
         .catch((err) => {
@@ -218,7 +218,7 @@ export default {
     return new Promise((resolve, reject) => {
       client.get('/categories/' + id)
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           resolve(res.data)
         })
         .catch((err) => {
@@ -241,7 +241,7 @@ export default {
 
             // ループの最後
             if (categories.length === index + 1) {
-              console.log(_categories)
+              // console.log(_categories)
               resolve(_categories)
             }
           })

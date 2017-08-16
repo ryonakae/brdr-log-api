@@ -32,7 +32,7 @@
         </ul>
       </li>
       <li>
-        <a href="//brdr.jp" target="_blank">BRDR</a>
+        <a href="http://brdr.jp" target="_blank">BRDR</a>
       </li>
     </ul>
   </header>
