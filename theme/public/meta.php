@@ -35,7 +35,7 @@
       $og_image = $image[0];
     }
     else {
-      $og_image = get_template_directory_uri().'/assets/images/ogp.png';
+      $og_image = get_template_directory_uri().'/ogp.png';
     }
   }
   // それ以外(一覧など)のとき
@@ -44,7 +44,7 @@
     $description = get_bloginfo('description');
     $og_url = get_bloginfo('url');
     $og_type = 'website';
-    $og_image = get_template_directory_uri().'/assets/images/ogp.png';
+    $og_image = get_template_directory_uri().'/ogp.png';
   }
 ?>
 
