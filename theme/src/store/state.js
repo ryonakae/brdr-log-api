@@ -10,7 +10,7 @@ export default {
   perPageMobile: 6,
   infiniteScrollLock: false,
   loadedPostItem: 0,
-  isLogoLoading: false,
+  isLogoLoading: true,
   isFiltered: false,
   filteredCategory: '',
   isPreview: window.wpApiSettings.is_preview,

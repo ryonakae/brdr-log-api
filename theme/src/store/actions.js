@@ -78,7 +78,7 @@ export default {
   // 記事一覧を取得
   getAllPosts ({state}, options) {
     return new Promise((resolve, reject) => {
-      const _queryOptions = {_embed: null}
+      const _queryOptions = {_embed: ''}
       if (state.isUserLoggedIn) _queryOptions.status = 'any'
       const queryOptions = Object.assign(_queryOptions, options)
 
@@ -161,13 +161,11 @@ export default {
   // 単一の投稿を取得
   getPost ({state}, id) {
     return new Promise((resolve, reject) => {
-      const queryOptions = {
-        _embed: null
-      }
+      const queryOptions = {_embed: ''}
 
       client.get('/posts/' + id, {params: queryOptions})
         .then((res) => {
-          // console.log(res)
+          console.log(res)
           resolve(res.data)
         })
         .catch((err) => {
@@ -196,13 +194,13 @@ export default {
   getPage ({state}, slug) {
     return new Promise((resolve, reject) => {
       const queryOptions = {
-        _embed: null,
+        _embed: '',
         slug: slug
       }
 
       client.get('/pages', {params: queryOptions})
         .then((res) => {
-          // console.log(res)
+          console.log(res)
           res.data.length > 0 ? resolve(res.data[0]) : reject()
         })
         .catch((err) => {

@@ -4,11 +4,7 @@
       <h1 :class="$style.title" v-html="page.title.rendered"></h1>
     </header>
 
-    <div v-if="hasEyecatch" :class="$style.eyecatch">
-      <img :src="eyecatch">
-    </div>
-
-    <div v-if="hasContent" :class="$style.content" v-html="page.content.rendered"></div>
+    <content-component :data="page"></content-component>
   </article>
 
   <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
@@ -18,10 +14,12 @@
 
 <script>
 import NotFoundComponent from '../components/NotFound.vue'
+import ContentComponent from '../components/Content.vue'
 
 export default {
   components: {
-    NotFoundComponent
+    NotFoundComponent,
+    ContentComponent
   },
 
   data () {
@@ -33,23 +31,12 @@ export default {
   computed: {
     hasPage () {
       return Object.keys(this.page).length > 0
-    },
-
-    hasContent () {
-      return this.page.content.rendered !== ''
-    },
-
-    hasEyecatch () {
-      return this.page.featured_media > 0
     }
   },
 
   methods: {
-    init (result) {
-      this.$store.dispatch('setCurrentPost', result)
-      this.$store.dispatch('changeTitle', result.title.rendered.toUpperCase())
-      this.page = result
-      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+    init () {
+      this.$store.dispatch('changeTitle', this.page.title.rendered.toUpperCase())
     },
 
     // 404
@@ -61,8 +48,19 @@ export default {
     }
   },
 
+  created () {
+    // logoのローディング開始
+    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
+  },
+
   mounted () {
     this.$store.dispatch('getPage', this.$route.params.slug)
+      .then((result) => {
+        return new Promise((resolve, reject) => {
+          this.page = result
+          resolve()
+        })
+      })
       .then(this.init)
       .catch(this.onNotFound)
   }
@@ -76,14 +74,6 @@ export default {
 
 .header {
   @apply --header;
-}
-
-.eyecatch {
-  @apply --eyecatch;
-}
-
-.content {
-  @apply --content;
 }
 
 .notFound {
