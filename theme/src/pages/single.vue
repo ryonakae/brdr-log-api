@@ -13,11 +13,7 @@
       </div>
     </header>
 
-    <div v-if="hasEyecatch" :class="$style.eyecatch">
-      <img :src="eyecatch">
-    </div>
-
-    <div v-if="hasContent" :class="$style.content" v-html="post.content.rendered"></div>
+    <content-component :data="post"></content-component>
   </article>
 
   <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
@@ -27,15 +23,14 @@
 
 <script>
 import moment from 'moment'
-import imagesLoaded from 'imagesloaded'
 import ShareComponent from '../components/Share.vue'
+import ContentComponent from '../components/Content.vue'
 import NotFoundComponent from '../components/NotFound.vue'
-import '../library/twitter_widgets'
-import '../library/prettify'
 
 export default {
   components: {
     ShareComponent,
+    ContentComponent,
     NotFoundComponent
   },
 
@@ -55,24 +50,8 @@ export default {
       return Object.keys(this.post).length > 0
     },
 
-    hasContent () {
-      return this.post.content.rendered !== ''
-    },
-
     hasCategories () {
       return this.post.categories.length >= 1
-    },
-
-    hasEyecatch () {
-      return this.post.featured_media > 0
-    },
-
-    eyecatch () {
-      if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        return this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url
-      } else {
-        return this.post._embedded['wp:featuredmedia'][0].source_url
-      }
     },
 
     isPreview () {
@@ -108,46 +87,6 @@ export default {
             this.categories = result
           })
       }
-
-      // 本文の画像の親要素にaddClass
-      const $images = document.getElementsByTagName('img')
-      if ($images.length > 0) {
-        for (let i = 0; i < $images.length; i++) {
-          $images[i].parentNode.classList.add('img')
-        }
-      }
-
-      // Twitterの埋め込みツイートがあったら関数実行
-      const $tweet = document.getElementsByClassName('twitter-tweet')
-      if ($tweet.length > 0) window.twttr.widgets.load(document.body)
-
-      // コードスニペットがあったらprettify実行
-      const $code = document.getElementsByTagName('pre')
-      if ($code.length > 0) {
-        for (let i = 0; i < $code.length; i++) {
-          $code[i].classList.add('prettyprint')
-        }
-        window.prettyPrint()
-      }
-
-      // iframeをdivで囲う
-      const $iframes = document.getElementsByTagName('iframe')
-      if ($iframes.length > 0) {
-        for (let i = 0; i < $iframes.length; i++) {
-          $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
-        }
-      }
-
-      // ページ内の画像全部ロードしたらlogoのローディング終了
-      this.imgLoad = imagesLoaded(this.$refs.article, {background: true})
-      // progress
-      this.imgLoad.on('progress', (instance, image) => {
-        image.img.classList.add('ready')
-      })
-      // done
-      this.imgLoad.on('done', (instance) => {
-        this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
-      })
     },
 
     // 404の時
@@ -215,14 +154,6 @@ export default {
 
 .header {
   @apply --header;
-}
-
-.eyecatch {
-  @apply --eyecatch;
-}
-
-.content {
-  @apply --content;
 }
 
 .notFound {
