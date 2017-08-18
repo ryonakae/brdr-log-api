@@ -50,7 +50,7 @@ export default {
 
 <style module>
 @import "properties.css";
-@import "propertySets.css";
+@import "property-sets.css";
 
 .share {
   line-height: 1;
