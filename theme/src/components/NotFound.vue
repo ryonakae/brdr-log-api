@@ -6,7 +6,7 @@
 
 <style module>
 @import "properties.css";
-@import "propertySets.css";
+@import "property-sets.css";
 @import "media.css";
 
 .title {

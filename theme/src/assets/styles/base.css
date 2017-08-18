@@ -1,31 +1,3 @@
-/* web fonts */
-@font-face {
-  font-family: "Neue Frutiger";
-  src: url("~fonts/NeueFrutiger-Book.woff2") format("woff2"), url("~fonts/NeueFrutiger-Book.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Neue Frutiger";
-  src: url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"), url("~fonts/NeueFrutiger-Bold.woff") format("woff");
-  font-weight: bold;
-}
-
-@font-face {
-  font-family: "Noto Sans Japanese";
-  src: url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Noto Sans Japanese";
-  src: url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
-  font-weight: bold;
-}
-
-@font-face {
-  font-family: "Source Code Pro";
-  src: url("~fonts/SourceCodePro-Regular.woff2") format("woff2"), url("~fonts/SourceCodePro-Regular.woff") format("woff");
-}
-
 /* reset box-sizing */
 html {
   box-sizing: border-box;
@@ -51,6 +23,7 @@ body {
   letter-spacing: var(--letterSpacing_default);
   font-kerning: normal;
   font-feature-settings: "palt" on;
+  font-display: swap;
   color: var(--textColor_default);
   word-wrap: break-word;
   overflow-wrap: break-word;

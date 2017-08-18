@@ -46,8 +46,9 @@ export default {
 
 <style>
 @import "reset-css";
+@import "font-face.css";
 @import "properties.css";
-@import "propertySets.css";
+@import "property-sets.css";
 @import "media.css";
 @import "base.css";
 </style>
