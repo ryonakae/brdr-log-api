@@ -18,16 +18,20 @@ export default {
     state.perPage = count
   },
 
-  CHANGE_INFINITE_SCROLL_LOCK (state, boolean) {
-    state.infiniteScrollLock = boolean
-  },
-
   INCREMENT_LOADED_POST_ITEM (state) {
     state.loadedPostItem++
   },
 
   RESET_LOADED_POST_ITEM (state) {
     state.loadedPostItem = 0
+  },
+
+  CHANGE_INFINITE_SCROLL_LOCK (state, boolean) {
+    state.infiniteScrollLock = boolean
+  },
+
+  CHANGE_IS_LOADED_FIRST (state, boolean) {
+    state.isLoadedFirst = boolean
   },
 
   CHANGE_IS_LOGO_LOADING (state, boolean) {

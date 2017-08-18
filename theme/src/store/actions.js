@@ -1,17 +1,12 @@
 'use strict'
 
-import axios from 'axios'
 import {util, scrollManager} from '../'
 import router from '../router'
-
-// axiosのインスタンスの設定
-const client = axios.create()
-export {client}
 
 // 非同期、複数のmutationsを組み合わせた処理
 export default {
   changeTitle ({commit, state}, title) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       // pageTitleを変更
       commit('SET_PAGE_TITLE', title)
 
@@ -28,14 +23,14 @@ export default {
   },
 
   changePerPage ({commit}, count) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       commit('SET_PER_PAGE', count)
       resolve()
     })
   },
 
   setAllPost ({commit}, data) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       commit('SET_ALL_POST_DATA', data)
       resolve()
     })
@@ -43,21 +38,28 @@ export default {
 
   // currentPostDataにpostオブジェクトをセット
   setCurrentPost ({commit}, data) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       commit('SET_CURRENT_POST_DATA', data)
       resolve()
     })
   },
 
   clearCurrentPost ({commit}) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       commit('SET_CURRENT_POST_DATA', {})
       resolve()
     })
   },
 
+  changeIsLoadedFirst ({commit}, boolean) {
+    return new Promise((resolve) => {
+      commit('CHANGE_IS_LOADED_FIRST', boolean)
+      resolve()
+    })
+  },
+
   changeLoadedPostItem ({commit}, arg) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (arg === 'increment') {
         commit('INCREMENT_LOADED_POST_ITEM')
       } else if (arg === 'reset') {
@@ -70,9 +72,12 @@ export default {
 
   // axiosのクライアントをセットアップ
   initClient ({state}) {
-    client.defaults.baseURL = state.siteUrl + '/wp-json/wp/v2'
-    client.defaults.timeout = 10000
-    client.defaults.headers = {'X-WP-Nonce': state.nonce}
+    return new Promise((resolve) => {
+      state.client.defaults.baseURL = state.siteUrl + '/wp-json/wp/v2'
+      state.client.defaults.timeout = 10000
+      state.client.defaults.headers = {'X-WP-Nonce': state.nonce}
+      resolve()
+    })
   },
 
   // 記事一覧を取得
@@ -82,7 +87,7 @@ export default {
       if (state.isUserLoggedIn) _queryOptions.status = 'any'
       const queryOptions = Object.assign(_queryOptions, options)
 
-      client.get('/posts', {params: queryOptions})
+      state.client.get('/posts', {params: queryOptions})
         .then((res) => {
           // console.log(res)
           // res.bodyが空(これ以上記事ない)ときはrejectを返す
@@ -97,45 +102,50 @@ export default {
 
   // スクロールでさらに記事一覧を取得
   infiniteScroll ({dispatch, commit, state}, options) {
-    console.log('fire infiniteScroll')
-    const documentHeight = document.body.clientHeight
+    return new Promise((resolve, reject) => {
+      console.log('fire infiniteScroll')
+      const documentHeight = document.body.clientHeight
 
-    // スクロールが7割位になったら次のポストロード
-    if (scrollManager.scrollBottom > documentHeight * 0.7) {
-      if (state.infiniteScrollLock) return
+      // スクロールが7割位になったら次のポストロード
+      if (scrollManager.scrollBottom > documentHeight * 0.7) {
+        if (state.infiniteScrollLock) return
 
-      commit('CHANGE_INFINITE_SCROLL_LOCK', true)
+        commit('CHANGE_INFINITE_SCROLL_LOCK', true)
 
-      // logoをローディング中にする
-      dispatch('logoLoading', {boolean: true, wait: 0})
+        // logoをローディング中にする
+        dispatch('logoLoading', {boolean: true, wait: 0})
 
-      // getAllPostsする（optionsはそのまま渡す）
-      dispatch('getAllPosts', options)
-        .then((result) => {
-          // 現在のallPostDataとresultを結合する
-          const newData = state.allPostData.concat(result)
-          console.log('infiniteScroll', newData)
-          // 結合した配列をallPostDataにセット
-          return dispatch('setAllPost', newData)
-        })
-        .then(() => {
-          commit('CHANGE_INFINITE_SCROLL_LOCK', false)
-        })
-        .catch((err) => {
-          // エラーか、これ以上投稿ないとき
-          console.log('error or nomore posts', err)
-          commit('CHANGE_INFINITE_SCROLL_LOCK', true)
+        // getAllPostsする（optionsはそのまま渡す）
+        dispatch('getAllPosts', options)
+          .then((result) => {
+            // 現在のallPostDataとresultを結合する
+            const newData = state.allPostData.concat(result)
+            console.log('infiniteScroll', newData)
+            // 結合した配列をallPostDataにセット
+            return dispatch('setAllPost', newData)
+          })
+          .then(() => {
+            commit('CHANGE_INFINITE_SCROLL_LOCK', false)
+            resolve()
+          })
+          .catch((err) => {
+            // エラーか、これ以上投稿ないとき
+            console.log('error or nomore posts', err)
+            commit('CHANGE_INFINITE_SCROLL_LOCK', true)
 
-          // logoのローディング終了
-          dispatch('logoLoading', {boolean: false, wait: 300})
-        })
-    }
+            // logoのローディング終了
+            dispatch('logoLoading', {boolean: false, wait: 300})
+
+            reject()
+          })
+      }
+    })
   },
 
   // 記事一覧を作成
   // getAllPosts→setAllPost→infiniteScroll
   createIndex ({dispatch, commit, state}, options) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       // infiniteScrollをリセット
       scrollManager.remove('index.infiniteScroll')
       commit('CHANGE_INFINITE_SCROLL_LOCK', false)
@@ -163,7 +173,7 @@ export default {
     return new Promise((resolve, reject) => {
       const queryOptions = {_embed: ''}
 
-      client.get('/posts/' + id, {params: queryOptions})
+      state.client.get('/posts/' + id, {params: queryOptions})
         .then((res) => {
           console.log(res)
           resolve(res.data)
@@ -178,7 +188,7 @@ export default {
   // 投稿のリビジョンを取得
   getPostRevisions ({state}, id) {
     return new Promise((resolve, reject) => {
-      client.get('/posts/' + id + '/revisions')
+      state.client.get('/posts/' + id + '/revisions')
         .then((res) => {
           // console.log(res)
           resolve(res.data[0])
@@ -198,7 +208,7 @@ export default {
         slug: slug
       }
 
-      client.get('/pages', {params: queryOptions})
+      state.client.get('/pages', {params: queryOptions})
         .then((res) => {
           console.log(res)
           res.data.length > 0 ? resolve(res.data[0]) : reject()
@@ -214,7 +224,7 @@ export default {
   // resolveの引数にカテゴリ情報を入れて、thenに渡す
   getCategoryName ({state}, id) {
     return new Promise((resolve, reject) => {
-      client.get('/categories/' + id)
+      state.client.get('/categories/' + id)
         .then((res) => {
           // console.log(res)
           resolve(res.data)
@@ -245,6 +255,7 @@ export default {
           })
           .catch((err) => {
             console.log(err)
+            reject(err)
           })
       })
     })
@@ -252,7 +263,7 @@ export default {
 
   // カテゴリで絞り込む
   filterByCategory ({dispatch, commit, state}, options) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       // logoのローディング開始
       dispatch('logoLoading', {boolean: true, wait: 0})
 
@@ -305,7 +316,7 @@ export default {
 
   // logoのloading
   logoLoading ({commit, state}, options) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       util.wait(options.wait)
         .then(() => {
           commit('CHANGE_IS_LOGO_LOADING', options.boolean)
