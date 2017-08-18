@@ -64,7 +64,7 @@ export default {
       }
     }
 
-    // ページ内の画像全部ロードしたらlogoのローディング終了
+    // ページ内の画像ロードした時の処理
     this.imgLoad = imagesLoaded(this.$refs.content, {background: true})
     // progress
     this.imgLoad.on('progress', (instance, image) => {
@@ -72,8 +72,12 @@ export default {
     })
     // done
     this.imgLoad.on('done', (instance) => {
+      // ロゴのローディング終了
       this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
     })
+
+    // isLoadedFirstをtrueにする
+    if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
   }
 }
 </script>

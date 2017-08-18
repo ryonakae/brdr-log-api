@@ -68,6 +68,9 @@ export default {
       if (this.posts.length === this.loadedPostItem) {
         console.log('all postitem loaded')
         this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+
+        // isLoadedFirstをtrueにする
+        if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
       }
     },
 

@@ -1,5 +1,7 @@
 'use strict'
 
+import axios from 'axios'
+
 export default {
   pageTitle: '',
   siteTitle: document.title,
@@ -8,13 +10,14 @@ export default {
   currentPostData: {},
   perPage: 10,
   perPageMobile: 6,
-  infiniteScrollLock: false,
   loadedPostItem: 0,
+  infiniteScrollLock: false,
+  isLoadedFirst: false,
   isLogoLoading: true,
   isFiltered: false,
   filteredCategory: '',
+  client: axios.create(),
   isPreview: window.wpApiSettings.is_preview,
   nonce: window.wpApiSettings.nonce,
-  isUserLoggedIn: window.wpApiSettings.is_logged_in,
-  client: null // axios client
+  isUserLoggedIn: window.wpApiSettings.is_logged_in
 }

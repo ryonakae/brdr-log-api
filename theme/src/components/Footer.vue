@@ -1,5 +1,5 @@
 <template>
-  <footer :class="$style.footer">
+  <footer v-if="isLoadedFirst" :class="$style.footer">
     <router-link v-if="!isIndex" :to="'/'" tag="div" :class="$style.backIndex">
       <svg :viewBox="icon.back.viewBox">
         <use :xlink:href="'#'+icon.back.id"></use>
@@ -43,6 +43,10 @@ export default {
 
     hasPost () {
       return Object.keys(this.post).length > 0
+    },
+
+    isLoadedFirst () {
+      return this.$store.state.isLoadedFirst
     }
   }
 }

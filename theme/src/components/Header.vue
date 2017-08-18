@@ -22,7 +22,7 @@
       <span>{{filteredCategory}}</span>
     </div>
 
-    <ul :class="$style.navi">
+    <ul v-if="isLoadedFirst" :class="$style.navi">
       <li :class="$style.categories">
         <span @click="toggleCategories">Category</span>
         <ul :class="{[$style.active]: isCategoriesActive}">
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import {client} from '../store/actions'
 import logo from 'images/logo.svg'
 import logoClipPath from 'images/logo-clipPath.svg'
 import iconClear from 'images/icon-clear.svg'
@@ -63,6 +62,10 @@ export default {
 
     perPage () {
       return this.$store.state.perPage
+    },
+
+    isLoadedFirst () {
+      return this.$store.state.isLoadedFirst
     },
 
     isLogoLoading () {
@@ -95,7 +98,7 @@ export default {
 
     getAllCategories () {
       return new Promise((resolve, reject) => {
-        client.get('/categories')
+        this.$store.state.client.get('/categories')
           .then((res) => {
             console.log(res)
             resolve(res.data)
