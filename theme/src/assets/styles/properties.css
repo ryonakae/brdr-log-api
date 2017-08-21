@@ -17,7 +17,8 @@
   --textColor_lightGray: color(var(--color_key) alpha(30%));
 
   /* font family */
-  --fontFamily_default: "Neue Frutiger", "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+  --fontFamily_default: "Neue Frutiger", "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+  --fontFamily_loaded: "Neue Frutiger", "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
   --fontFamily_code: "Source Code Pro", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
 
   /* font size */

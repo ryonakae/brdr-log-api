@@ -10,6 +10,7 @@
 import HeaderComponent from './components/Header.vue'
 import FooterComponent from './components/Footer.vue'
 import {util} from './'
+import webFont from 'webfontloader'
 
 export default {
   components: {
@@ -35,11 +36,24 @@ export default {
       this.$store.dispatch('changePerPage', this.perPageMobile)
     }
 
-    // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
+    // webfont(Noto Sans Japanese)のロードが終わったらbodyにaddClass
+    webFont.load({
+      classes: false,
+      timeout: 10000,
+      custom: {
+        families: ['Noto Sans Japanese']
+      },
+      active: () => {
+        console.log('all webfont loaded')
+        document.body.classList.add('webfontLoaded')
+      }
+    })
 
     // axiosのクライアントをセットアップ
     this.$store.dispatch('initClient')
+
+    // logoのローディング開始
+    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
   }
 }
 </script>
@@ -51,4 +65,8 @@ export default {
 @import "property-sets.css";
 @import "media.css";
 @import "base.css";
+
+body.webfontLoaded {
+  font-family: var(--fontFamily_loaded);
+}
 </style>
