@@ -95,6 +95,7 @@ export default {
   text-align: center;
 
   & img {
+    width: var(--width_single);
     max-width: 100%;
     height: auto;
     vertical-align: top;
@@ -104,6 +105,11 @@ export default {
     &:global(.ready) {
       opacity: 1;
     }
+  }
+
+  @media (--mq_tablet) {
+    border-right: none;
+    border-left: none;
   }
 }
 

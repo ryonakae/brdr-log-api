@@ -184,6 +184,11 @@ export default {
     height: 100%;
     overflow: hidden;
     pointer-events: none;
+
+    @media (--mq_tablet) {
+      border-right: none;
+      border-left: none;
+    }
   }
 
   & .image {
@@ -214,7 +219,7 @@ export default {
     transition: all var(--duration_quick) var(--easing);
 
     &.ready {
-      opacity: 0.35;
+      opacity: 0.4;
     }
   }
 
@@ -231,7 +236,7 @@ export default {
 
   @nest :global(body.pc) &:hover {
     & .overlay {
-      opacity: 0.75;
+      opacity: 0.8;
     }
 
     & .image {
