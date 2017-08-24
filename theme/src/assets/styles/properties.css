@@ -56,7 +56,7 @@
   /* transition */
   --duration: 1000ms;
   --duration_quick: 300ms;
-  --duration_image: 600ms;
+  --duration_image: 700ms;
   --easing: cubic-bezier(0.165, 0.84, 0.44, 1); /* easeOutQuart */
 
   /* margin */

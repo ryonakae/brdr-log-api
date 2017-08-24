@@ -37,4 +37,12 @@ const router = new VueRouter({
   linkExactActiveClass: ''
 })
 
+// google analytics
+router.afterEach((to) => {
+  window.ga('send', {
+    hitType: 'pageview',
+    location: to.path
+  })
+})
+
 export default router
