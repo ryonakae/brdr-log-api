@@ -1,7 +1,7 @@
 <template>
   <ul :class="$style.share">
     <li :class="[$style.icon, $style.twitter]">
-      <a :href="twitterUrl" target="_blank">
+      <a :href="twitterUrl" target="_blank" @click.stop="onShare('twitter', twitterUrl)">
         <svg :viewBox="icon.twitter.viewBox">
           <use :xlink:href="'#'+icon.twitter.id"></use>
         </svg>
@@ -9,7 +9,7 @@
     </li>
 
     <li :class="[$style.icon, $style.facebook]">
-      <a :href="facebookUrl" target="_blank">
+      <a :href="facebookUrl" target="_blank" @click.stop="onShare('facebook', facebookUrl)">
         <svg :viewBox="icon.facebook.viewBox">
           <use :xlink:href="'#'+icon.facebook.id"></use>
         </svg>
@@ -43,6 +43,25 @@ export default {
     facebookUrl () {
       const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(this.permalink)
       return url
+    }
+  },
+
+  methods: {
+    onShare (network, url) {
+      let socialNetwork
+      if (network === 'twitter') socialNetwork = 'Twitter'
+      else if (network === 'facebook') socialNetwork = 'Facebook'
+
+      let socialAction
+      if (network === 'twitter') socialAction = 'Tweet'
+      else if (network === 'facebook') socialAction = 'Share'
+
+      window.ga('send', {
+        hitType: 'social',
+        socialNetwork: socialNetwork,
+        socialAction: socialAction,
+        socialTarget: url
+      })
     }
   }
 }
