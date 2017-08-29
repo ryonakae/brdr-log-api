@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.page" ref="page">
     <ul v-if="hasPosts">
-      <li v-for="post in posts" :key="post.id" :class="$style.item" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
+      <li v-for="post in posts" :key="post.id" :class="$style.post" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
         <post-item-component :post="post"></post-item-component>
       </li>
     </ul>
@@ -141,7 +141,7 @@ export default {
   }
 }
 
-.item {
+.post {
   margin-top: 75px;
 
   &:first-child {

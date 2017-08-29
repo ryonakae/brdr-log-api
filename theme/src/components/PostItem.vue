@@ -131,33 +131,82 @@ export default {
 .post {
   position: relative;
   cursor: pointer;
+}
 
-  & .text {
-    max-width: var(--width_content);
-    margin: 0 auto;
+.text {
+  max-width: var(--width_content);
+  margin: 0 auto;
 
-    @media (--mq_sp) {
-      margin: 0 var(--margin_page_sp);
-    }
+  @media (--mq_sp) {
+    margin: 0 var(--margin_page_sp);
   }
+}
 
-  & .title {
-    font-size: var(--fontSize_h1);
-    transition: all var(--duration_quick) var(--easing);
+.title {
+  font-size: var(--fontSize_h1);
+  transition: all var(--duration_quick) var(--easing);
 
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h1_sp);
-    }
+  @media (--mq_sp) {
+    font-size: var(--fontSize_h1_sp);
   }
+}
 
-  & .info {
-    @apply --info;
+.info {
+  @apply --info;
 
-    margin-top: 25px;
+  margin-top: 25px;
 
-    @media (--mq_sp) {
-      margin-top: 15px;
-    }
+  @media (--mq_sp) {
+    margin-top: 15px;
+  }
+}
+
+.bg {
+  border: 1px solid var(--color_key);
+  background-color: var(--color_key);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+
+  @media (--mq_tablet) {
+    border-right: none;
+    border-left: none;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  z-index: 0;
+  transition: all var(--duration_image) var(--easing);
+  opacity: 0;
+
+  &.ready {
+    opacity: 1;
+  }
+}
+
+.overlay {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color_key);
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition: all var(--duration_quick) var(--easing);
+
+  &.ready {
+    opacity: 0.4;
   }
 }
 
@@ -173,55 +222,6 @@ export default {
 
 .post.eyecatch {
   padding: 0;
-
-  & .bg {
-    border: 1px solid var(--color_key);
-    background-color: var(--color_key);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: none;
-
-    @media (--mq_tablet) {
-      border-right: none;
-      border-left: none;
-    }
-  }
-
-  & .image {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    z-index: 0;
-    transition: all var(--duration_image) var(--easing);
-    opacity: 0;
-
-    &.ready {
-      opacity: 1;
-    }
-  }
-
-  & .overlay {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color_key);
-    opacity: 0;
-    mix-blend-mode: multiply;
-    transition: all var(--duration_quick) var(--easing);
-
-    &.ready {
-      opacity: 0.4;
-    }
-  }
 
   & .text {
     padding: 90px 0 45px;

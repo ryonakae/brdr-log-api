@@ -15,7 +15,7 @@
       </router-link>
     </h1>
 
-    <div v-if="isFiltered" :class="$style.clear" @click="clearFilter">
+    <div v-if="isFiltered" :class="$style.filter" @click="clearFilter">
       <svg :viewBox="icon.clear.viewBox">
         <use :xlink:href="'#'+icon.clear.id"></use>
       </svg>
@@ -24,10 +24,10 @@
 
     <ul v-if="isLoadedFirst" :class="$style.navi">
       <li :class="$style.categories">
-        <span @click="toggleCategories">Category</span>
+        <span :class="$style.text" @click="toggleCategories">Category</span>
         <ul :class="{[$style.active]: isCategoriesActive}">
           <li v-for="category in categories" v-if="category.count > 0" :key="category.id" @click="filterByCategory(category.id, category.name)">
-            <span>{{category.name}}</span>
+            <span :class="$style.text">{{category.name}}</span>
           </li>
         </ul>
       </li>
@@ -242,7 +242,7 @@ export default {
   }
 }
 
-.clear {
+.filter {
   position: absolute;
   top: 6px;
   left: 50%;
@@ -269,7 +269,7 @@ export default {
 }
 
 @-moz-document url-prefix() {
-  .clear {
+  .filter {
     @nest :global(body.pc) &:hover {
       & svg {
         transform: none;
@@ -285,7 +285,7 @@ export default {
 
   @apply --clearfix;
 
-  & span {
+  & .text {
     @apply --link;
   }
 
@@ -302,33 +302,33 @@ export default {
       margin-left: 15px;
     }
   }
+}
 
-  & .categories {
-    position: relative;
+.categories {
+  position: relative;
 
-    & ul {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 15px;
-      display: none;
-      min-width: 100px;
+  & ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 15px;
+    display: none;
+    min-width: 100px;
 
-      &.active {
-        display: block;
-      }
-
-      @media (--mq_sp) {
-        margin-top: 10px;
-      }
+    &.active {
+      display: block;
     }
 
-    & li {
-      margin-top: 4px;
+    @media (--mq_sp) {
+      margin-top: 10px;
+    }
+  }
 
-      &:first-child {
-        margin-top: 0;
-      }
+  & li {
+    margin-top: 4px;
+
+    &:first-child {
+      margin-top: 0;
     }
   }
 }

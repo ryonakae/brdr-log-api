@@ -1,6 +1,6 @@
 <template>
   <footer v-if="isLoadedFirst" :class="$style.footer">
-    <router-link v-if="!isIndex" :to="'/'" tag="div" :class="$style.backIndex">
+    <router-link v-if="!isIndex" :to="'/'" tag="div" :class="$style.back">
       <svg :viewBox="icon.back.viewBox">
         <use :xlink:href="'#'+icon.back.id"></use>
       </svg>
@@ -66,63 +66,63 @@ export default {
   @media (--mq_sp) {
     margin: var(--margin_bottom_sp) 0 var(--margin_page_sp);
   }
+}
 
-  & .backIndex {
-    cursor: pointer;
-    position: fixed;
-    bottom: var(--margin_page);
-    left: var(--margin_page);
-    font-size: var(--fontSize_small);
-    transition: all var(--duration_quick) var(--easing);
+.back {
+  cursor: pointer;
+  position: fixed;
+  bottom: var(--margin_page);
+  left: var(--margin_page);
+  font-size: var(--fontSize_small);
+  transition: all var(--duration_quick) var(--easing);
 
-    @apply --link;
+  @apply --link;
 
-    & * {
-      display: inline-block;
-    }
-
-    & svg {
-      display: inline;
-      fill: var(--color_key);
-      width: 11px;
-      height: 7px;
-      vertical-align: baseline;
-      margin-right: 3px;
-      transition: all var(--duration_quick) var(--easing);
-    }
-
-    @nest :global(body.pc) &:hover {
-      & svg {
-        transform: translateX(-1px);
-      }
-    }
-
-    @media (--mq_sp) {
-      bottom: var(--margin_page_sp);
-      left: var(--margin_page_sp);
-      font-size: var(--fontSize_small_sp);
-    }
-  }
-
-  & .share {
+  & * {
     display: inline-block;
-    position: relative;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
-  & .copyright {
-    display: block;
-    position: fixed;
-    bottom: var(--margin_page);
-    right: var(--margin_page);
-    font-size: var(--fontSize_xSmall);
+  & svg {
+    display: inline;
+    fill: var(--color_key);
+    width: 11px;
+    height: 7px;
+    vertical-align: baseline;
+    margin-right: 3px;
+    transition: all var(--duration_quick) var(--easing);
+  }
 
-    @media (--mq_sp) {
-      bottom: var(--margin_page_sp);
-      right: var(--margin_page_sp);
+  @nest :global(body.pc) &:hover {
+    & svg {
+      transform: translateX(-1px);
     }
+  }
+
+  @media (--mq_sp) {
+    bottom: var(--margin_page_sp);
+    left: var(--margin_page_sp);
+    font-size: var(--fontSize_small_sp);
+  }
+}
+
+.share {
+  display: inline-block;
+  position: relative;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.copyright {
+  display: block;
+  position: fixed;
+  bottom: var(--margin_page);
+  right: var(--margin_page);
+  font-size: var(--fontSize_xSmall);
+
+  @media (--mq_sp) {
+    bottom: var(--margin_page_sp);
+    right: var(--margin_page_sp);
   }
 }
 </style>
