@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ShareComponent from '../components/Share.vue'
+import ShareComponent from '@/components/Share.vue'
 import iconBack from 'images/icon-back.svg'
 
 export default {

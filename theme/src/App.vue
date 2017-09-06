@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import HeaderComponent from './components/Header.vue'
-import FooterComponent from './components/Footer.vue'
-import {util} from './'
+import HeaderComponent from '@/components/Header.vue'
+import FooterComponent from '@/components/Footer.vue'
+import {util} from '@/index'
 import webFont from 'webfontloader'
 
 export default {

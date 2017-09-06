@@ -10,7 +10,6 @@
       is_logged_in => is_user_logged_in(),
       is_preview => is_preview()
     ));
-    echo the_content();
   ?>
   <script>
     var wpApiSettings = <?php echo $wp_api_settings; ?>;

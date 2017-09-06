@@ -2,9 +2,9 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import mutations from './mutations'
-import actions from './actions'
-import state from './state'
+import mutations from '@/store/mutations'
+import actions from '@/store/actions'
+import state from '@/store/state'
 
 Vue.use(Vuex)
 
@@ -18,12 +18,11 @@ const store = new Vuex.Store({
 // Hot Module Replacementに対応させる
 if (module.hot) {
   module.hot.accept([
-    './mutations',
-    './actions'
+    '@/store/mutations',
+    '@/store/actions'
   ], () => {
-    // import modules
-    const newMutations = require('./mutations').default
-    const newActions = require('./actions').default
+    const newMutations = require('@/store/mutations').default
+    const newActions = require('@/store/actions').default
 
     store.hotUpdate({
       mutations: newMutations,

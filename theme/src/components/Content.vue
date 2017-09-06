@@ -10,8 +10,8 @@
 
 <script>
 import imagesLoaded from 'imagesloaded'
-import '../library/twitter_widgets'
-import '../library/prettify'
+import '@/library/twitter_widgets'
+import '@/library/prettify'
 
 export default {
   props: ['data'],

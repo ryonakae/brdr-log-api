@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import NotFoundComponent from '../components/NotFound.vue'
-import ContentComponent from '../components/Content.vue'
+import NotFoundComponent from '@/components/NotFound.vue'
+import ContentComponent from '@/components/Content.vue'
 
 export default {
   components: {

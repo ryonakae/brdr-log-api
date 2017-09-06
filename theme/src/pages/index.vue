@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import PostItemComponent from '../components/PostItem.vue'
-import {scrollManager} from '../index'
+import PostItemComponent from '@/components/PostItem.vue'
+import {scrollManager} from '@/index'
 
 export default {
   components: {

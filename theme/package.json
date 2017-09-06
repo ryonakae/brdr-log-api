@@ -2,7 +2,7 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "copy": "cpx public/**/* dist",
-    "watch": "cpx public/**/* dist -vw & webpack -w",
+    "watch": "cpx public/**/* dist -w & webpack -w",
     "server": "browser-sync start -c 'bs-config.js'",
     "start": "npm run clean && npm run copy && npm run server & npm run watch",
     "build": "npm run clean && npm run copy && NODE_ENV=production webpack",
