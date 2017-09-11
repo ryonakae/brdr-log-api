@@ -23,9 +23,9 @@
 
 <script>
 import moment from 'moment'
-import ShareComponent from '../components/Share.vue'
-import ContentComponent from '../components/Content.vue'
-import NotFoundComponent from '../components/NotFound.vue'
+import ShareComponent from '@/components/Share.vue'
+import ContentComponent from '@/components/Content.vue'
+import NotFoundComponent from '@/components/NotFound.vue'
 
 export default {
   components: {

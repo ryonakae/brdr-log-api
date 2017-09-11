@@ -1,22 +1,15 @@
 'use strict'
 
 import 'es6-promise/auto'
-
-// import vue
 import Vue from 'vue'
+import store from '@/store'
+import router from '@/router'
+import Util from '@/manager/Util'
+import ResizeManager from '@/manager/ResizeManager'
+import ScrollManager from '@/manager/ScrollManager'
+import App from '@/App.vue'
 
-// import App
-import App from './App.vue'
-
-// import vuex store & router
-import store from './store'
-import router from './router'
-
-// import and initialize manager
-import Util from './manager/Util'
-import ResizeManager from './manager/ResizeManager'
-import ScrollManager from './manager/ScrollManager'
-
+// create manager instance
 const util = new Util()
 const resizeManager = new ResizeManager()
 const scrollManager = new ScrollManager({

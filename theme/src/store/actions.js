@@ -1,7 +1,7 @@
 'use strict'
 
-import {util, scrollManager} from '../'
-import router from '../router'
+import {util, scrollManager} from '@/index'
+import router from '@/router'
 
 // 非同期、複数のmutationsを組み合わせた処理
 export default {

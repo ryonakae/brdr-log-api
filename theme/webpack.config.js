@@ -66,6 +66,7 @@ const common = {
 
   resolve: {
     alias: {
+      '@': filePath.src,
       styles: path.join(filePath.assets, 'styles'),
       images: path.join(filePath.assets, 'images'),
       fonts:  path.join(filePath.assets, 'fonts')
