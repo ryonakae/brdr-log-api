@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "Neue Frutiger"
+  font-family: "Neue Frutiger";
   src: local("Neue Frutiger"), url("~fonts/NeueFrutiger-Book.woff2") format("woff2"), url("~fonts/NeueFrutiger-Book.woff") format("woff");
 }
 
