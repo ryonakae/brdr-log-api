@@ -16,8 +16,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - brdr-log-{{ checksum "package.json" }}
-            - brdr-log-
+            - brdr-log-{{ checksum "theme/package.json" }}
 
       - run:
           name: Install Node Package
@@ -26,7 +25,7 @@ jobs:
             npm install
 
       - save_cache:
-          key: brdr-log-{{ checksum "package.json" }}
+          key: brdr-log-{{ checksum "theme/package.json" }}
           paths:
             - ./theme/node_modules
 
@@ -41,12 +40,3 @@ jobs:
           command: |
             cd theme
             npm run build
-
-      - deploy:
-          command: |
-            git config --global user.name 'CircleCI'
-            git config --global user.email 'circleci@gh-pages.com'
-            git add .
-            git commit -m 'Release [ci skip]'
-            git checkout -B release
-            git push -u origin release --force
