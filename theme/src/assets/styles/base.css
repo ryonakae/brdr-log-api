@@ -16,7 +16,8 @@ html {
 }
 
 body {
-  background-color: var(--bgColor_default);
+  /*background-color: var(--bgColor_default);*/
+  background-color: black;
   font-family: var(--fontFamily_default);
   font-size: var(--fontSize_default);
   line-height: var(--lineHeight_default);
@@ -24,7 +25,8 @@ body {
   font-kerning: normal;
   font-feature-settings: "palt" on;
   font-display: swap;
-  color: var(--textColor_default);
+  /*color: var(--textColor_default);*/
+  color: white;
   word-wrap: break-word;
   overflow-wrap: break-word;
   -webkit-text-size-adjust: 100%;
