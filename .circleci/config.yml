@@ -2,10 +2,17 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/brdr-log
-
     docker:
       - image: circleci/node:7.10.0
+
+    working_directory: ~/brdr-log
+
+    # developからのPull Requestの時だけCircleCIを動かす
+    # CircleCIのプロジェクト設定の、Advanced Settings -> Only build pull requests をOnに
+    branches:
+      ignore:
+        - master
+        - /feature-.*/
 
     steps:
       - checkout
@@ -30,9 +37,3 @@ jobs:
           command: |
             cd theme
             npm run lint
-
-      - run:
-          name: Build
-          command: |
-            cd theme
-            npm run build
