@@ -7,9 +7,10 @@ jobs:
     docker:
       - image: circleci/node:7.10.0
 
-    # branches:
-    #   only:
-    #     - master
+    branches:
+      ignore:
+        - develop
+        - /feature-.*/
 
     steps:
       - checkout
