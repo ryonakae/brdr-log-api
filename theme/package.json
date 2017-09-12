@@ -6,8 +6,8 @@
     "server": "browser-sync start -c 'bs-config.js'",
     "start": "npm run clean && npm run copy && npm run server & npm run watch",
     "build": "npm run clean && npm run copy && NODE_ENV=production webpack",
-    "lint:script": "eslint src/**/*.{js,vue} --ignore-pattern src/**/library",
-    "lint:style": "stylelint src/**/*.css & stylelint src/**/*.vue",
+    "lint:script": "eslint 'src/**/*.{js,vue}' --ignore-pattern 'src/**/library'",
+    "lint:style": "stylelint 'src/**/*.{css,vue}'",
     "lint": "npm run lint:script && npm run lint:style"
   },
   "devDependencies": {
