@@ -1,6 +1,6 @@
 #!/bin/sh
 
-git pull origin master
+git pull
 cd theme
 npm install
 npm run build

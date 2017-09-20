@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.page" ref="page">
     <ul v-if="hasPosts">
-      <li v-for="post in posts" :key="post.id" :class="$style.post" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
+      <li v-for="post in posts" :key="post.id" :class="[$style.post, {[$style.eyecatch]: checkHasEyecatch(post)}]" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
         <post-item-component :post="post"></post-item-component>
       </li>
     </ul>
@@ -64,27 +64,31 @@ export default {
     },
 
     checkOnLoad () {
-      // loadedCountが記事数と同じになったらlogoのローディング終了
+      // loadedCountが記事数と同じになったらisLoadedFirstをtrueにする
       if (this.posts.length === this.loadedPostItem) {
         console.log('all postitem loaded')
-        this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
-
-        // isLoadedFirstをtrueにする
         if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
       }
     },
 
     init () {
       // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
-      // allPostDataがない時だけgetAllPostsする
+      // allPostDataがない時だけcreateIndexする
       if (!this.hasPosts) {
-        this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0})
+        // logoのローディング開始 -> createIndex -> logoのローディング終了
+        this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
+          .then(this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0}))
+          .then(this.$store.dispatch('logoLoading', {boolean: false, wait: 300}))
       } else {
         console.log('allPostData already exsist')
         // 既に全記事がロードされているので、loadedPostItemは変化しない→watchが動かない
         // なので、手動でcheckOnLoad関数を実行する
         this.checkOnLoad()
       }
+    },
+
+    checkHasEyecatch (post) {
+      return post.featured_media > 0
     }
   },
 
@@ -97,9 +101,6 @@ export default {
 
     // loadedPostItemをリセット
     this.$store.dispatch('changeLoadedPostItem', 'reset')
-
-    // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
   },
 
   mounted () {
@@ -150,6 +151,12 @@ export default {
 
   @media (--mq_sp) {
     margin-top: 45px;
+  }
+}
+
+@media (--mq_sp) {
+  .post.eyecatch + .post.eyecatch {
+    margin-top: -1px;
   }
 }
 </style>

@@ -112,7 +112,7 @@ export default {
 
         commit('CHANGE_INFINITE_SCROLL_LOCK', true)
 
-        // logoをローディング中にする
+        // logoのローディング開始
         dispatch('logoLoading', {boolean: true, wait: 0})
 
         // getAllPostsする（optionsはそのまま渡す）
@@ -320,7 +320,6 @@ export default {
       util.wait(options.wait)
         .then(() => {
           commit('CHANGE_IS_LOGO_LOADING', options.boolean)
-          console.log('isLogoLoading', state.isLogoLoading)
           resolve()
         })
     })

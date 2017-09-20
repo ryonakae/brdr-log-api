@@ -15,7 +15,7 @@
       </router-link>
     </h1>
 
-    <div v-if="isFiltered" :class="$style.filter" @click="clearFilter">
+    <div v-if="isFiltered" :class="$style.filter" @click="filterByCategory('reset', null)">
       <svg :viewBox="icon.clear.viewBox">
         <use :xlink:href="'#'+icon.clear.id"></use>
       </svg>
@@ -84,13 +84,6 @@ export default {
   methods: {
     filterByCategory (categoryId, categoryName) {
       this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: true})
-
-      // カテゴリ一覧を閉じる
-      this.isCategoriesActive = false
-    },
-
-    clearFilter () {
-      this.$store.dispatch('filterByCategory', {categoryId: 'reset', transition: true})
 
       // カテゴリ一覧を閉じる
       this.isCategoriesActive = false
