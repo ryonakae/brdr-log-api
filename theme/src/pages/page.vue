@@ -48,11 +48,6 @@ export default {
     }
   },
 
-  created () {
-    // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
-  },
-
   mounted () {
     this.$store.dispatch('getPage', this.$route.params.slug)
       .then((result) => {

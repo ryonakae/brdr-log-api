@@ -51,9 +51,6 @@ export default {
 
     // axiosのクライアントをセットアップ
     this.$store.dispatch('initClient')
-
-    // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
   }
 }
 </script>

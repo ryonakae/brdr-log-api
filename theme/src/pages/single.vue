@@ -92,10 +92,9 @@ export default {
     // 404の時
     onNotFound () {
       this.$store.dispatch('changeTitle', 'Page Not Found')
-      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
-
       const $notFound = this.$refs.notFound
       $notFound.classList.remove(this.$style.hidden)
+      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
     }
   },
 
@@ -103,11 +102,6 @@ export default {
     moment (date) {
       return moment(date).format('YYYY.M.D')
     }
-  },
-
-  created () {
-    // logoのローディング開始
-    this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
   },
 
   mounted () {
@@ -119,6 +113,7 @@ export default {
       // currentPostDataがない場合(url直接叩いたとき)
       // →getPost()実行してcurrentPostDataにデータを入れる
       // エラー返ってきたらnotFoundを表示
+
       // 通常時
       if (!this.isPreview) {
         this.$store.dispatch('getPost', this.$route.params.id)
@@ -128,7 +123,8 @@ export default {
           .then(this.init)
           .catch(this.onNotFound)
       } else {
-        // プレビューの時は、リビジョンを取得して、contentだけリビジョンのものに置き換える
+        // プレビュー時
+        // リビジョンを取得して、contentだけリビジョンのものに置き換える
         Promise.all([
           this.$store.dispatch('getPost', this.$route.params.id),
           this.$store.dispatch('getPostRevisions', this.$route.params.id)

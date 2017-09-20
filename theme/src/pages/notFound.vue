@@ -12,7 +12,7 @@ export default {
 
   data () {
     return {
-      title: '404 Page Not Found'
+      title: 'Page Not Found'
     }
   },
 

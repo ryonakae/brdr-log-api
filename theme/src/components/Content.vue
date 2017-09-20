@@ -10,6 +10,7 @@
 
 <script>
 import imagesLoaded from 'imagesloaded'
+import {util} from '@/index'
 import '@/library/twitter_widgets'
 import '@/library/prettify'
 
@@ -70,11 +71,25 @@ export default {
     this.imgLoad.on('progress', (instance, image) => {
       image.img.classList.add('ready')
     })
-    // done
-    this.imgLoad.on('done', (instance) => {
-      // ロゴのローディング終了
-      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
-    })
+
+    // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
+    // 全部の画像を読み込み終わったらローディング終了
+    // すでに読み込まれている場合は即座にlogoのローディング終了
+    util.wait(100)
+      .then(() => {
+        if (!this.imgLoad.isComplete) {
+          console.log('images are NOT loaded')
+          this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
+
+          this.imgLoad.on('always', (instance) => {
+            console.log('all images are loaded')
+            this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+          })
+        } else {
+          console.log('images are ALREADY loaded')
+          this.$store.dispatch('logoLoading', {boolean: false, wait: 0})
+        }
+      })
 
     // isLoadedFirstをtrueにする
     if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
