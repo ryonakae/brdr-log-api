@@ -134,11 +134,11 @@ export default {
 
 .page {
   max-width: var(--width_index);
-  padding: var(--margin_top) 0 var(--margin_bottom);
+  padding-top: var(--margin_top);
   margin: 0 auto;
 
   @media (--mq_sp) {
-    padding: var(--margin_top_sp) 0 var(--margin_bottom_sp);
+    padding-top: var(--margin_top_sp);
   }
 }
 
