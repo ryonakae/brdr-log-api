@@ -1,6 +1,6 @@
 <template>
   <!-- アイキャッチがある -->
-  <router-link v-if="hasEyecatch" :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.eyecatch]" ref="post">
+  <router-link v-if="hasEyecatch" :to="'/post/'+post.id" tag="div" :class="[$style.post, $style.eyecatch]">
     <div :class="$style.bg">
       <div :class="$style.image" :style="{backgroundImage:'url('+eyecatch+')'}" ref="image"></div>
       <div :class="$style.overlay" ref="overlay"></div>
@@ -106,11 +106,13 @@ export default {
 
     // アイキャッチがある時
     if (this.hasEyecatch) {
-      const $post = this.$refs.post.$el
       const $image = this.$refs.image
       const $overlay = this.$refs.overlay
 
-      imagesLoaded($post, {background: true}, () => {
+      // imagesLoaded
+      const imgLoad = imagesLoaded($image, {background: true})
+      console.log(imgLoad)
+      imgLoad.on('always', () => {
         $image.classList.add(this.$style.ready)
         $overlay.classList.add(this.$style.ready)
         this.init()
