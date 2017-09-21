@@ -17,6 +17,12 @@ import '@/library/prettify'
 export default {
   props: ['data'],
 
+  data () {
+    return {
+      isImagesLoaded: false
+    }
+  },
+
   computed: {
     hasEyecatch () {
       return this.data.featured_media > 0
@@ -32,6 +38,30 @@ export default {
 
     hasContent () {
       return this.data.content.rendered !== ''
+    },
+
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
+    }
+  },
+
+  watch: {
+    isImagesLoaded () {
+      this.checkLoad()
+    },
+
+    isWebfontLoaded () {
+      this.checkLoad()
+    }
+  },
+
+  methods: {
+    checkLoad () {
+      // webフォントがロードされて、全ての画像が読み込み済みの時の処理
+      if (this.isWebfontLoaded && this.isImagesLoaded) {
+        console.log('all webfont and images loaded')
+        this.$store.dispatch('loading', {status: 'end', wait: 300})
+      }
     }
   },
 
@@ -79,15 +109,15 @@ export default {
     util.wait(100).then(() => {
       if (!imgLoad.isComplete) {
         console.log('images are NOT loaded')
-        this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
+        this.$store.dispatch('loading', {status: 'start', wait: 0})
 
         imgLoad.on('always', () => {
           console.log('all images are loaded')
-          this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+          this.isImagesLoaded = true
         })
       } else {
         console.log('images are ALREADY loaded')
-        this.$store.dispatch('logoLoading', {boolean: false, wait: 0})
+        this.isImagesLoaded = true
       }
     })
   }
@@ -311,9 +341,14 @@ export default {
     vertical-align: top;
     margin: 0;
     padding: 0 0.35em;
+    font-family: var(--fontFamily_code);
     font-size: var(--fontSize_code);
     letter-spacing: var(--letterSpacing_code);
     background-color: var(--bgColor_gray);
+
+    @nest :global(body.webfontLoaded) & {
+      font-family: var(--fontFamily_code_loaded);
+    }
 
     @media (--mq_sp) {
       font-size: var(--fontSize_code_sp);

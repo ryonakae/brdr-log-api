@@ -18,10 +18,6 @@ export default {
   },
 
   computed: {
-    siteUrl () {
-      return this.$store.state.siteUrl
-    },
-
     posts () {
       return this.$store.state.allPostData
     },
@@ -34,12 +30,26 @@ export default {
       return this.$store.state.perPage
     },
 
-    loadedPostItem () {
-      return this.$store.state.loadedPostItem
+    loadedPostCount () {
+      return this.$store.state.loadedPostCount
     },
 
     isPreview () {
       return this.$store.state.isPreview
+    },
+
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
+    }
+  },
+
+  watch: {
+    loadedPostCount () {
+      this.checkLoad()
+    },
+
+    isWebfontLoaded () {
+      this.checkLoad()
     }
   },
 
@@ -56,17 +66,24 @@ export default {
       }
     },
 
+    checkLoad () {
+      // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
+      if (this.isWebfontLoaded && this.posts.length === this.loadedPostCount) {
+        console.log('all webfont and postitem loaded')
+        this.$store.dispatch('loading', {status: 'end', wait: 300})
+      }
+    },
+
     init () {
       // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
-      // allPostDataがない時だけcreateIndexする
-      if (!this.hasPosts) {
-        // logoのローディング開始 -> createIndex -> logoのローディング終了
-        this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
-          .then(this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0}))
-          .then(this.$store.dispatch('logoLoading', {boolean: false, wait: 300}))
-      } else {
+      if (this.hasPosts) {
         console.log('allPostData already exsist')
-        this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+        this.$store.dispatch('loading', {status: 'end', wait: 0})
+      } else {
+        this.$store.dispatch('loading', {status: 'start', wait: 0})
+          .then(() => {
+            this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0})
+          })
       }
     },
 
@@ -82,8 +99,8 @@ export default {
     // currentPostDataを空にする
     this.clearCurrentPost()
 
-    // loadedPostItemをリセット
-    this.$store.dispatch('changeLoadedPostItem', 'reset')
+    // loadedPostCountをリセット
+    this.$store.dispatch('changeLoadedPostCount', 'reset')
   },
 
   mounted () {

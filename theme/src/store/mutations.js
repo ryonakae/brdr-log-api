@@ -18,20 +18,28 @@ export default {
     state.perPage = count
   },
 
-  INCREMENT_LOADED_POST_ITEM (state) {
-    state.loadedPostItem++
+  INCREMENT_LOADED_POST_COUNT (state) {
+    state.loadedPostCount++
   },
 
-  RESET_LOADED_POST_ITEM (state) {
-    state.loadedPostItem = 0
+  RESET_LOADED_POST_COUNT (state) {
+    state.loadedPostCount = 0
   },
 
   CHANGE_INFINITE_SCROLL_LOCK (state, boolean) {
     state.infiniteScrollLock = boolean
   },
 
-  CHANGE_IS_LOGO_LOADING (state, boolean) {
-    state.isLogoLoading = boolean
+  CHANGE_IS_WEBFONT_LOADED (state, boolean) {
+    state.isWebfontLoaded = boolean
+  },
+
+  CHANGE_IS_LOADING (state, boolean) {
+    state.isLoading = boolean
+  },
+
+  CHANGE_IS_NOT_FOUND (state, boolean) {
+    state.isNotFound = boolean
   },
 
   CHANGE_IS_FILTERED (state, boolean) {
