@@ -41,7 +41,7 @@ export default {
       classes: false,
       timeout: 10000,
       custom: {
-        families: ['Neue Frutiger', 'Noto Sans Japanese', 'Source Code Pro']
+        families: ['Neue Frutiger', 'Noto Sans Japanese']
       },
       active: () => {
         console.log('all webfont loaded')
