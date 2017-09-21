@@ -51,13 +51,6 @@ export default {
     })
   },
 
-  changeIsLoadedFirst ({commit}, boolean) {
-    return new Promise((resolve) => {
-      commit('CHANGE_IS_LOADED_FIRST', boolean)
-      resolve()
-    })
-  },
-
   changeLoadedPostItem ({commit}, arg) {
     return new Promise((resolve) => {
       if (arg === 'increment') {

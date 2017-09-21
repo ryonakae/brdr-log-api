@@ -43,13 +43,6 @@ export default {
     }
   },
 
-  watch: {
-    // loadedPostItemの数が変わるたびにcheckOnLoad関数を実行する
-    loadedPostItem () {
-      this.checkOnLoad()
-    }
-  },
-
   methods: {
     setCurrentPost (post) {
       if (this.$route.path === '/') {
@@ -60,14 +53,6 @@ export default {
     clearCurrentPost () {
       if (this.$route.path === '/') {
         this.$store.dispatch('clearCurrentPost')
-      }
-    },
-
-    checkOnLoad () {
-      // loadedCountが記事数と同じになったらisLoadedFirstをtrueにする
-      if (this.posts.length === this.loadedPostItem) {
-        console.log('all postitem loaded')
-        if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
       }
     },
 
@@ -82,10 +67,6 @@ export default {
       } else {
         console.log('allPostData already exsist')
         this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
-
-        // 既に全記事がロードされているので、loadedPostItemは変化しない→watchが動かない
-        // なので、手動でcheckOnLoad関数を実行する
-        this.checkOnLoad()
       }
     },
 

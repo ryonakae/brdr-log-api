@@ -90,9 +90,6 @@ export default {
         this.$store.dispatch('logoLoading', {boolean: false, wait: 0})
       }
     })
-
-    // isLoadedFirstをtrueにする
-    if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
   }
 }
 </script>

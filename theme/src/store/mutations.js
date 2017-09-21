@@ -30,10 +30,6 @@ export default {
     state.infiniteScrollLock = boolean
   },
 
-  CHANGE_IS_LOADED_FIRST (state, boolean) {
-    state.isLoadedFirst = boolean
-  },
-
   CHANGE_IS_LOGO_LOADING (state, boolean) {
     state.isLogoLoading = boolean
   },
