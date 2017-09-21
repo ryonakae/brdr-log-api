@@ -1,14 +1,14 @@
 <template>
-  <article v-if="hasPage" ref="page">
-    <header :class="$style.header">
-      <h1 :class="$style.title" v-html="page.title.rendered"></h1>
-    </header>
+  <div>
+    <article v-if="hasPage" ref="page">
+      <header :class="$style.header">
+        <h1 :class="$style.title" v-html="page.title.rendered"></h1>
+      </header>
 
-    <content-component :data="page"></content-component>
-  </article>
+      <content-component :data="page"></content-component>
+    </article>
 
-  <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
-    <not-found-component></not-found-component>
+    <not-found-component v-if="isNotFound"></not-found-component>
   </div>
 </template>
 
@@ -31,20 +31,16 @@ export default {
   computed: {
     hasPage () {
       return Object.keys(this.page).length > 0
+    },
+
+    isNotFound () {
+      return this.$store.state.isNotFound
     }
   },
 
   methods: {
     init () {
       this.$store.dispatch('changeTitle', this.page.title.rendered.toUpperCase())
-    },
-
-    // 404
-    onNotFound () {
-      this.$store.dispatch('changeTitle', 'Page Not Found')
-      const $notFound = this.$refs.notFound
-      $notFound.classList.remove(this.$style.hidden)
-      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
     }
   },
 
@@ -56,8 +52,13 @@ export default {
           resolve()
         })
       })
-      .then(this.init)
-      .catch(this.onNotFound)
+      .then(() => {
+        this.init()
+      })
+      .catch((err) => {
+        console.error(err)
+        this.$store.dispatch('onNotFound')
+      })
   }
 }
 </script>
@@ -69,11 +70,5 @@ export default {
 
 .header {
   @apply --header;
-}
-
-.notFound {
-  &.hidden {
-    display: none;
-  }
 }
 </style>

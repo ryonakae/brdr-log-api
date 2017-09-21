@@ -22,13 +22,6 @@ export default {
     })
   },
 
-  changePerPage ({commit}, count) {
-    return new Promise((resolve) => {
-      commit('SET_PER_PAGE', count)
-      resolve()
-    })
-  },
-
   setAllPost ({commit}, data) {
     return new Promise((resolve) => {
       commit('SET_ALL_POST_DATA', data)
@@ -51,15 +44,39 @@ export default {
     })
   },
 
-  changeLoadedPostItem ({commit}, arg) {
+  changeLoadedPostCount ({commit}, arg) {
     return new Promise((resolve) => {
       if (arg === 'increment') {
-        commit('INCREMENT_LOADED_POST_ITEM')
+        commit('INCREMENT_LOADED_POST_COUNT')
       } else if (arg === 'reset') {
-        commit('RESET_LOADED_POST_ITEM')
+        commit('RESET_LOADED_POST_COUNT')
       }
 
       resolve()
+    })
+  },
+
+  onNotFound ({dispatch, commit}, options) {
+    return new Promise((resolve) => {
+      commit('CHANGE_IS_NOT_FOUND', true)
+      dispatch('changeTitle', 'Page Not Found')
+      dispatch('loading', {status: 'end', wait: 300})
+      resolve()
+    })
+  },
+
+  // logoのloading
+  loading ({commit, state}, options) {
+    return new Promise((resolve) => {
+      util.wait(options.wait)
+        .then(() => {
+          if (options.status === 'start') {
+            commit('CHANGE_IS_LOADING', true)
+          } else if (options.status === 'end') {
+            commit('CHANGE_IS_LOADING', false)
+          }
+          resolve()
+        })
     })
   },
 
@@ -87,7 +104,7 @@ export default {
           res.data.length > 0 ? resolve(res.data) : reject()
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
           reject(err)
         })
     })
@@ -105,8 +122,8 @@ export default {
 
         commit('CHANGE_INFINITE_SCROLL_LOCK', true)
 
-        // logoのローディング開始
-        dispatch('logoLoading', {boolean: true, wait: 0})
+        // ローディング開始
+        dispatch('loading', {status: 'start', wait: 0})
 
         // getAllPostsする（optionsはそのまま渡す）
         dispatch('getAllPosts', options)
@@ -126,8 +143,8 @@ export default {
             console.log('error or nomore posts', err)
             commit('CHANGE_INFINITE_SCROLL_LOCK', true)
 
-            // logoのローディング終了
-            dispatch('logoLoading', {boolean: false, wait: 300})
+            // ローディング終了
+            dispatch('loading', {status: 'end', wait: 300})
 
             reject()
           })
@@ -172,7 +189,7 @@ export default {
           resolve(res.data)
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
           reject(err)
         })
     })
@@ -187,7 +204,7 @@ export default {
           resolve(res.data[0])
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
           reject(err)
         })
     })
@@ -207,7 +224,7 @@ export default {
           res.data.length > 0 ? resolve(res.data[0]) : reject()
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
           reject(err)
         })
     })
@@ -223,7 +240,7 @@ export default {
           resolve(res.data)
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
           reject(err)
         })
     })
@@ -247,7 +264,7 @@ export default {
             }
           })
           .catch((err) => {
-            console.log(err)
+            console.error(err)
             reject(err)
           })
       })
@@ -257,8 +274,8 @@ export default {
   // カテゴリで絞り込む
   filterByCategory ({dispatch, commit, state}, options) {
     return new Promise((resolve) => {
-      // logoのローディング開始
-      dispatch('logoLoading', {boolean: true, wait: 0})
+      // ローディング開始
+      dispatch('loading', {status: 'start', wait: 0})
 
       // createIndexのオプションを作成
       // categoryIdが'reset'なら全記事取得
@@ -299,20 +316,9 @@ export default {
             commit('CHANGE_IS_FILTERED', true)
           }
 
-          // logoのローディング終了
-          dispatch('logoLoading', {boolean: false, wait: 300})
+          // ローディング終了
+          dispatch('loading', {status: 'end', wait: 300})
 
-          resolve()
-        })
-    })
-  },
-
-  // logoのloading
-  logoLoading ({commit, state}, options) {
-    return new Promise((resolve) => {
-      util.wait(options.wait)
-        .then(() => {
-          commit('CHANGE_IS_LOGO_LOADING', options.boolean)
           resolve()
         })
     })

@@ -1,23 +1,23 @@
 <template>
-  <article v-if="hasPost" ref="article">
-    <header :class="$style.header">
-      <h1 :class="$style.title" v-html="postTitle"></h1>
+  <div>
+    <article v-if="hasPost" ref="article">
+      <header :class="$style.header">
+        <h1 :class="$style.title" v-html="postTitle"></h1>
 
-      <div :class="$style.info">
-        <div :class="$style.date">{{post.date | moment}}</div>
-        <ul v-if="hasCategories" :class="$style.categories">
-          <li v-for="category in categories" :key="category.id" :class="$style.category" @click="filterByCategory(category.id, category.name)">{{category.name}}</li>
-        </ul>
+        <div :class="$style.info">
+          <div :class="$style.date">{{post.date | moment}}</div>
+          <ul v-if="hasCategories" :class="$style.categories">
+            <li v-for="category in categories" :key="category.id" :class="$style.category" @click="filterByCategory(category.id, category.name)">{{category.name}}</li>
+          </ul>
 
-        <share-component :permalink="post.link" :title="postTitle" :class="$style.share"></share-component>
-      </div>
-    </header>
+          <share-component :permalink="post.link" :title="postTitle" :class="$style.share"></share-component>
+        </div>
+      </header>
 
-    <content-component :data="post"></content-component>
-  </article>
+      <content-component :data="post"></content-component>
+    </article>
 
-  <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
-    <not-found-component></not-found-component>
+    <not-found-component v-if="isNotFound"></not-found-component>
   </div>
 </template>
 
@@ -54,10 +54,6 @@ export default {
       return this.post.categories.length >= 1
     },
 
-    isPreview () {
-      return this.$store.state.isPreview
-    },
-
     postTitle () {
       let title
 
@@ -68,6 +64,20 @@ export default {
       }
 
       return title
+    },
+
+    isPreview () {
+      return this.$store.state.isPreview
+    },
+
+    isNotFound () {
+      return this.$store.state.isNotFound
+    }
+  },
+
+  filters: {
+    moment (date) {
+      return moment(date).format('YYYY.M.D')
     }
   },
 
@@ -87,20 +97,6 @@ export default {
             this.categories = result
           })
       }
-    },
-
-    // 404の時
-    onNotFound () {
-      this.$store.dispatch('changeTitle', 'Page Not Found')
-      const $notFound = this.$refs.notFound
-      $notFound.classList.remove(this.$style.hidden)
-      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
-    }
-  },
-
-  filters: {
-    moment (date) {
-      return moment(date).format('YYYY.M.D')
     }
   },
 
@@ -120,8 +116,13 @@ export default {
           .then((result) => {
             this.$store.dispatch('setCurrentPost', result)
           })
-          .then(this.init)
-          .catch(this.onNotFound)
+          .then(() => {
+            this.init()
+          })
+          .catch((err) => {
+            console.error(err)
+            this.$store.dispatch('onNotFound')
+          })
       } else {
         // プレビュー時
         // リビジョンを取得して、contentだけリビジョンのものに置き換える
@@ -130,13 +131,18 @@ export default {
           this.$store.dispatch('getPostRevisions', this.$route.params.id)
         ])
           .then((results) => {
-            const _result = results[0]
-            _result.content = results[1].content
-            console.log(_result)
-            this.$store.dispatch('setCurrentPost', _result)
+            // results[0]がgetPostの結果、results[1]がgetPostRevisionsの結果
+            const result = Object.assign(results[0], results[1])
+            console.log(result)
+            this.$store.dispatch('setCurrentPost', result)
           })
-          .then(this.init)
-          .catch(this.onNotFound)
+          .then(() => {
+            this.init()
+          })
+          .catch((err) => {
+            console.error(err)
+            this.$store.dispatch('onNotFound')
+          })
       }
     }
   }
@@ -150,12 +156,6 @@ export default {
 
 .header {
   @apply --header;
-}
-
-.notFound {
-  &.hidden {
-    display: none;
-  }
 }
 </style>
 
