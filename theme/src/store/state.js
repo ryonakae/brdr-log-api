@@ -12,7 +12,6 @@ export default {
   perPageMobile: 6,
   loadedPostItem: 0,
   infiniteScrollLock: false,
-  isLoadedFirst: false,
   isLogoLoading: true,
   isFiltered: false,
   filteredCategory: '',

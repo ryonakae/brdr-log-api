@@ -22,7 +22,7 @@
       <span>{{filteredCategory}}</span>
     </div>
 
-    <ul v-if="isLoadedFirst" :class="$style.navi">
+    <ul :class="$style.navi">
       <li :class="$style.categories">
         <span :class="$style.text" @click="toggleCategories">Category</span>
         <ul :class="{[$style.active]: isCategoriesActive}">
@@ -62,10 +62,6 @@ export default {
 
     perPage () {
       return this.$store.state.perPage
-    },
-
-    isLoadedFirst () {
-      return this.$store.state.isLoadedFirst
     },
 
     isLogoLoading () {
