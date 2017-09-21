@@ -36,12 +36,12 @@ export default {
       this.$store.dispatch('changePerPage', this.perPageMobile)
     }
 
-    // webfont(Noto Sans Japanese)のロードが終わったらbodyにaddClass
+    // webfontのロードが終わったらbodyにaddClass
     webFont.load({
       classes: false,
       timeout: 10000,
       custom: {
-        families: ['Noto Sans Japanese']
+        families: ['Neue Frutiger', 'Noto Sans Japanese', 'Source Code Pro']
       },
       active: () => {
         console.log('all webfont loaded')

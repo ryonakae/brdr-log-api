@@ -1,26 +1,58 @@
 @font-face {
+  font-family: "Hiragino";
+  font-weight: normal;
+  src: local("Hiragino Sans W3"), local("ヒラギノ角ゴ ProN W3"), local("Hiragino Kaku Gothic ProN");
+}
+
+@font-face {
+  font-family: "Hiragino";
+  font-weight: bold;
+  src: local("Hiragino Sans W6"), local("ヒラギノ角ゴ ProN W6"), local("Hiragino Kaku Gothic ProN W6");
+}
+
+@font-face {
+  font-family: "Apple System";
+  src: local("-apple-system"), local("BlinkMacSystemFont");
+}
+
+@font-face {
+  font-family: "Sans Serif";
+  font-weight: normal;
+  src: local("Avenir Next"), local("Avenir"), local("Helvetica Neue"), local("Helvetica"), local("Arial");
+}
+
+@font-face {
+  font-family: "Sans Serif";
+  font-weight: bold;
+  src: local("Avenir Next Demi Bold"), local("AvenirNext-DemiBold"), local("AvenirNextDemiBold"), local("Avenir Black"), local("Avenir-Black"), local("AvenirBlack"), local("Helvetica Neue Bold"), local("HelveticaNeue-Bold"), local("HelveticaNeueBold"), local("Helvetica Bold"), local("Helvetica-Bold"), local("HelveticaBold"), local("Arial Bold"), local("Arial-BoldMT");
+}
+
+@font-face {
   font-family: "Neue Frutiger";
+  font-weight: normal;
   src: local("Neue Frutiger"), url("~fonts/NeueFrutiger-Book.woff2") format("woff2"), url("~fonts/NeueFrutiger-Book.woff") format("woff");
 }
 
 @font-face {
   font-family: "Neue Frutiger";
-  src: local("Neue Frutiger"), url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"), url("~fonts/NeueFrutiger-Bold.woff") format("woff");
   font-weight: bold;
+  src: local("Neue Frutiger"), url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"), url("~fonts/NeueFrutiger-Bold.woff") format("woff");
 }
 
 @font-face {
   font-family: "Noto Sans Japanese";
+  font-weight: normal;
   src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
 }
 
 @font-face {
   font-family: "Noto Sans Japanese";
-  src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
   font-weight: bold;
+  src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
 }
 
 @font-face {
   font-family: "Source Code Pro";
+  font-weight: normal;
   src: local("Source Code Pro"), url("~fonts/SourceCodePro-Regular.woff2") format("woff2"), url("~fonts/SourceCodePro-Regular.woff") format("woff");
 }
