@@ -17,6 +17,12 @@ import '@/library/prettify'
 export default {
   props: ['data'],
 
+  data () {
+    return {
+      isImagesLoaded: false
+    }
+  },
+
   computed: {
     hasEyecatch () {
       return this.data.featured_media > 0
@@ -32,7 +38,31 @@ export default {
 
     hasContent () {
       return this.data.content.rendered !== ''
+    },
+
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
     }
+  },
+
+  watch: {
+    isImagesLoaded () {
+      this.checkOnLoad()
+    },
+
+    isWebfontLoaded () {
+      this.checkOnLoad()
+    }
+  },
+
+  methods: {
+    checkOnLoad () {
+      // webフォントがロードされて、全ての画像が読み込み済みの時の処理
+      if (this.isWebfontLoaded && this.isImagesLoaded) {
+        console.log('all webfont and images loaded')
+        this.$store.dispatch('loading', {status: 'end', wait: 300})
+      }
+    },
   },
 
   mounted () {
@@ -79,20 +109,17 @@ export default {
     util.wait(100).then(() => {
       if (!imgLoad.isComplete) {
         console.log('images are NOT loaded')
-        this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
+        this.$store.dispatch('loading', {status: 'start', wait: 0})
 
         imgLoad.on('always', () => {
           console.log('all images are loaded')
-          this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+          this.isImagesLoaded = true
         })
       } else {
         console.log('images are ALREADY loaded')
-        this.$store.dispatch('logoLoading', {boolean: false, wait: 0})
+        this.isImagesLoaded = true
       }
     })
-
-    // isLoadedFirstをtrueにする
-    if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
   }
 }
 </script>

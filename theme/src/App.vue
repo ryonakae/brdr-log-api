@@ -1,12 +1,16 @@
 <template>
   <div id="app">
-    <header-component></header-component>
-    <router-view></router-view>
-    <footer-component></footer-component>
+    <header>
+      <logo-component></logo-component>
+      <header-component :class="{[$style.hidden]: !isWebfontLoaded}"></header-component>
+    </header>
+    <router-view :class="{[$style.hidden]: !isWebfontLoaded}"></router-view>
+    <footer-component :class="{[$style.hidden]: !isWebfontLoaded}"></footer-component>
   </div>
 </template>
 
 <script>
+import LogoComponent from '@/components/Logo.vue'
 import HeaderComponent from '@/components/Header.vue'
 import FooterComponent from '@/components/Footer.vue'
 import {util} from '@/index'
@@ -14,6 +18,7 @@ import webFont from 'webfontloader'
 
 export default {
   components: {
+    LogoComponent,
     HeaderComponent,
     FooterComponent
   },
@@ -21,6 +26,10 @@ export default {
   computed: {
     perPageMobile () {
       return this.$store.state.perPageMobile
+    },
+
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
     }
   },
 
@@ -46,11 +55,7 @@ export default {
       active: () => {
         console.log('all webfont loaded')
         document.body.classList.add('webfontLoaded')
-      },
-      // 1つでも読み込みエラーしたら即座にaddClass
-      fontinactive: (familyName, fvd) => {
-        console.error(familyName, fvd, 'is faild to load')
-        document.body.classList.add('webfontLoaded')
+        this.$store.dispatch('changeIsWebfontLoaded', true)
       }
     })
 
@@ -79,5 +84,11 @@ code {
   @nest body.webfontLoaded & {
     font-family: var(--fontFamily_code_loaded);
   }
+}
+</style>
+
+<style module>
+.hidden {
+  visibility: hidden;
 }
 </style>

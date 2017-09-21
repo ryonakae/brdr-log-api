@@ -16,9 +16,7 @@
     <content-component :data="post"></content-component>
   </article>
 
-  <div v-else ref="notFound" :class="[$style.notFound, $style.hidden]">
-    <not-found-component></not-found-component>
-  </div>
+  <not-found-component v-else></not-found-component>
 </template>
 
 <script>
@@ -91,10 +89,8 @@ export default {
 
     // 404の時
     onNotFound () {
-      this.$store.dispatch('changeTitle', 'Page Not Found')
-      const $notFound = this.$refs.notFound
-      $notFound.classList.remove(this.$style.hidden)
-      this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+      this.$store.dispatch('changeTitle', 'Post Not Found')
+      this.$store.dispatch('loading', {status: 'end', wait: 300})
     }
   },
 
@@ -150,12 +146,6 @@ export default {
 
 .header {
   @apply --header;
-}
-
-.notFound {
-  &.hidden {
-    display: none;
-  }
 }
 </style>
 

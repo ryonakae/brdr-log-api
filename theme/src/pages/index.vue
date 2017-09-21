@@ -40,12 +40,20 @@ export default {
 
     isPreview () {
       return this.$store.state.isPreview
+    },
+
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
     }
   },
 
   watch: {
-    // loadedPostItemの数が変わるたびにcheckOnLoad関数を実行する
+    // loadedPostItemの数とisWebfontLoadedの値が変わるたびにcheckOnLoad関数を実行する
     loadedPostItem () {
+      this.checkOnLoad()
+    },
+
+    isWebfontLoaded () {
       this.checkOnLoad()
     }
   },
@@ -64,28 +72,21 @@ export default {
     },
 
     checkOnLoad () {
-      // loadedCountが記事数と同じになったらisLoadedFirstをtrueにする
-      if (this.posts.length === this.loadedPostItem) {
-        console.log('all postitem loaded')
-        if (!this.$store.state.isLoadedFirst) this.$store.dispatch('changeIsLoadedFirst', true)
+      // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
+      if (this.isWebfontLoaded && this.posts.length === this.loadedPostItem) {
+        console.log('all webfont and postitem loaded')
+        this.$store.dispatch('loading', {status: 'end', wait: 300})
       }
     },
 
     init () {
       // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
-      // allPostDataがない時だけcreateIndexする
-      if (!this.hasPosts) {
-        // logoのローディング開始 -> createIndex -> logoのローディング終了
-        this.$store.dispatch('logoLoading', {boolean: true, wait: 0})
-          .then(this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0}))
-          .then(this.$store.dispatch('logoLoading', {boolean: false, wait: 300}))
-      } else {
+      if (this.hasPosts) {
         console.log('allPostData already exsist')
-        this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
-
-        // 既に全記事がロードされているので、loadedPostItemは変化しない→watchが動かない
-        // なので、手動でcheckOnLoad関数を実行する
-        this.checkOnLoad()
+        this.$store.dispatch('loading', {status: 'end', wait: 0})
+      } else {
+        this.$store.dispatch('loading', {status: 'start', wait: 0})
+          .then(this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0}))
       }
     },
 

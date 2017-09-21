@@ -51,9 +51,9 @@ export default {
     })
   },
 
-  changeIsLoadedFirst ({commit}, boolean) {
+  changeIsWebfontLoaded ({commit}, boolean) {
     return new Promise((resolve) => {
-      commit('CHANGE_IS_LOADED_FIRST', boolean)
+      commit('CHANGE_IS_WEBFONT_LOADED', boolean)
       resolve()
     })
   },
@@ -113,7 +113,7 @@ export default {
         commit('CHANGE_INFINITE_SCROLL_LOCK', true)
 
         // logoのローディング開始
-        dispatch('logoLoading', {boolean: true, wait: 0})
+        dispatch('loading', {status: 'start', wait: 0})
 
         // getAllPostsする（optionsはそのまま渡す）
         dispatch('getAllPosts', options)
@@ -134,7 +134,7 @@ export default {
             commit('CHANGE_INFINITE_SCROLL_LOCK', true)
 
             // logoのローディング終了
-            dispatch('logoLoading', {boolean: false, wait: 300})
+            dispatch('loading', {status: 'end', wait: 300})
 
             reject()
           })
@@ -265,7 +265,7 @@ export default {
   filterByCategory ({dispatch, commit, state}, options) {
     return new Promise((resolve) => {
       // logoのローディング開始
-      dispatch('logoLoading', {boolean: true, wait: 0})
+      dispatch('loading', {status: 'start', wait: 0})
 
       // createIndexのオプションを作成
       // categoryIdが'reset'なら全記事取得
@@ -307,7 +307,7 @@ export default {
           }
 
           // logoのローディング終了
-          dispatch('logoLoading', {boolean: false, wait: 300})
+          dispatch('loading', {status: 'end', wait: 300})
 
           resolve()
         })
@@ -315,11 +315,15 @@ export default {
   },
 
   // logoのloading
-  logoLoading ({commit, state}, options) {
+  loading ({commit, state}, options) {
     return new Promise((resolve) => {
       util.wait(options.wait)
         .then(() => {
-          commit('CHANGE_IS_LOGO_LOADING', options.boolean)
+          if (options.status === 'start') {
+            commit('CHANGE_IS_LOADING', true)
+          } else if (options.status === 'end') {
+            commit('CHANGE_IS_LOADING', false)
+          }
           resolve()
         })
     })

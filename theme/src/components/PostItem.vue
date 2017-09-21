@@ -40,7 +40,8 @@ export default {
 
   data () {
     return {
-      categories: []
+      categories: [],
+      isLoaded: false
     }
   },
 
@@ -75,6 +76,20 @@ export default {
       }
 
       return title
+    },
+
+    isWebfontLoaded () {
+      return this.$store.state.isWebfontLoaded
+    }
+  },
+
+  watch: {
+    isLoaded () {
+      this.checkOnLoad()
+    },
+
+    isWebfontLoaded () {
+      this.checkOnLoad()
     }
   },
 
@@ -82,10 +97,21 @@ export default {
     init () {
       // PostItemがロードされたらloadedPostItemを1up
       this.$store.dispatch('changeLoadedPostItem', 'increment')
+      this.isLoaded = true
     },
 
     filterByCategory (categoryId, categoryName) {
       this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: false})
+    },
+
+    checkOnLoad () {
+      // アイキャッチがあり、webfont読み込み済みで、アイキャッチの読み込みが完了した場合
+      if (this.hasEyecatch && this.isWebfontLoaded && this.isLoaded) {
+        const $image = this.$refs.image
+        const $overlay = this.$refs.overlay
+        $image.classList.add(this.$style.ready)
+        $overlay.classList.add(this.$style.ready)
+      }
     }
   },
 
@@ -106,17 +132,11 @@ export default {
 
     // アイキャッチがある時
     if (this.hasEyecatch) {
-      const $image = this.$refs.image
-      const $overlay = this.$refs.overlay
-
       // imagesLoaded
+      const $image = this.$refs.image
       const imgLoad = imagesLoaded($image, {background: true})
       console.log(imgLoad)
-      imgLoad.on('always', () => {
-        $image.classList.add(this.$style.ready)
-        $overlay.classList.add(this.$style.ready)
-        this.init()
-      })
+      imgLoad.on('always', this.init)
     } else {
       // アイキャッチがないとき
       this.init()

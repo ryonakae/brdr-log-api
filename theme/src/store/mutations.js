@@ -30,12 +30,12 @@ export default {
     state.infiniteScrollLock = boolean
   },
 
-  CHANGE_IS_LOADED_FIRST (state, boolean) {
-    state.isLoadedFirst = boolean
+  CHANGE_IS_WEBFONT_LOADED (state, boolean) {
+    state.isWebfontLoaded = boolean
   },
 
-  CHANGE_IS_LOGO_LOADING (state, boolean) {
-    state.isLogoLoading = boolean
+  CHANGE_IS_LOADING (state, boolean) {
+    state.isLoading = boolean
   },
 
   CHANGE_IS_FILTERED (state, boolean) {
