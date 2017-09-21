@@ -142,6 +142,10 @@ export default {
     text-decoration: underline;
   }
 
+  & strong {
+    font-weight: bold;
+  }
+
   & h1,
   & h2,
   & h3,
