@@ -62,7 +62,7 @@ export default {
         console.log('all webfont and images loaded')
         this.$store.dispatch('loading', {status: 'end', wait: 300})
       }
-    },
+    }
   },
 
   mounted () {

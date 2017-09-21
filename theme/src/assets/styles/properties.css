@@ -17,7 +17,6 @@
   --textColor_lightGray: color(var(--color_key) alpha(30%));
 
   /* font family */
-  /* font-faceで指定した'Sans Serif'や'Hiragino'を使う */
   --fontFamily_default: "Sans Serif", "Hiragino", "メイリオ", Meiryo, sans-serif;
   --fontFamily_loaded: "Neue Frutiger", "Noto Sans Japanese", sans-serif;
   --fontFamily_code: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
