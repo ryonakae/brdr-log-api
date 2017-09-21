@@ -31,33 +31,33 @@
   font-family: "Neue Frutiger";
   font-weight: normal;
   src: local("Neue Frutiger"), url("~fonts/NeueFrutiger-Book.woff2") format("woff2"), url("~fonts/NeueFrutiger-Book.woff") format("woff");
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Neue Frutiger";
   font-weight: bold;
   src: local("Neue Frutiger"), url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"), url("~fonts/NeueFrutiger-Bold.woff") format("woff");
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Noto Sans Japanese";
   font-weight: normal;
   src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Noto Sans Japanese";
   font-weight: bold;
   src: local("Noto Sans CJK JP"), url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Source Code Pro";
   font-weight: normal;
   src: local("Source Code Pro"), url("~fonts/SourceCodePro-Regular.woff2") format("woff2"), url("~fonts/SourceCodePro-Regular.woff") format("woff");
-  font-display: block;
+  font-display: swap;
 }
