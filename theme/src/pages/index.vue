@@ -81,6 +81,8 @@ export default {
           .then(this.$store.dispatch('logoLoading', {boolean: false, wait: 300}))
       } else {
         console.log('allPostData already exsist')
+        this.$store.dispatch('logoLoading', {boolean: false, wait: 300})
+
         // 既に全記事がロードされているので、loadedPostItemは変化しない→watchが動かない
         // なので、手動でcheckOnLoad関数を実行する
         this.checkOnLoad()
