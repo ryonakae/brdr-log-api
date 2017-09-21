@@ -73,17 +73,8 @@ export default {
 @import "media.css";
 @import "base.css";
 
-/* WebFontをApp.vueで指定しないとdistにfontがコピーされない */
 body.webfontLoaded {
   font-family: var(--fontFamily_loaded);
-}
-
-code {
-  font-family: var(--fontFamily_code);
-
-  @nest body.webfontLoaded & {
-    font-family: var(--fontFamily_code_loaded);
-  }
 }
 </style>
 

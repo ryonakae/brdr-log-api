@@ -16,7 +16,10 @@ const options = {
   },
   cssnano: {
     preset: 'default',
-    autoprefixer: false
+    autoprefixer: false,
+    discardUnused: {
+      fontFace: false
+    }
   }
 }
 
