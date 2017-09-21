@@ -63,7 +63,7 @@ export default {
             resolve(res.data)
           })
           .catch((err) => {
-            console.log(err)
+            console.erorr(err)
             reject(err)
           })
       })

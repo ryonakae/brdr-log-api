@@ -42,7 +42,7 @@ export default {
 
     // mobileのときだけperPageを少なくする
     if (util.getDevice() === 'mobile') {
-      this.$store.dispatch('changePerPage', this.perPageMobile)
+      this.$store.commit('SET_PER_PAGE', this.perPageMobile)
     }
 
     // webfontのロードが終わったらbodyにaddClass
@@ -55,7 +55,7 @@ export default {
       active: () => {
         console.log('all webfont loaded')
         document.body.classList.add('webfontLoaded')
-        this.$store.dispatch('changeIsWebfontLoaded', true)
+        this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
       }
     })
 

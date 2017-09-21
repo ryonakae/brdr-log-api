@@ -18,12 +18,12 @@ export default {
     state.perPage = count
   },
 
-  INCREMENT_LOADED_POST_ITEM (state) {
-    state.loadedPostItem++
+  INCREMENT_LOADED_POST_COUNT (state) {
+    state.loadedPostCount++
   },
 
-  RESET_LOADED_POST_ITEM (state) {
-    state.loadedPostItem = 0
+  RESET_LOADED_POST_COUNT (state) {
+    state.loadedPostCount = 0
   },
 
   CHANGE_INFINITE_SCROLL_LOCK (state, boolean) {
@@ -36,6 +36,10 @@ export default {
 
   CHANGE_IS_LOADING (state, boolean) {
     state.isLoading = boolean
+  },
+
+  CHANGE_IS_NOT_FOUND (state, boolean) {
+    state.isNotFound = boolean
   },
 
   CHANGE_IS_FILTERED (state, boolean) {

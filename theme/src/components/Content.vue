@@ -47,16 +47,16 @@ export default {
 
   watch: {
     isImagesLoaded () {
-      this.checkOnLoad()
+      this.checkLoad()
     },
 
     isWebfontLoaded () {
-      this.checkOnLoad()
+      this.checkLoad()
     }
   },
 
   methods: {
-    checkOnLoad () {
+    checkLoad () {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
       if (this.isWebfontLoaded && this.isImagesLoaded) {
         console.log('all webfont and images loaded')

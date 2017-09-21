@@ -18,10 +18,6 @@ export default {
   },
 
   computed: {
-    siteUrl () {
-      return this.$store.state.siteUrl
-    },
-
     posts () {
       return this.$store.state.allPostData
     },
@@ -34,8 +30,8 @@ export default {
       return this.$store.state.perPage
     },
 
-    loadedPostItem () {
-      return this.$store.state.loadedPostItem
+    loadedPostCount () {
+      return this.$store.state.loadedPostCount
     },
 
     isPreview () {
@@ -48,13 +44,12 @@ export default {
   },
 
   watch: {
-    // loadedPostItemの数とisWebfontLoadedの値が変わるたびにcheckOnLoad関数を実行する
-    loadedPostItem () {
-      this.checkOnLoad()
+    loadedPostCount () {
+      this.checkLoad()
     },
 
     isWebfontLoaded () {
-      this.checkOnLoad()
+      this.checkLoad()
     }
   },
 
@@ -71,9 +66,9 @@ export default {
       }
     },
 
-    checkOnLoad () {
+    checkLoad () {
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
-      if (this.isWebfontLoaded && this.posts.length === this.loadedPostItem) {
+      if (this.isWebfontLoaded && this.posts.length === this.loadedPostCount) {
         console.log('all webfont and postitem loaded')
         this.$store.dispatch('loading', {status: 'end', wait: 300})
       }
@@ -86,7 +81,9 @@ export default {
         this.$store.dispatch('loading', {status: 'end', wait: 0})
       } else {
         this.$store.dispatch('loading', {status: 'start', wait: 0})
-          .then(this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0}))
+          .then(() => {
+            this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0})
+          })
       }
     },
 
@@ -102,8 +99,8 @@ export default {
     // currentPostDataを空にする
     this.clearCurrentPost()
 
-    // loadedPostItemをリセット
-    this.$store.dispatch('changeLoadedPostItem', 'reset')
+    // loadedPostCountをリセット
+    this.$store.dispatch('changeLoadedPostCount', 'reset')
   },
 
   mounted () {
