@@ -19,7 +19,8 @@
   /* font family */
   --fontFamily_default: "Apple System", "Sans Serif", "Hiragino", "メイリオ", Meiryo, sans-serif;
   --fontFamily_loaded: "Neue Frutiger", "Noto Sans Japanese", sans-serif;
-  --fontFamily_code: "Source Code Pro", Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  --fontFamily_code: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  --fontFamily_code_loaded: "Source Code Pro", monospace;
 
   /* font size */
   --fontSize_default: 1.6rem;

@@ -15,12 +15,8 @@
     cursor: pointer;
     transition: all var(--duration_quick) var(--easing);
 
-    @nest body.pc &:hover {
-      text-decoration: none;
-      opacity: 0.7;
-    }
-
     @nest :global(body.pc) &:hover {
+      text-decoration: none;
       opacity: 0.7;
     }
   }

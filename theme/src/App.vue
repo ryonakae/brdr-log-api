@@ -46,6 +46,11 @@ export default {
       active: () => {
         console.log('all webfont loaded')
         document.body.classList.add('webfontLoaded')
+      },
+      // 1つでも読み込みエラーしたら即座にaddClass
+      fontinactive: (familyName, fvd) => {
+        console.error(familyName, fvd, 'is faild to load')
+        document.body.classList.add('webfontLoaded')
       }
     })
 
@@ -63,7 +68,16 @@ export default {
 @import "media.css";
 @import "base.css";
 
+/* WebFontをApp.vueで指定しないとdistにfontがコピーされない */
 body.webfontLoaded {
   font-family: var(--fontFamily_loaded);
+}
+
+code {
+  font-family: var(--fontFamily_code);
+
+  @nest body.webfontLoaded & {
+    font-family: var(--fontFamily_code_loaded);
+  }
 }
 </style>
