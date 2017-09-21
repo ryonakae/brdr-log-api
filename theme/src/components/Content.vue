@@ -315,10 +315,6 @@ export default {
     letter-spacing: var(--letterSpacing_code);
     background-color: var(--bgColor_gray);
 
-    @nest :global(body.webfontLoaded) & {
-      font-family: var(--fontFamily_code_loaded);
-    }
-
     @media (--mq_sp) {
       font-size: var(--fontSize_code_sp);
     }
