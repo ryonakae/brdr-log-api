@@ -42,7 +42,7 @@ const common = {
         test: /\.(otf|eot|ttf|woff|woff2)$/,
         loader: 'url-loader',
         options: {
-          limit: 20000,
+          limit: 1,
           name: '[name].[ext]',
           outputPath: 'fonts/',
           publicPath: filePath.theme

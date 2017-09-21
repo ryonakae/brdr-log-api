@@ -39,9 +39,9 @@ export default {
     // webfontのロードが終わったらbodyにaddClass
     webFont.load({
       classes: false,
-      timeout: 10000,
+      timeout: 5000,
       custom: {
-        families: ['Neue Frutiger:n4,n7', 'Noto Sans Japanese:n4,n7', 'Source Code Pro']
+        families: ['Neue Frutiger:n4,n7', 'Noto Sans Japanese:n4,n7', 'Source Code Pro:n4']
       },
       active: () => {
         console.log('all webfont loaded')
