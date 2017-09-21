@@ -314,7 +314,6 @@ export default {
     vertical-align: top;
     margin: 0;
     padding: 0 0.35em;
-    font-family: var(--fontFamily_code);
     font-size: var(--fontSize_code);
     letter-spacing: var(--letterSpacing_code);
     background-color: var(--bgColor_gray);
