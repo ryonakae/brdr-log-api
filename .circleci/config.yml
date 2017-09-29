@@ -82,7 +82,7 @@ workflows:
     jobs:
       # developからmasterへのpull requestが作成されたとき
       # masterへpull requestがmergeされたとき
-      - build
+      - build:
           filters:
             branches:
               only:
