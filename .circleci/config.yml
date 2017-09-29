@@ -8,8 +8,7 @@ defaults: &defaults
 
 jobs:
   # install npm package
-  # build というjob名にしないとエラーが出る
-  build:
+  npm-install:
     <<: *defaults
 
     steps:
@@ -86,8 +85,8 @@ workflows:
   test-or-deploy:
     jobs:
       # developからmasterへのpull requestが作成されたとき
-      # masterへpull requestがmergeされたとき
-      - build:
+      # masterへpull requestがmergeされたとき(masterにcommitがあったとき)
+      - npm-install:
           filters:
             branches:
               only:
@@ -97,15 +96,15 @@ workflows:
       # developからmasterへのpull requestが作成されたとき
       - lint-js-css:
           requires:
-            - build
+            - npm-install
           filters:
             branches:
               only: develop
 
-      # masterへpull requestがmergeされたとき
+      # masterへpull requestがmergeされたとき(masterにcommitがあったとき)
       - build-and-publish:
           requires:
-            - build
+            - npm-install
           filters:
             branches:
               only: master
