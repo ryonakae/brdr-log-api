@@ -3,13 +3,9 @@
 logs
 *.log
 npm-debug.log*
-package-lock.json
-
-.env
-backup
 
 node_modules
-theme/dist/*
+dist
 _sprite.*
 
 !.gitkeep

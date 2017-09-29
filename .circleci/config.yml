@@ -1,39 +1,102 @@
+# CircleCIのプロジェクト設定の、Advanced Settings -> Only build pull requestsをOnに
 version: 2
 
+defaults: &defaults
+  working_directory: ~/brdr-log
+  docker:
+    - image: circleci/node:7.10.0
+
 jobs:
+  # install npm package
   build:
-    docker:
-      - image: circleci/node:7.10.0
-
-    working_directory: ~/brdr-log
-
-    # developからのPull Requestの時だけCircleCIを動かす
-    # CircleCIのプロジェクト設定の、Advanced Settings -> Only build pull requests をOnに
-    branches:
-      ignore:
-        - master
-        - /feature-.*/
+    <<: *defaults
 
     steps:
       - checkout
 
       - restore_cache:
           keys:
-            - brdr-log-{{ checksum "theme/package.json" }}
+            - brdr-log-{{ checksum "package.json" }}
 
       - run:
-          name: Install Node Package
-          command: |
-            cd theme
-            npm install
+          name: Install node package
+          command: npm install
 
       - save_cache:
-          key: brdr-log-{{ checksum "theme/package.json" }}
+          key: brdr-log-{{ checksum "package.json" }}
           paths:
-            - ./theme/node_modules
+            - ./node_modules
+
+  # test
+  test_js_css:
+    <<: *defaults
+
+    steps:
+      - restore_cache:
+          keys:
+            - brdr-log-{{ checksum "package.json" }}
 
       - run:
-          name: Test
+          name: Install node package
+          command: npm install
+
+      - save_cache:
+          key: brdr-log-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+      - run:
+          name: Lint
+          command: npm run lint
+
+  # build and publish
+  build_and_publish:
+    <<: *defaults
+
+    steps:
+      - run:
+          name: Build
+          command: npm run build
+
+      - run:
+          name: Erase and move files
           command: |
-            cd theme
-            npm run lint
+            find . -maxdepth 1 -type f -not -name '.gitmodules' | xargs rm -rf
+            find . -maxdepth 1 -type d -not -name '.' -not -name '.git' -not -name 'server' -not -name 'dist' | xargs rm -rf
+            mv dist theme
+
+      - deploy:
+          name: Deploy and publich
+          command: |
+            - git config --global user.name  "CircleCI"
+            - git config --global user.email "circleci@log.brdr.jp"
+            - git add .
+            - git commit -m "[ci skip] Publish by CircleCI"
+            - git checkout -B public
+            - git push -u origin public --force
+
+workflows:
+  version: 2
+
+  test_and_deploy:
+    jobs:
+      # developからmasterへのpull requestが作成されたとき
+      # masterへpull requestがmergeされたとき
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
+                - master
+
+      # developからmasterへのpull requestが作成されたとき
+      - test_js_css:
+          filters:
+            branches:
+              only: develop
+
+      # masterへpull requestがmergeされたとき
+      - build_and_publish:
+          filters:
+            branches:
+              only: master
