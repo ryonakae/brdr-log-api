@@ -1,3 +1,4 @@
+# CircleCIのプロジェクト設定の、Advanced Settings -> Only build pull requestsをOnに
 version: 2
 
 defaults: &defaults
@@ -79,13 +80,22 @@ workflows:
 
   test_and_deploy:
     jobs:
+      # developからmasterへのpull requestが作成されたとき
+      # masterへpull requestがmergeされたとき
       - build
+          filters:
+            branches:
+              only:
+                - develop
+                - master
 
+      # developからmasterへのpull requestが作成されたとき
       - test_js_css:
           filters:
             branches:
               only: develop
 
+      # masterへpull requestがmergeされたとき
       - build_and_publish:
           filters:
             branches:
