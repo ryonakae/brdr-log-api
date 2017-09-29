@@ -8,6 +8,7 @@ defaults: &defaults
 
 jobs:
   # install npm package
+  # build というjob名にしないとエラーが出る
   build:
     <<: *defaults
 
@@ -27,8 +28,8 @@ jobs:
           paths:
             - ./node_modules
 
-  # test
-  test_js_css:
+  # lint
+  lint-js-css:
     <<: *defaults
 
     steps:
@@ -52,7 +53,7 @@ jobs:
           command: npm run lint
 
   # build and publish
-  build_and_publish:
+  build-and-publish:
     <<: *defaults
 
     steps:
@@ -82,7 +83,7 @@ jobs:
 workflows:
   version: 2
 
-  test_and_deploy:
+  test-or-deploy:
     jobs:
       # developからmasterへのpull requestが作成されたとき
       # masterへpull requestがmergeされたとき
@@ -94,13 +95,17 @@ workflows:
                 - master
 
       # developからmasterへのpull requestが作成されたとき
-      - test_js_css:
+      - lint-js-css:
+          requires:
+            - build
           filters:
             branches:
               only: develop
 
       # masterへpull requestがmergeされたとき
-      - build_and_publish:
+      - build-and-publish:
+          requires:
+            - build
           filters:
             branches:
               only: master
