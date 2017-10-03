@@ -1,11 +1,11 @@
 :root {
   /* color */
-  --color_key: #162140;
+  --color_key: #131414;
 
   /* bg color */
   --bgColor_default: #fff;
   --bgColor_gray: color(var(--color_key) alpha(10%));
-  --bgColor_selection: #162140;
+  --bgColor_selection: #fc524c;
 
   /* border color */
   --borderColor_default: color(var(--color_key) alpha(8%));
@@ -51,7 +51,7 @@
 
   /* letter spacing */
   --letterSpacing_default: 0.075em;
-  --letterSpacing_title: 0.075em;
+  --letterSpacing_title: 0.055em;
   --letterSpacing_code: 0;
 
   /* transition */
