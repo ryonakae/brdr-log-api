@@ -226,7 +226,7 @@ export default {
   transition: all var(--duration_quick) var(--easing);
 
   &.ready {
-    opacity: 0.4;
+    opacity: 0.25;
   }
 }
 
@@ -256,7 +256,7 @@ export default {
 
   @nest :global(body.pc) &:hover {
     & .overlay {
-      opacity: 0.8;
+      opacity: 0.5;
     }
 
     & .image {

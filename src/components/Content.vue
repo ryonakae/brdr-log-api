@@ -283,7 +283,6 @@ export default {
   & :global(.img) {
     display: table;
     margin: 2.1em auto;
-    overflow: hidden;
 
     &:first-child {
       margin-top: 0;
