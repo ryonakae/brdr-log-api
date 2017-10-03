@@ -51,7 +51,7 @@
 
   /* letter spacing */
   --letterSpacing_default: 0.075em;
-  --letterSpacing_title: 0.075em;
+  --letterSpacing_title: 0.055em;
   --letterSpacing_code: 0;
 
   /* transition */
