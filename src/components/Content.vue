@@ -314,6 +314,7 @@ export default {
       margin-top: 1.2em;
       line-height: var(--lineHeight_caption);
       font-size: var(--fontSize_small);
+      color: var(--textColor_gray);
 
       @media (--mq_sp) {
         font-size: var(--fontSize_small_sp);
