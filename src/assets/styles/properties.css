@@ -17,7 +17,7 @@
   --textColor_lightGray: color(var(--color_key) alpha(30%));
 
   /* font family */
-  --fontFamily_default: "Sans Serif", "Hiragino", "メイリオ", Meiryo, sans-serif;
+  --fontFamily_default: system-ui, "Sans Serif", "Hiragino", "メイリオ", Meiryo, sans-serif;
   --fontFamily_loaded: "Neue Frutiger", "Noto Sans Japanese", sans-serif;
   --fontFamily_code: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
   --fontFamily_code_loaded: "Source Code Pro", monospace;
