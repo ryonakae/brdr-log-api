@@ -1,6 +1,6 @@
 'use strict'
 
-import {util, scrollManager} from '@/index'
+import {utils, scrollManager} from '@/index'
 import router from '@/router'
 
 // 非同期、複数のmutationsを組み合わせた処理
@@ -68,7 +68,7 @@ export default {
   // logoのloading
   loading ({commit, state}, options) {
     return new Promise((resolve) => {
-      util.wait(options.wait)
+      utils.wait(options.wait, true)
         .then(() => {
           if (options.status === 'start') {
             commit('CHANGE_IS_LOADING', true)
@@ -101,7 +101,7 @@ export default {
         .then((res) => {
           // console.log(res)
           // res.bodyが空(これ以上記事ない)ときはrejectを返す
-          res.data.length > 0 ? resolve(res.data) : reject()
+          res.data.length > 0 ? resolve(res.data) : reject(new Error('error on getAllPosts'))
         })
         .catch((err) => {
           console.error(err)
@@ -146,7 +146,7 @@ export default {
             // ローディング終了
             dispatch('loading', {status: 'end', wait: 300})
 
-            reject()
+            reject(new Error('error on infiniteScroll: ' + err))
           })
       }
     })
@@ -221,7 +221,7 @@ export default {
       state.client.get('/pages', {params: queryOptions})
         .then((res) => {
           console.log(res)
-          res.data.length > 0 ? resolve(res.data[0]) : reject()
+          res.data.length > 0 ? resolve(res.data[0]) : reject(new Error('error on getPage'))
         })
         .catch((err) => {
           console.error(err)

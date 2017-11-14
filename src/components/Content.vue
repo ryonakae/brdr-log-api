@@ -10,7 +10,7 @@
 
 <script>
 import imagesLoaded from 'imagesloaded'
-import {util} from '@/index'
+import {utils} from '@/index'
 import '@/library/twitter_widgets'
 import '@/library/prettify'
 
@@ -106,7 +106,7 @@ export default {
     // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
     // 全部の画像を読み込み終わったらローディング終了
     // すでに読み込まれている場合は即座にlogoのローディング終了
-    util.wait(100).then(() => {
+    utils.wait(100, true).then(() => {
       if (!imgLoad.isComplete) {
         console.log('images are NOT loaded')
         this.$store.dispatch('loading', {status: 'start', wait: 0})

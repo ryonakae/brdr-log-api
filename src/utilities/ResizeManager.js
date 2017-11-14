@@ -9,8 +9,6 @@ export default class ResizeManager {
     this.functions = {}
     this.fps = 60
     this.isResizing = false
-
-    this.init()
   }
 
   init () {

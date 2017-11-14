@@ -13,7 +13,7 @@
 import LogoComponent from '@/components/Logo.vue'
 import HeaderComponent from '@/components/Header.vue'
 import FooterComponent from '@/components/Footer.vue'
-import {util} from '@/index'
+import {utils} from '@/index'
 import webFont from 'webfontloader'
 
 export default {
@@ -38,12 +38,10 @@ export default {
     this.$store.dispatch('changeTitle', '')
 
     // デバイスによってbodyにaddClass
-    document.body.classList.add(util.getDevice())
+    document.body.classList.add(utils.getDevice())
 
     // mobileのときだけperPageを少なくする
-    if (util.getDevice() === 'mobile') {
-      this.$store.commit('SET_PER_PAGE', this.perPageMobile)
-    }
+    if (utils.getDevice() === 'mobile') this.$store.commit('SET_PER_PAGE', this.perPageMobile)
 
     // webfontのロードが終わったらbodyにaddClass
     webFont.load({

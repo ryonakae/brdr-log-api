@@ -1,14 +1,8 @@
 'use strict'
 
-// スクロール量の取得はブラウザによって差異がありすぎるので、jQueryを使う
-import $ from 'jquery'
-
 export default class ScrollManager {
   constructor (options) {
-    this.$window = null
-
-    this.resizeManager = options.resizeManager
-    this.util = options.util
+    this.utils = options.utils
 
     this.scrollAmount = 0
     this.scrollDirection = null
@@ -19,27 +13,23 @@ export default class ScrollManager {
     this.functions = {}
     this.fps = 60
     this.isScrolling = false
-
-    this.init()
   }
 
   init () {
-    this.$window = $(window)
-
     this.update()
 
     // pcはwheelイベント、タッチデバイスはtouchstart & touchmoveイベント
-    if (this.util.getDevice() === 'pc') {
-      this.$window.on('wheel', (e) => {
+    if (this.utils.getDevice() === 'pc') {
+      window.addEventListener('wheel', (e) => {
         this.onScroll(e)
-      })
+      }, false)
     } else {
-      this.$window.on('touchstart', (e) => {
+      window.addEventListener('touchstart', (e) => {
         this.onTouchstart(e)
-      })
-      this.$window.on('touchmove', (e) => {
+      }, false)
+      window.addEventListener('touchmove', (e) => {
         this.onScroll(e)
-      })
+      }, false)
     }
   }
 
@@ -68,21 +58,20 @@ export default class ScrollManager {
   }
 
   onTouchstart (event) {
-    this.touchStartY = event.originalEvent.changedTouches[0].pageY
+    this.touchStartY = event.changedTouches[0].pageY
   }
 
   update (event) {
     this.scrollTop = window.pageYOffset
-    this.scrollBottom = this.getScrollTop() + this.resizeManager.getWindowHeight()
+    this.scrollBottom = this.getScrollTop() + window.innerHeight
 
     // スクロール量を設定
     // update関数の引数にeventが入ってる時だけ実行
     if (event) {
-      if (this.util.getDevice() === 'pc') {
-        this.scrollAmount = event.originalEvent.deltaY
+      if (this.utils.getDevice() === 'pc') {
+        this.scrollAmount = event.deltaY
       } else {
-        const touchMoveY = event.originalEvent.changedTouches[0].pageY
-        this.scrollAmount = this.touchStartY - touchMoveY
+        this.scrollAmount = this.touchStartY - event.changedTouches[0].pageY
       }
     }
 
