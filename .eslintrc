@@ -5,7 +5,6 @@
     "browser": true
   },
   "rules": {
-    "no-unused-vars": "warn",
-    "prefer-promise-reject-errors": "warn"
+    "no-unused-vars": "warn"
   }
 }
