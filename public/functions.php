@@ -50,7 +50,7 @@ update_option('medium_large_size_w', 0);
 
 // アイキャッチ画像のサイズを追加
 // add_image_size('theme_dummy', 10, 10, false);
-add_image_size('theme_thumbnail', 2048, 0, false);
+add_image_size('theme_thumbnail', 2048, 2048, false);
 
 // セルフピンバックの無効化
 function no_self_ping(&$links){
@@ -126,7 +126,18 @@ function rename_mediafile($filename) {
 	if( $info['filename'] != 'sitemap' ){
 		$filename = strtolower(time().$ext);
 	}
-    return $filename;
+  return $filename;
 }
 add_filter('sanitize_file_name', 'rename_mediafile', 10);
+
+// Cloudinary settings
+function my_cloudinary_settings($args) {
+  $args['transform']['crop'] = 'limit';
+	$args['transform']['format'] = 'auto';
+	$args['transform']['quality'] = 'auto:best';
+	$args['transform']['flags'] = 'progressive';
+	return $args;
+}
+add_filter('cloudinary_default_args', 'my_cloudinary_settings');
+
 ?>
