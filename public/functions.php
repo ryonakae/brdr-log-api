@@ -131,13 +131,28 @@ function rename_mediafile($filename) {
 add_filter('sanitize_file_name', 'rename_mediafile', 10);
 
 // Cloudinary settings
-function my_cloudinary_settings($args) {
+add_filter('cloudinary_default_args', function($args) {
   $args['transform']['crop'] = 'limit';
 	$args['transform']['format'] = 'auto';
 	$args['transform']['quality'] = 'auto:best';
 	$args['transform']['flags'] = 'progressive';
 	return $args;
-}
-add_filter('cloudinary_default_args', 'my_cloudinary_settings');
+});
+
+add_shortcode('cloudinary', function($atts) {
+  extract(shortcode_atts(array(
+    'url' => '',
+  ), $atts));
+
+  return cloudinary_url($url, array(
+    'transform' => array(
+      'crop' => 'limit',
+      'width' => 1440,
+      'height' => 1440,
+      'format' => 'auto',
+      'quality' => 'auto:best'
+    )
+  ));
+});
 
 ?>
