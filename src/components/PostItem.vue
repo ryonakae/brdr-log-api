@@ -58,7 +58,7 @@ export default {
       let eyecatch
 
       if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_eyecatch.source_url
       } else {
         eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url
       }

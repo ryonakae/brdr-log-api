@@ -31,7 +31,7 @@
     // og_image
     if (has_post_thumbnail()) {
       $thumbnail_id = get_post_thumbnail_id($post->ID);
-      $image = wp_get_attachment_image_src( $thumbnail_id, 'medium' );
+      $image = wp_get_attachment_image_src( $thumbnail_id, 'theme_eyecatch' );
       $og_image = $image[0];
     }
     else {
