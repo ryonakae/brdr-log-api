@@ -18,7 +18,7 @@ remove_action('admin_print_styles', 'print_emoji_styles');
 // head内のインラインスタイル削除
 add_filter('widgets_init', function() {
   global $wp_widget_factory;
-  remove_action('wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
+  remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
 });
 
 // head内のdns-prefetchを削除
@@ -32,23 +32,22 @@ add_filter('wp_resource_hints', function($hints, $relation_type) {
 // アイキャッチ画像の有効化
 add_theme_support('post-thumbnails');
 
-// アイキャッチ画像生成時の画質を変更
+// 画像生成時の画質を変更
 add_filter('jpeg_quality', function($arg){ return 100; });
 
-// アイキャッチ画像のサイズを削除
+// 画像のサイズを削除
 add_filter('intermediate_image_sizes_advanced', function($sizes){
-  unset($sizes['thumbnail']);
-	unset($sizes['medium']);
+  // medium_large(Advanced Custom Fields)
+  update_option('medium_large_size_w', 0);
+
+  // unset($sizes['thumbnail']);
+	// unset($sizes['medium']);
 	unset($sizes['large']);
 	return $sizes;
 });
-// medium_large
-update_option('medium_large_size_w', 0);
 
-// アイキャッチ画像のサイズを追加
-add_image_size('theme_thumbnail', 300, 300, true);
+// 画像のサイズを追加
 add_image_size('theme_eyecatch', 2048, 2048, false);
-// add_image_size('theme_content', 1440, 1440, false);
 
 // セルフピンバックの無効化
 add_filter('pre_ping', function(&$links) {
@@ -114,7 +113,7 @@ add_filter('image_send_to_editor', 'my_image_send_to_editor', 10 ,7);
 add_filter('sanitize_file_name', function($filename) {
   $info = pathinfo($filename);
 	$ext  = empty($info['extension']) ? '' : '.' . $info['extension'];
-	if( $info['filename'] != 'sitemap' ){
+	if ($info['filename'] != 'sitemap') {
 		$filename = strtolower(time().$ext);
 	}
   return $filename;
@@ -123,7 +122,7 @@ add_filter('sanitize_file_name', function($filename) {
 // Cloudinary
 // productionでだけ有効にする
 // developmentではAuto Cloudinaryの設定の「Content Images」のチェックを外す（アイキャッチが表示できなくなるため）
-if (getenv('SERVER_ENV') == 'production') {
+if (function_exists('cloudinary_url') && getenv('SERVER_ENV') == 'production') {
   // デフォルトのフォーマットを設定
   add_filter('cloudinary_default_args', function($args) {
     $args['transform']['crop'] = 'limit';
@@ -141,7 +140,8 @@ if (getenv('SERVER_ENV') == 'production') {
     foreach ($matches[2] as $url) {
       $content = str_replace($url, cloudinary_url($url, array(
         'transform' => array(
-          'width' => 1440
+          'width' => 1440,
+          'height' => 1440,
         )
       )), $content);
     }
