@@ -127,7 +127,7 @@ if (function_exists('cloudinary_url')) {
     return 'limit';
   }, 10, 1);
   add_filter('cloudinary_default_args', function($args) {
-    $args['transform']['format'] = 'auto';
+    $args['transform']['fetch_format'] = 'auto';
     $args['transform']['quality'] = 'auto:best';
     $args['transform']['flags'] = 'progressive';
     return $args;
