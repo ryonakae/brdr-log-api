@@ -30,7 +30,7 @@ export default {
 
     eyecatch () {
       if (Object.keys(this.data._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        return this.data._embedded['wp:featuredmedia'][0].media_details.sizes.theme_thumbnail.source_url
+        return this.data._embedded['wp:featuredmedia'][0].media_details.sizes.theme_eyecatch.source_url
       } else {
         return this.data._embedded['wp:featuredmedia'][0].source_url
       }
