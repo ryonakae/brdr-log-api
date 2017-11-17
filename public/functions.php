@@ -40,13 +40,14 @@ add_filter('intermediate_image_sizes_advanced', function($sizes){
   // medium_large(Advanced Custom Fields)
   update_option('medium_large_size_w', 0);
 
-  // unset($sizes['thumbnail']);
+  unset($sizes['thumbnail']);
 	// unset($sizes['medium']);
 	unset($sizes['large']);
 	return $sizes;
 });
 
 // 画像のサイズを追加
+add_image_size('admin_thumbnail', 300, 300, true);
 add_image_size('theme_eyecatch', 2048, 2048, false);
 
 // セルフピンバックの無効化
@@ -120,34 +121,37 @@ add_filter('sanitize_file_name', function($filename) {
 }, 10);
 
 // Cloudinary
-// productionでだけ有効にする
-// developmentではAuto Cloudinaryの設定の「Content Images」のチェックを外す（アイキャッチが表示できなくなるため）
-if (function_exists('cloudinary_url') && getenv('SERVER_ENV') == 'production') {
+if (function_exists('cloudinary_url')) {
   // デフォルトのフォーマットを設定
+  add_filter('cloudinary_default_crop', function($crop) {
+    return 'limit';
+  }, 10, 1);
   add_filter('cloudinary_default_args', function($args) {
-    $args['transform']['crop'] = 'limit';
-  	$args['transform']['format'] = 'auto';
-  	$args['transform']['quality'] = 'auto:best';
-  	$args['transform']['flags'] = 'progressive';
-  	return $args;
+    $args['transform']['format'] = 'auto';
+    $args['transform']['quality'] = 'auto:best';
+    $args['transform']['flags'] = 'progressive';
+    return $args;
   });
 
-  // 本文中の画像URLをCloudinaryのものに置換する
-  add_filter('the_content', function($content) {
-    $pattern = '/<img.*?src=(["\'])(.+?)\1.*?>/i';
-    preg_match_all($pattern, $content, $matches);
+  // productionでだけ本文中の画像URLをCloudinaryのものに置換する
+  // developmentではAuto Cloudinaryの設定の「Content Images」のチェックを外す（アイキャッチが表示できなくなるため）
+  if (getenv('SERVER_ENV') == 'production') {
+    add_filter('the_content', function($content) {
+      $pattern = '/<img.*?src=(["\'])(.+?)\1.*?>/i';
+      preg_match_all($pattern, $content, $matches);
 
-    foreach ($matches[2] as $url) {
-      $content = str_replace($url, cloudinary_url($url, array(
-        'transform' => array(
-          'width' => 1440,
-          'height' => 1440,
-        )
-      )), $content);
-    }
+      foreach ($matches[2] as $url) {
+        $content = str_replace($url, cloudinary_url($url, array(
+          'transform' => array(
+            'width' => 1440,
+            'height' => 1440,
+          )
+        )), $content);
+      }
 
-    return $content;
-  });
+      return $content;
+    });
+  }
 }
 
 ?>
