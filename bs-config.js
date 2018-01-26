@@ -12,7 +12,7 @@ module.exports = {
   // reloadDelay: 300,
   ghostMode: false,
   proxy: {
-    target: 'log.brdr.dev',
+    target: 'log.brdr.test',
     middleware: [
       webpackDevMiddleware(bundler, {
         publicPath: webpackConfig.output.publicPath,
