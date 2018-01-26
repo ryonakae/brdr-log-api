@@ -20,16 +20,28 @@ export default class ScrollManager {
 
     // pcはwheelイベント、タッチデバイスはtouchstart & touchmoveイベント
     if (this.utils.getDevice() === 'pc') {
-      window.addEventListener('wheel', (e) => {
-        this.onScroll(e)
-      }, false)
+      window.addEventListener(
+        'wheel',
+        e => {
+          this.onScroll(e)
+        },
+        false
+      )
     } else {
-      window.addEventListener('touchstart', (e) => {
-        this.onTouchstart(e)
-      }, false)
-      window.addEventListener('touchmove', (e) => {
-        this.onScroll(e)
-      }, false)
+      window.addEventListener(
+        'touchstart',
+        e => {
+          this.onTouchstart(e)
+        },
+        false
+      )
+      window.addEventListener(
+        'touchmove',
+        e => {
+          this.onScroll(e)
+        },
+        false
+      )
     }
   }
 

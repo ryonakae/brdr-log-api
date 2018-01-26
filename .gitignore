@@ -5,7 +5,7 @@ logs
 npm-debug.log*
 
 node_modules
-dist
+theme
 _sprite.*
 
 !.gitkeep

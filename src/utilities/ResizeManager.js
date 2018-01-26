@@ -17,7 +17,11 @@ export default class ResizeManager {
     this.update()
 
     this.$window.addEventListener('resize', this.onResize.bind(this), false)
-    this.$window.addEventListener('orientationchange', this.onResize.bind(this), false)
+    this.$window.addEventListener(
+      'orientationchange',
+      this.onResize.bind(this),
+      false
+    )
   }
 
   add (name, func) {

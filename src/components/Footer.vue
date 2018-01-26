@@ -24,7 +24,7 @@ export default {
     ShareComponent
   },
 
-  data () {
+  data() {
     return {
       icon: {
         back: iconBack
@@ -33,15 +33,15 @@ export default {
   },
 
   computed: {
-    isIndex () {
+    isIndex() {
       return this.$route.path === '/'
     },
 
-    post () {
+    post() {
       return this.$store.state.currentPostData
     },
 
-    hasPost () {
+    hasPost() {
       return Object.keys(this.post).length > 0
     }
   }
@@ -49,9 +49,9 @@ export default {
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
-@import "media.css";
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 
 .footer {
   margin: var(--margin_bottom) 0 var(--margin_page);

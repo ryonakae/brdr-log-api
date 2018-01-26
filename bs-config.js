@@ -5,7 +5,6 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackConfig = require('./webpack.config')
 const bundler = webpack(webpackConfig)
 
-
 module.exports = {
   open: false,
   notify: false,

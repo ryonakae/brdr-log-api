@@ -66,8 +66,7 @@ jobs:
           name: Erase and move files
           command: |
             find . -maxdepth 1 -type f -not -name '.gitmodules' | xargs rm -rf
-            find . -maxdepth 1 -type d -not -name '.' -not -name '.git' -not -name 'server' -not -name 'dist' | xargs rm -rf
-            mv dist theme
+            find . -maxdepth 1 -type d -not -name '.' -not -name '.git' -not -name 'server' -not -name 'theme' | xargs rm -rf
 
       - deploy:
           name: Deploy and publich

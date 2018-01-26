@@ -1,4 +1,3 @@
-
 'use strict'
 
 import 'es6-promise/auto'
@@ -60,12 +59,12 @@ export default class Utils {
     let waitObj
 
     if (initial) {
-      waitObj = new Promise((resolve) => {
+      waitObj = new Promise(resolve => {
         setTimeout(resolve, delay)
       })
     } else {
       waitObj = () => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           setTimeout(resolve, delay)
         })
       }
