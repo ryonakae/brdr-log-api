@@ -1,6 +1,5 @@
 'use strict'
 
-import 'es6-promise/auto'
 import UAParser from 'ua-parser-js'
 
 export default class Utils {

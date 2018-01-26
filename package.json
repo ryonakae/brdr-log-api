@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "es6-promise": "^4.2.4",
     "imagesloaded": "^4.1.4",
     "moment": "^2.20.1",
     "reset-css": "^2.2.1",

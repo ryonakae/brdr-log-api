@@ -11,7 +11,6 @@ const options = {
 }
 
 module.exports = ctx => ({
-  map: ctx.env === 'production' ? false : ctx.options.map,
   plugins: {
     'postcss-import': options.postcssImport,
     'postcss-cssnext': options.cssnext,

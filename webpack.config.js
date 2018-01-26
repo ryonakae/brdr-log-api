@@ -22,7 +22,6 @@ const common = {
       // images
       {
         test: /\.(jpg|png|bmp|gif)$/,
-        exclude: /node_modules/,
         loader: 'url-loader',
         options: {
           limit: 20000,
@@ -34,14 +33,12 @@ const common = {
       // images(svg)
       {
         test: /\.svg$/,
-        exclude: /node_modules/,
         loader: 'svg-sprite-loader'
       },
 
       // webfont
       {
         test: /\.(otf|eot|ttf|woff|woff2)$/,
-        exclude: /node_modules/,
         loader: 'url-loader',
         options: {
           limit: 1,
@@ -61,7 +58,6 @@ const common = {
       // vue
       {
         test: /\.vue$/,
-        exclude: /node_modules/,
         loader: 'vue-loader'
       }
     ]
@@ -87,8 +83,12 @@ const common = {
 }
 
 // development config
+const hotMiddlewareScript =
+  'webpack-hot-middleware/client?noinfo=true&quiet=true'
 const dev = {
-  entry: ['webpack-hot-middleware/client?noinfo=true&quiet=true'],
+  entry: {
+    index: [path.join(__dirname, 'src/index.js'), hotMiddlewareScript]
+  },
 
   output: {
     publicPath: filePath.theme
