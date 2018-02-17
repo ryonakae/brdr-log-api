@@ -10,7 +10,7 @@
 
 <script>
 import PostItemComponent from '@/components/PostItem.vue'
-import {scrollManager} from '@/index'
+import { scrollManager } from '@/index'
 
 export default {
   components: {
@@ -18,81 +18,85 @@ export default {
   },
 
   computed: {
-    posts () {
+    posts() {
       return this.$store.state.allPostData
     },
 
-    hasPosts () {
+    hasPosts() {
       return this.posts.length > 0
     },
 
-    perPage () {
+    perPage() {
       return this.$store.state.perPage
     },
 
-    loadedPostCount () {
+    loadedPostCount() {
       return this.$store.state.loadedPostCount
     },
 
-    isPreview () {
+    isPreview() {
       return this.$store.state.isPreview
     },
 
-    isWebfontLoaded () {
+    isWebfontLoaded() {
       return this.$store.state.isWebfontLoaded
     }
   },
 
   watch: {
-    loadedPostCount () {
+    loadedPostCount() {
       this.checkLoad()
     },
 
-    isWebfontLoaded () {
+    isWebfontLoaded() {
       this.checkLoad()
     }
   },
 
   methods: {
-    setCurrentPost (post) {
+    setCurrentPost(post) {
       if (this.$route.path === '/') {
         this.$store.dispatch('setCurrentPost', post)
       }
     },
 
-    clearCurrentPost () {
+    clearCurrentPost() {
       if (this.$route.path === '/') {
         this.$store.dispatch('clearCurrentPost')
       }
     },
 
-    checkLoad () {
+    checkLoad() {
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
       if (this.isWebfontLoaded && this.posts.length === this.loadedPostCount) {
         console.log('all webfont and postitem loaded')
-        this.$store.dispatch('loading', {status: 'end', wait: 300})
+        this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }
     },
 
-    init () {
+    init() {
       // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
       if (this.hasPosts) {
         console.log('allPostData already exsist')
-        this.$store.dispatch('loading', {status: 'end', wait: 0})
+        this.$store.dispatch('loading', { status: 'end', wait: 0 })
       } else {
-        this.$store.dispatch('loading', {status: 'start', wait: 0})
+        this.$store
+          .dispatch('loading', { status: 'start', wait: 0 })
           .then(() => {
-            this.$store.dispatch('createIndex', {per_page: this.perPage, offset: 0})
+            this.$store.dispatch('createIndex', {
+              per_page: this.perPage,
+              offset: 0
+            })
           })
       }
     },
 
-    checkHasEyecatch (post) {
+    checkHasEyecatch(post) {
       return post.featured_media > 0
     }
   },
 
-  created () {
+  created() {
     // ページタイトルを変更
     this.$store.dispatch('changeTitle', '')
 
@@ -103,25 +107,25 @@ export default {
     this.$store.dispatch('changeLoadedPostCount', 'reset')
   },
 
-  mounted () {
+  mounted() {
     this.init()
   },
 
-  beforeRouteEnter (to, from, next) {
-    next((vm) => {
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
       // プレビュー時、かつ /?p=[id]&preview=true というクエリがある場合は、singleに遷移する
       // 遷移時にp(id)を渡す
       const query = vm.$route.query
 
       if (vm.isPreview && Object.keys(query).length > 0) {
         if (Object.keys(query.p).length > 0 && query.preview) {
-          vm.$router.replace({path: '/post/' + query.p})
+          vm.$router.replace({ path: '/post/' + query.p })
         }
       }
     })
   },
 
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     scrollManager.remove('index.infiniteScroll')
     next()
   }
@@ -129,8 +133,8 @@ export default {
 </script>
 
 <style module>
-@import "properties.css";
-@import "media.css";
+@import 'properties.css';
+@import 'media.css';
 
 .page {
   max-width: var(--width_index);

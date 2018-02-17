@@ -38,7 +38,7 @@ import imagesLoaded from 'imagesloaded'
 export default {
   props: ['post'],
 
-  data () {
+  data() {
     return {
       categories: [],
       isPostItemLoaded: false
@@ -46,19 +46,24 @@ export default {
   },
 
   computed: {
-    hasCategories () {
+    hasCategories() {
       return this.post.categories.length >= 1
     },
 
-    hasEyecatch () {
+    hasEyecatch() {
       return this.post.featured_media > 0
     },
 
-    eyecatch () {
+    eyecatch() {
       let eyecatch
 
-      if (Object.keys(this.post._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details.sizes.theme_eyecatch.source_url
+      if (
+        Object.keys(
+          this.post._embedded['wp:featuredmedia'][0].media_details.sizes
+        ).length > 0
+      ) {
+        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details
+          .sizes.theme_eyecatch.source_url
       } else {
         eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url
       }
@@ -66,7 +71,7 @@ export default {
       return eyecatch
     },
 
-    postTitle () {
+    postTitle() {
       let title
 
       if (this.post.status === 'draft') {
@@ -78,33 +83,37 @@ export default {
       return title
     },
 
-    isWebfontLoaded () {
+    isWebfontLoaded() {
       return this.$store.state.isWebfontLoaded
     }
   },
 
   watch: {
-    isPostItemLoaded () {
+    isPostItemLoaded() {
       this.checkLoad()
     },
 
-    isWebfontLoaded () {
+    isWebfontLoaded() {
       this.checkLoad()
     }
   },
 
   methods: {
-    init () {
+    init() {
       // PostItemがロードされたらloadedPostCountを1up
       this.$store.dispatch('changeLoadedPostCount', 'increment')
       this.isPostItemLoaded = true
     },
 
-    filterByCategory (categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: false})
+    filterByCategory(categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {
+        categoryId: categoryId,
+        categoryName: categoryName,
+        transition: false
+      })
     },
 
-    checkLoad () {
+    checkLoad() {
       // アイキャッチがあり、webfont読み込み済みで、アイキャッチの読み込みが完了した場合
       // アイキャッチをフェードインする
       if (this.hasEyecatch && this.isWebfontLoaded && this.isPostItemLoaded) {
@@ -115,16 +124,17 @@ export default {
   },
 
   filters: {
-    moment (date) {
+    moment(date) {
       return moment(date).format('YYYY.M.D')
     }
   },
 
-  mounted () {
+  mounted() {
     // カテゴリがある場合はカテゴリ取得
     if (this.hasCategories) {
-      this.$store.dispatch('getAllCategoryName', this.post.categories)
-        .then((result) => {
+      this.$store
+        .dispatch('getAllCategoryName', this.post.categories)
+        .then(result => {
           this.categories = result
         })
     }
@@ -132,7 +142,7 @@ export default {
     // アイキャッチがある時
     if (this.hasEyecatch) {
       // imagesLoaded
-      const imgLoad = imagesLoaded(this.$refs.image, {background: true})
+      const imgLoad = imagesLoaded(this.$refs.image, { background: true })
       console.log(imgLoad)
       imgLoad.on('always', this.init)
     } else {
@@ -144,9 +154,9 @@ export default {
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
-@import "media.css";
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 
 .post {
   position: relative;

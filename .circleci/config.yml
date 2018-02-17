@@ -7,8 +7,7 @@ defaults: &defaults
     - image: circleci/node:7.10.0
 
 jobs:
-  # install npm package
-  npm-install:
+  build-publish:
     <<: *defaults
 
     steps:
@@ -16,61 +15,25 @@ jobs:
 
       - restore_cache:
           keys:
-            - brdr-log-{{ checksum "package.json" }}
+            - brdr-log-{{ checksum "yarn.lock" }}
+            - brdr-log-
 
       - run:
-          name: Install node package
-          command: npm install
-
-      - save_cache:
-          key: brdr-log-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-
-      - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory
-          root: ./
-          # Must be relative path from root
-          paths:
-            - node_modules
-
-  # lint
-  lint-js-css:
-    <<: *defaults
-
-    steps:
-      - checkout
-
-      - attach_workspace:
-          at: ~/brdr-log
-
-      - run:
-          name: Lint
-          command: npm run lint
-
-  # build and publish
-  build-and-publish:
-    <<: *defaults
-
-    steps:
-      - checkout
-
-      - attach_workspace:
-          at: ~/brdr-log
+          name: Install node packages
+          command: yarn install --cache-folder ~/.cache/yarn
 
       - run:
           name: Build
-          command: npm run build
+          command: yarn run build
 
       - run:
           name: Erase and move files
           command: |
             find . -maxdepth 1 -type f -not -name '.gitmodules' | xargs rm -rf
-            find . -maxdepth 1 -type d -not -name '.' -not -name '.git' -not -name 'server' -not -name 'dist' | xargs rm -rf
-            mv dist theme
+            find . -maxdepth 1 -type d -not -name '.' -not -name '.git' -not -name 'server' -not -name 'theme' | xargs rm -rf
 
       - deploy:
-          name: Deploy and publich
+          name: Publish
           command: |
             git config --global user.name  "CircleCI"
             git config --global user.email "circleci@log.brdr.jp"
@@ -79,32 +42,18 @@ jobs:
             git checkout -B public
             git push -u origin public --force
 
+      - save_cache:
+          key: brdr-log-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
 workflows:
   version: 2
 
-  test-or-deploy:
+  deploy:
     jobs:
-      # developからmasterへのpull requestが作成されたとき
-      # masterへpull requestがmergeされたとき(masterにcommitがあったとき)
-      - npm-install:
-          filters:
-            branches:
-              only:
-                - develop
-                - master
-
-      # developからmasterへのpull requestが作成されたとき
-      - lint-js-css:
-          requires:
-            - npm-install
-          filters:
-            branches:
-              only: develop
-
-      # masterへpull requestがmergeされたとき(masterにcommitがあったとき)
-      - build-and-publish:
-          requires:
-            - npm-install
+      - build-publish:
+          # masterへpull requestがmergeされたとき(masterにcommitがあったとき)
           filters:
             branches:
               only: master

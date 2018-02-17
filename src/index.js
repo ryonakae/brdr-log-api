@@ -1,6 +1,5 @@
 'use strict'
 
-import 'es6-promise/auto'
 import Vue from 'vue'
 import store from '@/store'
 import router from '@/router'
@@ -25,11 +24,11 @@ const vm = new Vue({
   el: '#app',
   router,
   store,
-  render: (h) => h(App)
+  render: h => h(App)
 })
 
 // Hot Module Replacementに対応させる
 if (module.hot) module.hot.accept()
 
 // export manager
-export {utils, resizeManager, scrollManager}
+export { utils, resizeManager, scrollManager }

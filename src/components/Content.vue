@@ -10,62 +10,67 @@
 
 <script>
 import imagesLoaded from 'imagesloaded'
-import {utils} from '@/index'
+import { utils } from '@/index'
 import '@/library/twitter_widgets'
 import '@/library/prettify'
 
 export default {
   props: ['data'],
 
-  data () {
+  data() {
     return {
       isImagesLoaded: false
     }
   },
 
   computed: {
-    hasEyecatch () {
+    hasEyecatch() {
       return this.data.featured_media > 0
     },
 
-    eyecatch () {
-      if (Object.keys(this.data._embedded['wp:featuredmedia'][0].media_details.sizes).length > 0) {
-        return this.data._embedded['wp:featuredmedia'][0].media_details.sizes.theme_eyecatch.source_url
+    eyecatch() {
+      if (
+        Object.keys(
+          this.data._embedded['wp:featuredmedia'][0].media_details.sizes
+        ).length > 0
+      ) {
+        return this.data._embedded['wp:featuredmedia'][0].media_details.sizes
+          .theme_eyecatch.source_url
       } else {
         return this.data._embedded['wp:featuredmedia'][0].source_url
       }
     },
 
-    hasContent () {
+    hasContent() {
       return this.data.content.rendered !== ''
     },
 
-    isWebfontLoaded () {
+    isWebfontLoaded() {
       return this.$store.state.isWebfontLoaded
     }
   },
 
   watch: {
-    isImagesLoaded () {
+    isImagesLoaded() {
       this.checkLoad()
     },
 
-    isWebfontLoaded () {
+    isWebfontLoaded() {
       this.checkLoad()
     }
   },
 
   methods: {
-    checkLoad () {
+    checkLoad() {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
       if (this.isWebfontLoaded && this.isImagesLoaded) {
         console.log('all webfont and images loaded')
-        this.$store.dispatch('loading', {status: 'end', wait: 300})
+        this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }
     }
   },
 
-  mounted () {
+  mounted() {
     // 本文の画像の親要素にaddClass
     const $images = document.getElementsByTagName('img')
     if ($images.length > 0) {
@@ -91,12 +96,13 @@ export default {
     const $iframes = document.getElementsByTagName('iframe')
     if ($iframes.length > 0) {
       for (let i = 0; i < $iframes.length; i++) {
-        $iframes[i].outerHTML = '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
+        $iframes[i].outerHTML =
+          '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
       }
     }
 
     // ページ内の画像ロードした時の処理
-    const imgLoad = imagesLoaded(this.$refs.content, {background: true})
+    const imgLoad = imagesLoaded(this.$refs.content, { background: true })
 
     // progress
     imgLoad.on('progress', (instance, image) => {
@@ -109,7 +115,7 @@ export default {
     utils.wait(100, true).then(() => {
       if (!imgLoad.isComplete) {
         console.log('images are NOT loaded')
-        this.$store.dispatch('loading', {status: 'start', wait: 0})
+        this.$store.dispatch('loading', { status: 'start', wait: 0 })
 
         imgLoad.on('always', () => {
           console.log('all images are loaded')
@@ -125,9 +131,9 @@ export default {
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
-@import "media.css";
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 
 .eyecatch {
   display: table;

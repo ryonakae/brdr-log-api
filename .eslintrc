@@ -2,9 +2,12 @@
   "plugins": ["vue"],
   "extends": "standard",
   "env": {
-    "browser": true
+    "browser": true,
+    "node": true
   },
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "no-undef": "warn",
+    "prefer-promise-reject-errors": "warn"
   }
 }

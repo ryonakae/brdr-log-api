@@ -20,40 +20,44 @@ import logo from 'images/logo.svg'
 import logoClipPath from 'images/logo-clipPath.svg'
 
 export default {
-  data () {
+  data() {
     return {
       logo: logo
     }
   },
 
   computed: {
-    isLoading () {
+    isLoading() {
       return this.$store.state.isLoading
     }
   },
 
   methods: {
-    onEnter () {
+    onEnter() {
       console.log('onEnter')
-      this.$store.dispatch('loading', {status: 'start', wait: 0})
+      this.$store.dispatch('loading', { status: 'start', wait: 0 })
     },
 
-    onLeave () {
+    onLeave() {
       console.log('onLeave')
-      this.$store.dispatch('loading', {status: 'end', wait: 0})
+      this.$store.dispatch('loading', { status: 'end', wait: 0 })
     }
   }
 }
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
-@import "media.css";
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 
 @keyframes loading {
-  0% { transform: translateX(20%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .logo {
@@ -95,7 +99,20 @@ export default {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: normal;
-    background: linear-gradient(105deg, #6da3f2 0%, #6da3f2 5%, #af9bde 13%, #fa7895 26%, #ffa284 39%, #efb46e 52%, #efd69b 65%, #aed3b0 78%, #8ec9ce 91%, #6da3f2 95%, #6da3f2 100%);
+    background: linear-gradient(
+      105deg,
+      #6da3f2 0%,
+      #6da3f2 5%,
+      #af9bde 13%,
+      #fa7895 26%,
+      #ffa284 39%,
+      #efb46e 52%,
+      #efd69b 65%,
+      #aed3b0 78%,
+      #8ec9ce 91%,
+      #6da3f2 95%,
+      #6da3f2 100%
+    );
   }
 
   & .default {

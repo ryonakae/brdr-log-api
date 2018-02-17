@@ -11,10 +11,10 @@ Vue.use(VueRouter)
 
 // detect routes
 const routes = [
-  {path: '/', component: index},
-  {path: '/:slug', component: page},
-  {path: '/post/:id', component: single},
-  {path: '/*', component: notFound}
+  { path: '/', component: index },
+  { path: '/:slug', component: page },
+  { path: '/post/:id', component: single },
+  { path: '/*', component: notFound }
 ]
 
 // detect scroll behavior
@@ -22,7 +22,7 @@ const scrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
     return savedPosition
   } else {
-    return {x: 0, y: 0}
+    return { x: 0, y: 0 }
   }
 }
 
@@ -36,7 +36,7 @@ const router = new VueRouter({
 })
 
 // google analytics
-router.afterEach((to) => {
+router.afterEach(to => {
   window.ga('send', {
     hitType: 'pageview',
     location: to.path
