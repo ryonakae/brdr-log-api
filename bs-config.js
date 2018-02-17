@@ -5,7 +5,6 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackConfig = require('./webpack.config')
 const bundler = webpack(webpackConfig)
 
-
 module.exports = {
   open: false,
   notify: false,
@@ -13,7 +12,7 @@ module.exports = {
   // reloadDelay: 300,
   ghostMode: false,
   proxy: {
-    target: 'log.brdr.dev',
+    target: 'log.brdr.test',
     middleware: [
       webpackDevMiddleware(bundler, {
         publicPath: webpackConfig.output.publicPath,

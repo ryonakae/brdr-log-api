@@ -34,7 +34,7 @@ export default {
     NotFoundComponent
   },
 
-  data () {
+  data() {
     return {
       categories: [],
       imgLoad: null
@@ -42,19 +42,19 @@ export default {
   },
 
   computed: {
-    post () {
+    post() {
       return this.$store.state.currentPostData
     },
 
-    hasPost () {
+    hasPost() {
       return Object.keys(this.post).length > 0
     },
 
-    hasCategories () {
+    hasCategories() {
       return this.post.categories.length >= 1
     },
 
-    postTitle () {
+    postTitle() {
       let title
 
       if (this.post.status === 'draft') {
@@ -66,41 +66,46 @@ export default {
       return title
     },
 
-    isPreview () {
+    isPreview() {
       return this.$store.state.isPreview
     },
 
-    isNotFound () {
+    isNotFound() {
       return this.$store.state.isNotFound
     }
   },
 
   filters: {
-    moment (date) {
+    moment(date) {
       return moment(date).format('YYYY.M.D')
     }
   },
 
   methods: {
-    filterByCategory (categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: true})
+    filterByCategory(categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {
+        categoryId: categoryId,
+        categoryName: categoryName,
+        transition: true
+      })
     },
 
-    init () {
+    init() {
       // ページタイトルを変更
       this.$store.dispatch('changeTitle', this.post.title.rendered)
 
       // カテゴリがある場合はカテゴリ取得
       if (this.hasCategories) {
-        this.$store.dispatch('getAllCategoryName', this.post.categories)
-          .then((result) => {
+        this.$store
+          .dispatch('getAllCategoryName', this.post.categories)
+          .then(result => {
             this.categories = result
           })
       }
     }
   },
 
-  mounted () {
+  mounted() {
     // currentPostDataがある(indexから遷移した時)
     // 通信せずにcurrentPostDataをそのまま使う
     if (this.hasPost) {
@@ -112,14 +117,15 @@ export default {
 
       // 通常時
       if (!this.isPreview) {
-        this.$store.dispatch('getPost', this.$route.params.id)
-          .then((result) => {
+        this.$store
+          .dispatch('getPost', this.$route.params.id)
+          .then(result => {
             this.$store.dispatch('setCurrentPost', result)
           })
           .then(() => {
             this.init()
           })
-          .catch((err) => {
+          .catch(err => {
             console.error(err)
             this.$store.dispatch('onNotFound')
           })
@@ -130,7 +136,7 @@ export default {
           this.$store.dispatch('getPost', this.$route.params.id),
           this.$store.dispatch('getPostRevisions', this.$route.params.id)
         ])
-          .then((results) => {
+          .then(results => {
             // results[0]がgetPostの結果、results[1]がgetPostRevisionsの結果
             const result = Object.assign(results[0], results[1])
             console.log(result)
@@ -139,7 +145,7 @@ export default {
           .then(() => {
             this.init()
           })
-          .catch((err) => {
+          .catch(err => {
             console.error(err)
             this.$store.dispatch('onNotFound')
           })
@@ -150,9 +156,9 @@ export default {
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
-@import "media.css";
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 
 .header {
   @apply --header;
@@ -160,5 +166,5 @@ export default {
 </style>
 
 <style>
-@import "prettify";
+@import 'prettify';
 </style>

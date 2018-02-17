@@ -1,21 +1,20 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const path = require('path')
-const cssnext = require('postcss-cssnext')
-const postcssImport = require('postcss-import')
-const cssnano = require('cssnano')
-const filePath = require('./file-path')
 
+const filePath = {
+  theme: '/wp-content/themes/l/'
+}
 
 // common config
 const common = {
-  entry: [
-    path.join(filePath.src, 'index.js')
-  ],
+  entry: {
+    index: path.join(__dirname, 'src/index.js')
+  },
 
   output: {
-    filename: 'index.js',
-    path: filePath.dist
+    filename: '[name].js',
+    path: path.join(__dirname, 'theme')
   },
 
   module: {
@@ -52,8 +51,8 @@ const common = {
       // js
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        loader: 'babel-loader'
       },
 
       // vue
@@ -66,20 +65,30 @@ const common = {
 
   resolve: {
     alias: {
-      '@': filePath.src,
-      styles: path.join(filePath.assets, 'styles'),
-      images: path.join(filePath.assets, 'images'),
-      fonts:  path.join(filePath.assets, 'fonts')
+      '@': path.join(__dirname, 'src'),
+      styles: path.join(__dirname, 'src/styles'),
+      images: path.join(__dirname, 'src/assets/images'),
+      fonts: path.join(__dirname, 'src/assets/fonts')
     }
-  }
+  },
+
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: module => {
+        return module.context && module.context.includes('node_modules')
+      }
+    })
+  ]
 }
 
-
 // development config
+const hotMiddlewareScript =
+  'webpack-hot-middleware/client?noinfo=true&quiet=true'
 const dev = {
-  entry: [
-    'webpack-hot-middleware/client?noinfo=true&quiet=true'
-  ],
+  entry: {
+    index: [path.join(__dirname, 'src/index.js'), hotMiddlewareScript]
+  },
 
   output: {
     publicPath: filePath.theme
@@ -87,7 +96,7 @@ const dev = {
 
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('development')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
@@ -97,9 +106,8 @@ const dev = {
   ],
 
   cache: true,
-  devtool: 'inline-source-map',
+  devtool: 'inline-source-map'
 }
-
 
 // production config
 const prod = {
@@ -120,10 +128,8 @@ const prod = {
   ]
 }
 
-
-// detect config
-const config = process.env.NODE_ENV === 'production' ? prod : dev
-
-
 // exports
-module.exports = merge(common, config)
+module.exports = merge(
+  common,
+  process.env.NODE_ENV === 'production' ? prod : dev
+)

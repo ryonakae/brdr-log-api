@@ -25,7 +25,7 @@ import iconFacebook from 'images/icon-facebook.svg'
 export default {
   props: ['permalink', 'title'],
 
-  data () {
+  data() {
     return {
       icon: {
         twitter: iconTwitter,
@@ -35,19 +35,27 @@ export default {
   },
 
   computed: {
-    twitterUrl () {
-      const url = 'https://twitter.com/share?url=' + encodeURIComponent(this.permalink) + '&text=' + encodeURIComponent(this.title) + ' - ' + this.$store.state.siteTitle
+    twitterUrl() {
+      const url =
+        'https://twitter.com/share?url=' +
+        encodeURIComponent(this.permalink) +
+        '&text=' +
+        encodeURIComponent(this.title) +
+        ' - ' +
+        this.$store.state.siteTitle
       return url
     },
 
-    facebookUrl () {
-      const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(this.permalink)
+    facebookUrl() {
+      const url =
+        'https://www.facebook.com/sharer/sharer.php?u=' +
+        encodeURIComponent(this.permalink)
       return url
     }
   },
 
   methods: {
-    onShare (network, url) {
+    onShare(network, url) {
       let socialNetwork
       if (network === 'twitter') socialNetwork = 'Twitter'
       else if (network === 'facebook') socialNetwork = 'Facebook'
@@ -68,8 +76,8 @@ export default {
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
+@import 'properties.css';
+@import 'property-sets.css';
 
 .share {
   line-height: 1;

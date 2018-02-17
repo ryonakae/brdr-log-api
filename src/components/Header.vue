@@ -27,7 +27,7 @@
 import iconClear from 'images/icon-clear.svg'
 
 export default {
-  data () {
+  data() {
     return {
       icon: {
         clear: iconClear
@@ -38,38 +38,43 @@ export default {
   },
 
   computed: {
-    isFiltered () {
+    isFiltered() {
       return this.$store.state.isFiltered
     },
 
-    filteredCategory () {
+    filteredCategory() {
       return this.$store.state.filteredCategory
     }
   },
 
   methods: {
-    filterByCategory (categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {categoryId: categoryId, categoryName: categoryName, transition: true})
+    filterByCategory(categoryId, categoryName) {
+      this.$store.dispatch('filterByCategory', {
+        categoryId: categoryId,
+        categoryName: categoryName,
+        transition: true
+      })
 
       // カテゴリ一覧を閉じる
       this.isCategoriesActive = false
     },
 
-    getAllCategories () {
+    getAllCategories() {
       return new Promise((resolve, reject) => {
-        this.$store.state.client.get('/categories')
-          .then((res) => {
+        this.$store.state.client
+          .get('/categories')
+          .then(res => {
             console.log(res)
             resolve(res.data)
           })
-          .catch((err) => {
+          .catch(err => {
             console.erorr(err)
             reject(err)
           })
       })
     },
 
-    toggleCategories () {
+    toggleCategories() {
       if (this.isCategoriesActive) {
         this.isCategoriesActive = false
       } else {
@@ -78,22 +83,21 @@ export default {
     }
   },
 
-  mounted () {
-    this.getAllCategories()
-      .then((result) => {
-        return new Promise((resolve, reject) => {
-          this.categories = result
-          resolve()
-        })
+  mounted() {
+    this.getAllCategories().then(result => {
+      return new Promise((resolve, reject) => {
+        this.categories = result
+        resolve()
       })
+    })
   }
 }
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
-@import "media.css";
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 
 .filter,
 .navi {

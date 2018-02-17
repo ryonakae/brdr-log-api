@@ -17,10 +17,7 @@ const store = new Vuex.Store({
 
 // Hot Module Replacementに対応させる
 if (module.hot) {
-  module.hot.accept([
-    '@/store/mutations',
-    '@/store/actions'
-  ], () => {
+  module.hot.accept(['@/store/mutations', '@/store/actions'], () => {
     const newMutations = require('@/store/mutations').default
     const newActions = require('@/store/actions').default
 

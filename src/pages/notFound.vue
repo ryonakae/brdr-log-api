@@ -10,9 +10,9 @@ export default {
     NotFoundComponent
   },
 
-  mounted () {
+  mounted() {
     this.$store.dispatch('changeTitle', 'Page Not Found')
-    this.$store.dispatch('loading', {status: 'end', wait: 300})
+    this.$store.dispatch('loading', { status: 'end', wait: 300 })
   }
 }
 </script>

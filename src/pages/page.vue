@@ -22,31 +22,35 @@ export default {
     ContentComponent
   },
 
-  data () {
+  data() {
     return {
       page: {}
     }
   },
 
   computed: {
-    hasPage () {
+    hasPage() {
       return Object.keys(this.page).length > 0
     },
 
-    isNotFound () {
+    isNotFound() {
       return this.$store.state.isNotFound
     }
   },
 
   methods: {
-    init () {
-      this.$store.dispatch('changeTitle', this.page.title.rendered.toUpperCase())
+    init() {
+      this.$store.dispatch(
+        'changeTitle',
+        this.page.title.rendered.toUpperCase()
+      )
     }
   },
 
-  mounted () {
-    this.$store.dispatch('getPage', this.$route.params.slug)
-      .then((result) => {
+  mounted() {
+    this.$store
+      .dispatch('getPage', this.$route.params.slug)
+      .then(result => {
         return new Promise((resolve, reject) => {
           this.page = result
           resolve()
@@ -55,7 +59,7 @@ export default {
       .then(() => {
         this.init()
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err)
         this.$store.dispatch('onNotFound')
       })
@@ -64,9 +68,9 @@ export default {
 </script>
 
 <style module>
-@import "properties.css";
-@import "property-sets.css";
-@import "media.css";
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 
 .header {
   @apply --header;
