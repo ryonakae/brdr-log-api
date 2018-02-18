@@ -4,7 +4,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/brdr-log
   docker:
-    - image: circleci/node:7.10.0
+    - image: circleci/node:8.9.4
 
 jobs:
   build-publish:
@@ -21,6 +21,11 @@ jobs:
       - run:
           name: Install node packages
           command: yarn install --cache-folder ~/.cache/yarn
+
+      - save_cache:
+          key: brdr-log-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
 
       - run:
           name: Build
@@ -41,11 +46,6 @@ jobs:
             git commit -m "Publish by CircleCI"
             git checkout -B public
             git push -u origin public --force
-
-      - save_cache:
-          key: brdr-log-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
 
 workflows:
   version: 2
