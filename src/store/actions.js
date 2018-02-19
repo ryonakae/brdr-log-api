@@ -96,10 +96,19 @@ export default {
       if (state.isUserLoggedIn) _queryOptions.status = 'any'
       const queryOptions = Object.assign(_queryOptions, options)
 
+      window
+        .fetch(state.siteUrl + '/wp-json/wp/v2/posts', queryOptions)
+        .then(res => {
+          return res.json()
+        })
+        .then(data => {
+          console.log('[Fetch]', data)
+        })
+
       state.client
         .get('/posts', { params: queryOptions })
         .then(res => {
-          // console.log(res)
+          console.log('[Axios]', res.data)
           // res.bodyが空(これ以上記事ない)ときはrejectを返す
           res.data.length > 0
             ? resolve(res.data)
