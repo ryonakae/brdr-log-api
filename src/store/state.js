@@ -18,7 +18,7 @@ export default {
   isFiltered: false,
   filteredCategory: '',
   client: axios.create(),
-  isPreview: window.wpApiSettings.is_preview,
-  nonce: window.wpApiSettings.nonce,
-  isUserLoggedIn: window.wpApiSettings.is_logged_in
+  isPreview: window.wpSettings.is_preview,
+  nonce: window.wpSettings.nonce,
+  isUserLoggedIn: window.wpSettings.is_logged_in
 }

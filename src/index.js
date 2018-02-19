@@ -11,15 +11,19 @@ import App from '@/App.vue'
 // registor service worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-    .register('/wp-content/themes/l/service-worker.js', { scope: '/' })
+    .register(window.wpSettings.template_directory_url + '/service-worker.js', {
+      scope: '/'
+    })
     .then(registration => {
+      registration.update()
       console.log(
-        'ServiceWorker registration successful with scope: ',
+        '[Service Worker]',
+        'registration successful with scope: ',
         registration.scope
       )
     })
     .catch(err => {
-      console.log('ServiceWorker registration failed: ', err)
+      console.log('[Service Worker]', 'registration failed: ', err)
     })
 }
 

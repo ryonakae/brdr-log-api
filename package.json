@@ -1,4 +1,5 @@
 {
+  "license": "Apache-2.0",
   "scripts": {
     "clean": "rimraf theme/*",
     "server": "browser-sync start -c 'bs-config.js'",
