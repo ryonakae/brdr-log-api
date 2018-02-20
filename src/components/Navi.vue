@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="isFiltered" :class="$style.filter" @click="filterByCategory('reset', null)">
+  <nav class="nav">
+    <div v-if="isFiltered" class="filter" @click="filterByCategory('reset', null)">
       <svg :viewBox="icon.clear.viewBox">
         <use :xlink:href="'#'+icon.clear.id"></use>
       </svg>
@@ -17,10 +17,10 @@
         </ul>
       </li>
       <li>
-        <a href="http://brdr.jp" target="_blank">BRDR</a>
+        <a href="//brdr.jp" target="_blank">BRDR</a>
       </li>
     </ul>
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -75,24 +75,61 @@ export default {
     },
 
     toggleCategories() {
-      if (this.isCategoriesActive) {
-        this.isCategoriesActive = false
-      } else {
-        this.isCategoriesActive = true
-      }
+      this.isCategoriesActive = !this.isCategoriesActive
     }
   },
 
   mounted() {
     this.getAllCategories().then(result => {
-      return new Promise((resolve, reject) => {
-        this.categories = result
-        resolve()
-      })
+      this.categories = result
     })
   }
 }
 </script>
+
+<style scoped>
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
+
+.nav {
+  font-size: var(--fontSize_small);
+}
+
+.filter,
+.navi {
+  position: fixed;
+  z-index: 100;
+  top: calc(var(--margin_page) + 6px);
+
+  @media (--mq_sp) {
+    top: calc(var(--margin_page_sp) + 6px);
+  }
+}
+
+.filter {
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: auto;
+
+  @apply --link;
+
+  & svg {
+    display: inline;
+    fill: var(--color_key);
+    width: 10px;
+    height: 10px;
+    vertical-align: text-top;
+    margin-right: 3px;
+  }
+
+  @nest :global(body.pc) &:hover {
+    & svg {
+      transform: translateY(1px);
+    }
+  }
+}
+</style>
 
 <style module>
 @import 'properties.css';

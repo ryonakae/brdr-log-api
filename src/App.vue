@@ -1,17 +1,17 @@
 <template>
-  <div id="app">
+  <div :class="{webfontLoaded: isWebfontLoaded}">
     <header>
       <logo-component></logo-component>
-      <header-component :class="{[$style.hidden]: !isWebfontLoaded}"></header-component>
+      <navi-component :class="{hidden: !isWebfontLoaded}"></navi-component>
     </header>
-    <router-view :class="{[$style.hidden]: !isWebfontLoaded}"></router-view>
-    <footer-component :class="{[$style.hidden]: !isWebfontLoaded}"></footer-component>
+    <router-view :class="{hidden: !isWebfontLoaded}"></router-view>
+    <footer-component :class="{hidden: !isWebfontLoaded}"></footer-component>
   </div>
 </template>
 
 <script>
 import LogoComponent from '@/components/Logo.vue'
-import HeaderComponent from '@/components/Header.vue'
+import NaviComponent from '@/components/Navi.vue'
 import FooterComponent from '@/components/Footer.vue'
 import { utils } from '@/index'
 import webFont from 'webfontloader'
@@ -19,7 +19,7 @@ import webFont from 'webfontloader'
 export default {
   components: {
     LogoComponent,
-    HeaderComponent,
+    NaviComponent,
     FooterComponent
   },
 
@@ -57,7 +57,6 @@ export default {
       },
       active: () => {
         console.log('all webfont loaded')
-        document.body.classList.add('webfontLoaded')
         this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
       }
     })
@@ -69,19 +68,16 @@ export default {
 </script>
 
 <style>
-@import 'reset-css';
-@import 'font-face.css';
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
 @import 'base.css';
-
-body.webfontLoaded {
-  font-family: var(--fontFamily_loaded);
-}
 </style>
 
-<style module>
+<style scoped>
+@import 'properties.css';
+
+.webfontLoaded {
+  font-family: var(--fontFamily_loaded);
+}
+
 .hidden {
   visibility: hidden;
 }

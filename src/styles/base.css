@@ -1,3 +1,9 @@
+@import "sanitize.css";
+@import "font-face.css";
+@import "properties.css";
+@import "property-sets.css";
+@import "media.css";
+
 /* reset box-sizing */
 html {
   box-sizing: border-box;
@@ -21,7 +27,8 @@ body {
   font-family: var(--fontFamily_default);
   font-size: var(--fontSize_default);
   text-align: justify;
-  line-height: var(--lineHeight_default);
+
+  /* line-height: var(--lineHeight_default); */
   letter-spacing: var(--letterSpacing_default);
   font-synthesis: none;
   font-kerning: normal;

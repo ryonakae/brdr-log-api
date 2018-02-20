@@ -20,7 +20,7 @@
     "axios": "^0.17.1",
     "imagesloaded": "^4.1.4",
     "moment": "^2.20.1",
-    "reset-css": "^2.2.1",
+    "sanitize.css": "^5.0.0",
     "ua-parser-js": "^0.7.17",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
