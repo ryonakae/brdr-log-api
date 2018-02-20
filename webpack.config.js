@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const WorkBoxPlugin = require('workbox-webpack-plugin')
 const merge = require('webpack-merge')
 const path = require('path')
 
@@ -73,21 +74,54 @@ const common = {
   },
 
   plugins: [
+    new webpack.NamedModulesPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: module => {
         return module.context && module.context.includes('node_modules')
       }
+    }),
+    new WorkBoxPlugin({
+      cacheId: 'brdr-log',
+      globDirectory: path.join(__dirname, 'theme'),
+      globPatterns: ['**/*.{html,css,js}', 'fonts/**/*'],
+      swDest: path.join(__dirname, 'theme/service-worker.js'),
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: /\/wp-json\/.+/,
+          handler: 'networkFirst',
+          options: {
+            cacheName: 'api',
+            cacheExpiration: {
+              maxAgeSeconds: 60 * 60 * 24
+            }
+          }
+        },
+        {
+          urlPattern: /^(https?):\/\/.*\/.*\.(jpg|jpeg|gif|png)/,
+          // urlPattern: /(https?)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)\.(jpg|jpeg|gif|png)$/,
+          handler: 'cacheFirst',
+          options: {
+            cacheName: 'images',
+            cacheExpiration: {
+              maxAgeSeconds: 60 * 60 * 24 * 7
+            }
+          }
+        }
+      ]
     })
   ]
 }
 
 // development config
-const hotMiddlewareScript =
-  'webpack-hot-middleware/client?noinfo=true&quiet=true'
 const dev = {
   entry: {
-    index: [path.join(__dirname, 'src/index.js'), hotMiddlewareScript]
+    index: [
+      path.join(__dirname, 'src/index.js'),
+      'webpack-hot-middleware/client?noinfo=true&quiet=true'
+    ]
   },
 
   output: {

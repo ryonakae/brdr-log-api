@@ -16,11 +16,7 @@ if ('serviceWorker' in navigator) {
     })
     .then(registration => {
       registration.update()
-      console.log(
-        '[Service Worker]',
-        'registration successful with scope: ',
-        registration.scope
-      )
+      console.log('[Service Worker]', 'registered: ', registration)
     })
     .catch(err => {
       console.log('[Service Worker]', 'registration failed: ', err)
