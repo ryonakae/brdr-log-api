@@ -106,50 +106,43 @@ export default {
   },
 
   mounted() {
-    // currentPostDataがある(indexから遷移した時)
-    // 通信せずにcurrentPostDataをそのまま使う
-    if (this.hasPost) {
-      this.init()
-    } else {
-      // currentPostDataがない場合(url直接叩いたとき)
-      // →getPost()実行してcurrentPostDataにデータを入れる
-      // エラー返ってきたらnotFoundを表示
+    // →getPost()実行してcurrentPostDataにデータを入れる
+    // エラー返ってきたらnotFoundを表示
 
-      // 通常時
-      if (!this.isPreview) {
-        this.$store
-          .dispatch('getPost', this.$route.params.id)
-          .then(result => {
-            this.$store.dispatch('setCurrentPost', result)
-          })
-          .then(() => {
-            this.init()
-          })
-          .catch(err => {
-            console.error(err)
-            this.$store.dispatch('onNotFound')
-          })
-      } else {
-        // プレビュー時
-        // リビジョンを取得して、contentだけリビジョンのものに置き換える
-        Promise.all([
-          this.$store.dispatch('getPost', this.$route.params.id),
-          this.$store.dispatch('getPostRevisions', this.$route.params.id)
-        ])
-          .then(results => {
-            // results[0]がgetPostの結果、results[1]がgetPostRevisionsの結果
-            const result = Object.assign(results[0], results[1])
-            console.log(result)
-            this.$store.dispatch('setCurrentPost', result)
-          })
-          .then(() => {
-            this.init()
-          })
-          .catch(err => {
-            console.error(err)
-            this.$store.dispatch('onNotFound')
-          })
-      }
+    // 通常時
+    if (!this.isPreview) {
+      this.$store
+        .dispatch('getPost', this.$route.params.id)
+        .then(result => {
+          this.$store.dispatch('setCurrentPost', result)
+        })
+        .then(() => {
+          this.init()
+        })
+        .catch(err => {
+          console.error(err)
+          this.$store.dispatch('onNotFound')
+        })
+    } else {
+      // プレビュー時
+      // リビジョンを取得して、contentだけリビジョンのものに置き換える
+      Promise.all([
+        this.$store.dispatch('getPost', this.$route.params.id),
+        this.$store.dispatch('getPostRevisions', this.$route.params.id)
+      ])
+        .then(results => {
+          // results[0]がgetPostの結果、results[1]がgetPostRevisionsの結果
+          const result = Object.assign(results[0], results[1])
+          console.log(result)
+          this.$store.dispatch('setCurrentPost', result)
+        })
+        .then(() => {
+          this.init()
+        })
+        .catch(err => {
+          console.error(err)
+          this.$store.dispatch('onNotFound')
+        })
     }
   }
 }

@@ -96,15 +96,6 @@ export default {
       if (state.isUserLoggedIn) _queryOptions.status = 'any'
       const queryOptions = Object.assign(_queryOptions, options)
 
-      window
-        .fetch(state.siteUrl + '/wp-json/wp/v2/posts', queryOptions)
-        .then(res => {
-          return res.json()
-        })
-        .then(data => {
-          console.log('[Fetch]', data)
-        })
-
       state.client
         .get('/posts', { params: queryOptions })
         .then(res => {

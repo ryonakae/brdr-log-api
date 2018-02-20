@@ -75,20 +75,12 @@ export default {
     },
 
     init() {
-      // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
-      if (this.hasPosts) {
-        console.log('allPostData already exsist')
-        this.$store.dispatch('loading', { status: 'end', wait: 0 })
-      } else {
-        this.$store
-          .dispatch('loading', { status: 'start', wait: 0 })
-          .then(() => {
-            this.$store.dispatch('createIndex', {
-              per_page: this.perPage,
-              offset: 0
-            })
-          })
-      }
+      this.$store.dispatch('loading', { status: 'start', wait: 0 }).then(() => {
+        this.$store.dispatch('createIndex', {
+          per_page: this.perPage,
+          offset: 0
+        })
+      })
     },
 
     checkHasEyecatch(post) {
