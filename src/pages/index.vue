@@ -1,10 +1,8 @@
 <template>
-  <div :class="$style.page" ref="page">
-    <ul v-if="hasPosts">
-      <li v-for="post in posts" :key="post.id" :class="[$style.post, {[$style.eyecatch]: checkHasEyecatch(post)}]" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
-        <post-item-component :post="post"></post-item-component>
-      </li>
-    </ul>
+  <div v-if="hasPosts" class="index" ref="page">
+    <div v-for="post in posts" :key="post.id" class="post" :class="{eyecatch: checkHasEyecatch(post)}" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
+      <post-item-component :post="post"></post-item-component>
+    </div>
   </div>
 </template>
 
@@ -124,35 +122,27 @@ export default {
 }
 </script>
 
-<style module>
+<style scoped>
 @import 'properties.css';
 @import 'media.css';
 
-.page {
-  max-width: var(--width_index);
+.index {
+  max-width: var(--width_content);
   padding-top: var(--margin_top);
-  margin: 0 auto;
+  margin: 0 var(--margin_page)
+    calc(var(--margin_bottom) + var(--margin_page) + 1em);
 
   @media (--mq_sp) {
     padding-top: var(--margin_top_sp);
+    margin: 0 var(--margin_page_sp);
   }
 }
 
 .post {
-  margin-top: 75px;
+  margin-top: 3em;
 
   &:first-child {
     margin-top: 0;
-  }
-
-  @media (--mq_sp) {
-    margin-top: 45px;
-  }
-}
-
-@media (--mq_sp) {
-  .post.eyecatch + .post.eyecatch {
-    margin-top: -1px;
   }
 }
 </style>

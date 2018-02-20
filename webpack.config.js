@@ -28,7 +28,7 @@ const common = {
           limit: 20000,
           name: '[name].[ext]',
           outputPath: 'images/',
-          publicPath: filePath.theme
+          publicPath: filePath.theme + 'images/'
         }
       },
       // images(svg)
@@ -45,7 +45,7 @@ const common = {
           limit: 1,
           name: '[name].[ext]',
           outputPath: 'fonts/',
-          publicPath: filePath.theme
+          publicPath: filePath.theme + 'fonts/'
         }
       },
 

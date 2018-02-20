@@ -1,21 +1,17 @@
 <template>
-  <ul :class="$style.share">
-    <li :class="[$style.icon, $style.twitter]">
-      <a :href="twitterUrl" target="_blank" @click.stop="onShare('twitter', twitterUrl)">
-        <svg :viewBox="icon.twitter.viewBox">
-          <use :xlink:href="'#'+icon.twitter.id"></use>
-        </svg>
-      </a>
-    </li>
+  <div>
+    <a class="icon twitter" :href="twitterUrl" target="_blank" @click.stop="onShare('twitter', twitterUrl)">
+      <svg :viewBox="icon.twitter.viewBox">
+        <use :xlink:href="'#'+icon.twitter.id"></use>
+      </svg>
+    </a>
 
-    <li :class="[$style.icon, $style.facebook]">
-      <a :href="facebookUrl" target="_blank" @click.stop="onShare('facebook', facebookUrl)">
-        <svg :viewBox="icon.facebook.viewBox">
-          <use :xlink:href="'#'+icon.facebook.id"></use>
-        </svg>
-      </a>
-    </li>
-  </ul>
+    <a class="icon facebook" :href="facebookUrl" target="_blank" @click.stop="onShare('facebook', facebookUrl)">
+      <svg :viewBox="icon.facebook.viewBox">
+        <use :xlink:href="'#'+icon.facebook.id"></use>
+      </svg>
+    </a>
+  </div>
 </template>
 
 <script>
@@ -75,33 +71,39 @@ export default {
 }
 </script>
 
-<style module>
+<style scoped>
 @import 'properties.css';
 @import 'property-sets.css';
-
-.share {
-  line-height: 1;
-}
 
 .icon {
   display: inline-block;
   vertical-align: middle;
-  margin-left: 16px;
+  margin-left: 1.5em;
 
   &:first-child {
     margin-left: 0;
   }
 
   @apply --link;
+
+  & svg {
+    fill: var(--color_key);
+  }
+
+  @nest :global(body.pc) &:hover {
+    & svg {
+      fill: var(--color_bg);
+    }
+  }
 }
 
-svg {
-  fill: var(--color_key);
-}
+.twitter {
+  margin-top: 1px;
 
-.twitter svg {
-  width: 14px;
-  height: 11px;
+  & svg {
+    width: 14px;
+    height: 11px;
+  }
 }
 
 .facebook svg {

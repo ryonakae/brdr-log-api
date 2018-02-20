@@ -25,21 +25,15 @@
   --info: {
     font-size: var(--fontSize_small);
 
-    @media (--mq_sp) {
-      font-size: var(--fontSize_small_sp);
-    }
-
     & .date {
       display: inline-block;
     }
 
     & .categories {
+      margin: 0 0 0 1.5em;
+      padding: 0;
+      list-style-type: none;
       display: inline-block;
-      margin-left: 15px;
-
-      @media (--mq_sp) {
-        margin-left: 10px;
-      }
     }
 
     & .category {

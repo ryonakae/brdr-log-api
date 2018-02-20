@@ -68,6 +68,11 @@ export default {
 </script>
 
 <style>
+/* @import 'sanitize.css'; */
+@import 'font-face.css';
+@import 'properties.css';
+@import 'property-sets.css';
+@import 'media.css';
 @import 'base.css';
 </style>
 
