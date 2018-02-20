@@ -1,6 +1,9 @@
 :root {
   /* color */
-  --color_key: #131414;
+  --color_bg: #fff;
+  --color_key: #000;
+  --color_sub: color(var(--color_key) alpha(50%));
+  --color_accent: #fc524c;
 
   /* bg color */
   --bgColor_default: #fff;
@@ -17,12 +20,15 @@
   --textColor_lightGray: color(var(--color_key) alpha(30%));
 
   /* font family */
-  --fontFamily_default: system-ui, "Sans Serif", "Hiragino", "メイリオ", Meiryo, sans-serif;
+  --fontFamily: system-ui, "Sans Serif", "Hiragino", "メイリオ", Meiryo,
+    sans-serif;
   --fontFamily_loaded: "Neue Frutiger", "Noto Sans Japanese", sans-serif;
-  --fontFamily_code: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  --fontFamily_code: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
+    Monaco, Consolas, monospace;
   --fontFamily_code_loaded: "Source Code Pro", monospace;
 
   /* font size */
+  --fontSize: 1.6rem;
   --fontSize_default: 1.6rem;
   --fontSize_default_sp: 1.5rem;
   --fontSize_small: 1.2rem;
@@ -50,8 +56,7 @@
   --lineHeight_caption: 1.5;
 
   /* letter spacing */
-  --letterSpacing_default: 0.075em;
-  --letterSpacing_title: 0.055em;
+  --letterSpacing: 0.05em;
   --letterSpacing_code: 0;
 
   /* transition */

@@ -7,12 +7,12 @@
       <span>{{filteredCategory}}</span>
     </div>
 
-    <ul :class="$style.navi">
-      <li :class="$style.categories">
-        <span :class="$style.text" @click="toggleCategories">Category</span>
-        <ul :class="{[$style.active]: isCategoriesActive}">
+    <ul class="navi">
+      <li class="categories">
+        <span @click="toggleCategories">Category</span>
+        <ul :class="{active: isCategoriesActive}">
           <li v-for="category in categories" v-if="category.count > 0" :key="category.id" @click="filterByCategory(category.id, category.name)">
-            <span :class="$style.text">{{category.name}}</span>
+            <span>{{category.name}}</span>
           </li>
         </ul>
       </li>
@@ -125,65 +125,14 @@ export default {
 
   @nest :global(body.pc) &:hover {
     & svg {
-      transform: translateY(1px);
-    }
-  }
-}
-</style>
-
-<style module>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
-
-.filter,
-.navi {
-  font-size: var(--fontSize_small);
-  position: fixed;
-  z-index: 100;
-  top: calc(var(--margin_page) + 6px);
-
-  @media (--mq_sp) {
-    font-size: var(--fontSize_small_sp);
-    top: calc(var(--margin_page_sp) + 6px);
-  }
-}
-
-.filter {
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: auto;
-
-  @apply --link;
-
-  & svg {
-    display: inline;
-    fill: var(--color_key);
-    width: 10px;
-    height: 10px;
-    vertical-align: text-top;
-    margin-right: 3px;
-    transition: all var(--duration_quick) var(--easing);
-  }
-
-  @nest :global(body.pc) &:hover {
-    & svg {
-      transform: translateY(1px);
-    }
-  }
-}
-
-@-moz-document url-prefix() {
-  .filter {
-    @nest :global(body.pc) &:hover {
-      & svg {
-        transform: none;
-      }
+      fill: var(--color_bg);
     }
   }
 }
 
 .navi {
+  margin: 0;
+  padding: 0;
   right: var(--margin_page);
 
   @media (--mq_sp) {
@@ -192,7 +141,8 @@ export default {
 
   @apply --clearfix;
 
-  & .text {
+  & span,
+  & a {
     @apply --link;
   }
 
@@ -218,7 +168,8 @@ export default {
     position: absolute;
     top: 100%;
     left: 0;
-    margin-top: 15px;
+    margin: 15px 0 0;
+    padding: 0;
     display: none;
     min-width: 100px;
 
