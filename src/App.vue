@@ -34,15 +34,8 @@ export default {
   },
 
   created() {
-    // ページタイトルを変更
-    this.$store.dispatch('changeTitle', '')
-
     // デバイスによってbodyにaddClass
     document.body.classList.add(utils.getDevice())
-
-    // mobileのときだけperPageを少なくする
-    if (utils.getDevice() === 'mobile')
-      this.$store.commit('SET_PER_PAGE', this.perPageMobile)
 
     // webfontのロードが終わったらbodyにaddClass
     webFont.load({

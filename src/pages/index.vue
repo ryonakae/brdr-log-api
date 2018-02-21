@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasPosts" class="index" ref="page">
-    <div v-for="post in posts" :key="post.id" class="post" :class="{eyecatch: checkHasEyecatch(post)}" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
+    <div class="post" v-for="post in posts" :key="post.id" @mouseenter="preloadPost(post)" @touchstart="preloadPost(post)">
       <post-item-component :post="post"></post-item-component>
     </div>
   </div>
@@ -15,27 +15,32 @@ export default {
     PostItemComponent
   },
 
-  computed: {
-    posts() {
-      return this.$store.state.allPostData
-    },
+  data() {
+    return {
+      posts: [],
+      isScrolling: false
+    }
+  },
 
+  computed: {
+    client() {
+      return this.$store.state.client
+    },
     hasPosts() {
       return this.posts.length > 0
     },
-
     perPage() {
       return this.$store.state.perPage
     },
-
     loadedPostCount() {
       return this.$store.state.loadedPostCount
     },
-
+    isUserLoggedIn() {
+      return this.$store.state.isUserLoggedIn
+    },
     isPreview() {
       return this.$store.state.isPreview
     },
-
     isWebfontLoaded() {
       return this.$store.state.isWebfontLoaded
     }
@@ -52,16 +57,52 @@ export default {
   },
 
   methods: {
-    setCurrentPost(post) {
-      if (this.$route.path === '/') {
-        this.$store.dispatch('setCurrentPost', post)
+    getPosts(params) {
+      return new Promise((resolve, reject) => {
+        const _params = Object.assign(params, {
+          _embed: '',
+          status: this.isUserLoggedIn ? 'any' : 'publish'
+        })
+
+        this.client
+          .get('/posts', { params: _params })
+          .then(res => {
+            console.log('[index.vue - getPosts]', res.data)
+            resolve(res.data)
+          })
+          .catch(err => {
+            console.error('[index.vue - getPosts]', err)
+            reject(err)
+          })
+      })
+    },
+
+    onScroll(params) {
+      const documentHeight = document.body.clientHeight
+
+      if (scrollManager.scrollBottom > documentHeight * 0.7) {
+        if (this.isScrolling) return
+
+        this.isScrolling = true
+        this.$store.dispatch('loading', { status: 'start', wait: 0 })
+
+        // offsetかけてgetPosts
+        const _params = Object.assign(params, { offset: this.posts.length })
+        this.getPosts(_params)
+          .then(res => {
+            this.posts = this.posts.concat(res)
+            console.log('[index.vue - onScroll]', this.posts)
+            this.isScrolling = res.length < 1
+          })
+          .catch(err => {
+            console.error('[index.vue - onScroll]', err)
+            this.isScrolling = true
+          })
       }
     },
 
-    clearCurrentPost() {
-      if (this.$route.path === '/') {
-        this.$store.dispatch('clearCurrentPost')
-      }
+    preloadPost(post) {
+      console.log('[index.vue - preloadPost]')
     },
 
     checkLoad() {
@@ -70,35 +111,31 @@ export default {
         console.log('all webfont and postitem loaded')
         this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }
-    },
-
-    init() {
-      this.$store.dispatch('loading', { status: 'start', wait: 0 }).then(() => {
-        this.$store.dispatch('createIndex', {
-          per_page: this.perPage,
-          offset: 0
-        })
-      })
-    },
-
-    checkHasEyecatch(post) {
-      return post.featured_media > 0
     }
   },
 
-  created() {
+  mounted() {
+    // loadedPostCountをリセット
+    this.$store.dispatch('changeLoadedPostCount', 'reset')
+
+    // ローディング開始
+    this.$store.dispatch('loading', { status: 'start', wait: 0 })
+
     // ページタイトルを変更
     this.$store.dispatch('changeTitle', '')
 
-    // currentPostDataを空にする
-    this.clearCurrentPost()
+    // 記事一覧を取得
+    this.getPosts({
+      per_page: this.perPage,
+      offset: 0
+    }).then(res => {
+      this.posts = res
+    })
 
-    // loadedPostCountをリセット
-    this.$store.dispatch('changeLoadedPostCount', 'reset')
-  },
-
-  mounted() {
-    this.init()
+    // scrollManagerにonScroll関数を追加
+    scrollManager.add('index.onScroll', () => {
+      this.onScroll({ per_page: this.perPage })
+    })
   },
 
   beforeRouteEnter(to, from, next) {
@@ -116,7 +153,7 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    scrollManager.remove('index.infiniteScroll')
+    scrollManager.remove('index.onScroll')
     next()
   }
 }

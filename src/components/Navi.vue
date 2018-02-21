@@ -29,10 +29,12 @@ export default {
   },
 
   computed: {
+    client() {
+      return this.$store.state.client
+    },
     isFiltered() {
       return this.$store.state.isFiltered
     },
-
     filteredCategory() {
       return this.$store.state.filteredCategory
     }
@@ -52,7 +54,7 @@ export default {
 
     getAllCategories() {
       return new Promise((resolve, reject) => {
-        this.$store.state.client
+        this.client
           .get('/categories')
           .then(res => {
             console.log(res)
