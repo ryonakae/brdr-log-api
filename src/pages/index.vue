@@ -47,10 +47,6 @@ export default {
   },
 
   watch: {
-    loadedPostCount() {
-      this.checkLoad()
-    },
-
     isWebfontLoaded() {
       this.checkLoad()
     }
@@ -106,9 +102,9 @@ export default {
     },
 
     checkLoad() {
-      // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
-      if (this.isWebfontLoaded && this.posts.length === this.loadedPostCount) {
-        console.log('all webfont and postitem loaded')
+      // webフォントがロードされた時の処理
+      if (this.isWebfontLoaded) {
+        console.log('all webfont loaded')
         this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }
     }
