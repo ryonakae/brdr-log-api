@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasPosts" class="index" ref="page">
-    <div v-for="post in posts" :key="post.id" class="post" :class="{eyecatch: checkHasEyecatch(post)}" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
+    <div v-for="post in posts" :key="post.id" class="post" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
       <post-item-component :post="post"></post-item-component>
     </div>
   </div>
@@ -28,10 +28,6 @@ export default {
       return this.$store.state.perPage
     },
 
-    loadedPostCount() {
-      return this.$store.state.loadedPostCount
-    },
-
     isPreview() {
       return this.$store.state.isPreview
     },
@@ -42,10 +38,6 @@ export default {
   },
 
   watch: {
-    loadedPostCount() {
-      this.checkLoad()
-    },
-
     isWebfontLoaded() {
       this.checkLoad()
     }
@@ -65,9 +57,9 @@ export default {
     },
 
     checkLoad() {
-      // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
-      if (this.isWebfontLoaded && this.posts.length === this.loadedPostCount) {
-        console.log('all webfont and postitem loaded')
+      // webフォントがロードされた時の処理
+      if (this.isWebfontLoaded) {
+        console.log('all webfont loaded')
         this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }
     },
@@ -79,14 +71,10 @@ export default {
           offset: 0
         })
       })
-    },
-
-    checkHasEyecatch(post) {
-      return post.featured_media > 0
     }
   },
 
-  created() {
+  mounted() {
     // ページタイトルを変更
     this.$store.dispatch('changeTitle', '')
 
@@ -95,9 +83,7 @@ export default {
 
     // loadedPostCountをリセット
     this.$store.dispatch('changeLoadedPostCount', 'reset')
-  },
 
-  mounted() {
     this.init()
   },
 
