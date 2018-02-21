@@ -1,11 +1,11 @@
 <template>
-  <div :class="{webfontLoaded: isWebfontLoaded}">
+  <div :class="{webfontLoaded: isFontLoaded}">
     <header>
       <logo-component></logo-component>
-      <navi-component :class="{hidden: !isWebfontLoaded}"></navi-component>
+      <navi-component :class="{hidden: !isFontLoaded}"></navi-component>
     </header>
-    <router-view :class="{hidden: !isWebfontLoaded}"></router-view>
-    <footer-component :class="{hidden: !isWebfontLoaded}"></footer-component>
+    <router-view :class="{hidden: !isFontLoaded}"></router-view>
+    <footer-component :class="{hidden: !isFontLoaded}"></footer-component>
   </div>
 </template>
 
@@ -28,8 +28,8 @@ export default {
       return this.$store.state.perPageMobile
     },
 
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded
+    isFontLoaded() {
+      return this.$store.state.isFontLoaded
     }
   },
 

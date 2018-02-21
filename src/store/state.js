@@ -11,7 +11,7 @@ export default {
   perPage: 3,
   loadedPostCount: 0,
   infiniteScrollLock: false,
-  isWebfontLoaded: false,
+  isFontLoaded: false,
   isNotFound: false,
   isLoading: true,
   isFiltered: false,

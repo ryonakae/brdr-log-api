@@ -1,5 +1,5 @@
 <template>
-  <router-link class="post" :to="'/post/'+post.id" tag="div">
+  <router-link class="post" :class="{active: isPostItemLoaded}" :to="'/post/'+post.id" tag="div">
     <h1 class="title" v-html="postTitle"></h1>
     <div class="info">
       <div class="date">{{post.date | moment}}</div>
@@ -61,8 +61,8 @@ export default {
       return title
     },
 
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded
+    isFontLoaded() {
+      return this.$store.state.isFontLoaded
     }
   },
 

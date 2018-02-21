@@ -45,8 +45,8 @@ export default {
       return this.data.content.rendered !== ''
     },
 
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded
+    isFontLoaded() {
+      return this.$store.state.isFontLoaded
     }
   },
 
@@ -55,7 +55,7 @@ export default {
       this.checkLoad()
     },
 
-    isWebfontLoaded() {
+    isFontLoaded() {
       this.checkLoad()
     }
   },
@@ -63,7 +63,7 @@ export default {
   methods: {
     checkLoad() {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
-      if (this.isWebfontLoaded && this.isImagesLoaded) {
+      if (this.isFontLoaded && this.isImagesLoaded) {
         console.log('all webfont and images loaded')
         this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }

@@ -31,7 +31,7 @@ export default {
   },
 
   CHANGE_IS_WEBFONT_LOADED (state, boolean) {
-    state.isWebfontLoaded = boolean
+    state.isFontLoaded = boolean
   },
 
   CHANGE_IS_LOADING (state, boolean) {

@@ -1,6 +1,12 @@
 <template>
   <div v-if="hasPosts" class="index" ref="page">
-    <div class="post" v-for="post in posts" :key="post.id" @mouseenter="preloadPost(post)" @touchstart="preloadPost(post)">
+    <div
+      class="post"
+      v-for="post in posts"
+      :key="post.id"
+      @mouseenter="preloadPost(post)"
+      @touchstart="preloadPost(post)"
+    >
       <post-item-component :post="post"></post-item-component>
     </div>
   </div>
@@ -41,39 +47,39 @@ export default {
     isPreview() {
       return this.$store.state.isPreview
     },
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded
+    isFontLoaded() {
+      return this.$store.state.isFontLoaded
     }
   },
 
   watch: {
-    isWebfontLoaded() {
+    loadedPostCount() {
+      this.checkLoad()
+    },
+    isFontLoaded() {
       this.checkLoad()
     }
   },
 
   methods: {
-    getPosts(params) {
-      return new Promise((resolve, reject) => {
-        const _params = Object.assign(params, {
+    async getPosts() {
+      try {
+        const params = {
           _embed: '',
+          per_page: this.perPage,
+          offset: this.posts.length,
           status: this.isUserLoggedIn ? 'any' : 'publish'
-        })
-
-        this.client
-          .get('/posts', { params: _params })
-          .then(res => {
-            console.log('[index.vue - getPosts]', res.data)
-            resolve(res.data)
-          })
-          .catch(err => {
-            console.error('[index.vue - getPosts]', err)
-            reject(err)
-          })
-      })
+        }
+        const res = await this.client.get('/posts', { params: params })
+        this.posts = this.posts.concat(res.data)
+        console.log('[index.vue - getPosts]', this.posts, params)
+        return res.data
+      } catch (err) {
+        console.error('[index.vue - getPosts]', err)
+      }
     },
 
-    onScroll(params) {
+    onScroll() {
       const documentHeight = document.body.clientHeight
 
       if (scrollManager.scrollBottom > documentHeight * 0.7) {
@@ -81,19 +87,20 @@ export default {
 
         this.isScrolling = true
         this.$store.dispatch('loading', { status: 'start', wait: 0 })
+        this.getMorePosts()
+      }
+    },
 
-        // offsetかけてgetPosts
-        const _params = Object.assign(params, { offset: this.posts.length })
-        this.getPosts(_params)
-          .then(res => {
-            this.posts = this.posts.concat(res)
-            console.log('[index.vue - onScroll]', this.posts)
-            this.isScrolling = res.length < 1
-          })
-          .catch(err => {
-            console.error('[index.vue - onScroll]', err)
-            this.isScrolling = true
-          })
+    async getMorePosts() {
+      try {
+        const res = await this.getPosts()
+        console.log('[index.vue - onScroll]', res)
+        this.isScrolling = res.length < 1
+      } catch (err) {
+        console.error('[index.vue - onScroll]', err)
+        this.isScrolling = true
+      } finally {
+        this.checkLoad()
       }
     },
 
@@ -102,9 +109,16 @@ export default {
     },
 
     checkLoad() {
-      // webフォントがロードされた時の処理
-      if (this.isWebfontLoaded) {
-        console.log('all webfont loaded')
+      console.log(
+        '[index.vue - checkLoad] start check',
+        this.isFontLoaded,
+        this.posts.length,
+        this.loadedPostCount
+      )
+
+      // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
+      if (this.isFontLoaded && this.posts.length === this.loadedPostCount) {
+        console.log('[index.vue - checkLoad] all webfont and postitem loaded')
         this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }
     }
@@ -121,16 +135,11 @@ export default {
     this.$store.dispatch('changeTitle', '')
 
     // 記事一覧を取得
-    this.getPosts({
-      per_page: this.perPage,
-      offset: 0
-    }).then(res => {
-      this.posts = res
-    })
+    this.getPosts()
 
     // scrollManagerにonScroll関数を追加
     scrollManager.add('index.onScroll', () => {
-      this.onScroll({ per_page: this.perPage })
+      this.onScroll()
     })
   },
 
