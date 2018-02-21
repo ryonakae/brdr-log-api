@@ -117,20 +117,6 @@ export default {
 
 .post {
   cursor: pointer;
-}
-
-.title {
-  margin: 0;
-  font-size: var(--fontSize_h1);
-
-  @media (--mq_sp) {
-    font-size: var(--fontSize_h1_sp);
-  }
-}
-
-.info {
-  @apply --info;
-
-  margin-top: 1.7em;
+  @apply --header;
 }
 </style>

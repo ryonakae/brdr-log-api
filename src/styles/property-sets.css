@@ -61,6 +61,7 @@
     }
 
     & .title {
+      margin: 0;
       font-size: var(--fontSize_h1);
 
       @media (--mq_sp) {
@@ -69,19 +70,9 @@
     }
 
     & .info {
-      margin-top: 25px;
-
       @apply --info;
-      @apply --clearfix;
 
-      & .share {
-        float: right;
-        margin-top: 1px;
-      }
-
-      @media (--mq_sp) {
-        margin-top: 15px;
-      }
+      margin-top: 1.5em;
     }
   }
 }
