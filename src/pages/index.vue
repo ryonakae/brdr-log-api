@@ -38,8 +38,8 @@ export default {
     perPage() {
       return this.$store.state.perPage
     },
-    loadedPostCount() {
-      return this.$store.state.loadedPostCount
+    loadedPost() {
+      return this.$store.state.loadedPost
     },
     isUserLoggedIn() {
       return this.$store.state.isUserLoggedIn
@@ -53,7 +53,7 @@ export default {
   },
 
   watch: {
-    loadedPostCount() {
+    loadedPost() {
       this.checkLoad()
     },
     isFontLoaded() {
@@ -63,31 +63,23 @@ export default {
 
   methods: {
     async getPosts() {
+      let params = {
+        _embed: '',
+        per_page: this.perPage,
+        offset: this.posts.length,
+        status: this.isUserLoggedIn ? 'any' : 'publish'
+      }
+      if (this.$route.name === 'category') {
+        params = Object.assign(params, { categories: this.$route.params.id })
+      }
+
       try {
-        const params = {
-          _embed: '',
-          per_page: this.perPage,
-          offset: this.posts.length,
-          status: this.isUserLoggedIn ? 'any' : 'publish'
-        }
         const res = await this.client.get('/posts', { params: params })
         this.posts = this.posts.concat(res.data)
         console.log('[index.vue - getPosts]', this.posts, params)
         return res.data
       } catch (err) {
         console.error('[index.vue - getPosts]', err)
-      }
-    },
-
-    onScroll() {
-      const documentHeight = document.body.clientHeight
-
-      if (scrollManager.scrollBottom > documentHeight * 0.7) {
-        if (this.isScrolling) return
-
-        this.isScrolling = true
-        this.$store.dispatch('loading', { status: 'start', wait: 0 })
-        this.getMorePosts()
       }
     },
 
@@ -104,6 +96,18 @@ export default {
       }
     },
 
+    onScroll() {
+      const documentHeight = document.body.clientHeight
+
+      if (scrollManager.scrollBottom > documentHeight * 0.7) {
+        if (this.isScrolling) return
+
+        this.isScrolling = true
+        this.$store.dispatch('loading', { status: 'start', wait: 0 })
+        this.getMorePosts()
+      }
+    },
+
     preloadPost(post) {
       console.log('[index.vue - preloadPost]')
     },
@@ -113,11 +117,11 @@ export default {
         '[index.vue - checkLoad] start check',
         this.isFontLoaded,
         this.posts.length,
-        this.loadedPostCount
+        this.loadedPost
       )
 
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
-      if (this.isFontLoaded && this.posts.length === this.loadedPostCount) {
+      if (this.isFontLoaded && this.posts.length === this.loadedPost) {
         console.log('[index.vue - checkLoad] all webfont and postitem loaded')
         this.$store.dispatch('loading', { status: 'end', wait: 300 })
       }
@@ -125,8 +129,10 @@ export default {
   },
 
   mounted() {
-    // loadedPostCountをリセット
-    this.$store.dispatch('changeLoadedPostCount', 'reset')
+    console.log('[index.vue - mounted] route', this.$route)
+
+    // loadedPostをリセット
+    this.$store.dispatch('changeloadedPost', 'reset')
 
     // ローディング開始
     this.$store.dispatch('loading', { status: 'start', wait: 0 })

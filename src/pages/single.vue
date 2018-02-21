@@ -6,12 +6,17 @@
         <div class="info">
           <div class="date">{{post.date | moment}}</div>
           <ul v-if="hasCategories" class="categories">
-            <li v-for="category in categories" :key="category.id" class="category" @click="filterByCategory(category.id, category.name)">{{category.name}}</li>
+            <li v-for="category in categories" :key="category.id" class="category" @click="filter(category.id, category.name)">{{category.name}}</li>
           </ul>
         </div>
       </header>
 
       <content-component :data="post"></content-component>
+
+      <footer class="footer">
+        <share-component v-if="hasPost" :permalink="post.link" :title="post.title.rendered" class="share"></share-component>
+        <router-link :to="'/'" class="back">Index</router-link>
+      </footer>
     </article>
 
     <not-found-component v-if="isNotFound"></not-found-component>
@@ -21,11 +26,13 @@
 <script>
 import moment from 'moment'
 import ContentComponent from '@/components/Content.vue'
+import ShareComponent from '@/components/Share.vue'
 import NotFoundComponent from '@/components/NotFound.vue'
 
 export default {
   components: {
     ContentComponent,
+    ShareComponent,
     NotFoundComponent
   },
 
@@ -33,7 +40,8 @@ export default {
     return {
       post: {},
       categories: [],
-      imgLoad: null
+      imgLoad: null,
+      isNotFound: false
     }
   },
 
@@ -61,9 +69,6 @@ export default {
     },
     isPreview() {
       return this.$store.state.isPreview
-    },
-    isNotFound() {
-      return this.$store.state.isNotFound
     }
   },
 
@@ -118,12 +123,18 @@ export default {
       })
     },
 
-    filterByCategory(categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {
+    filter(categoryId, categoryName) {
+      this.$store.dispatch('filter', {
         categoryId: categoryId,
         categoryName: categoryName,
         transition: true
       })
+    },
+
+    onNotFound() {
+      this.isNotFound = true
+      this.$store.dispatch('changeTitle', 'Page Not Found')
+      this.$store.dispatch('loading', { status: 'end', wait: 300 })
     }
   },
 
@@ -136,9 +147,8 @@ export default {
           this.post = res
           this.init()
         })
-        .catch(err => {
-          console.error(err)
-          this.$store.dispatch('onNotFound')
+        .catch(() => {
+          this.onNotFound()
         })
     } else {
       Promise.all([
@@ -150,9 +160,8 @@ export default {
           this.post = _res
           this.init()
         })
-        .catch(err => {
-          console.error(err)
-          this.$store.dispatch('onNotFound')
+        .catch(() => {
+          this.onNotFound()
         })
     }
   }
@@ -166,6 +175,28 @@ export default {
 
 .header {
   @apply --header;
+}
+
+.footer {
+  margin-bottom: var(--margin_page);
+  font-size: var(--fontSize_small);
+
+  & a {
+    @apply --link;
+  }
+
+  @media (--mq_sp) {
+    margin-bottom: var(--margin_page_sp);
+  }
+}
+
+.share {
+  display: inline-block;
+}
+
+.back {
+  display: inline-block;
+  margin-left: 1.5em;
 }
 </style>
 

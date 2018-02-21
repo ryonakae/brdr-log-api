@@ -3,20 +3,17 @@
 import axios from 'axios'
 
 export default {
+  client: axios.create(),
   pageTitle: '',
   siteTitle: document.title,
   siteUrl: location.protocol + '//' + location.host,
-  allPostData: [],
-  currentPostData: {},
   perPage: 3,
-  loadedPostCount: 0,
+  loadedPost: 0,
   infiniteScrollLock: false,
   isFontLoaded: false,
-  isNotFound: false,
   isLoading: true,
   isFiltered: false,
-  filteredCategory: '',
-  client: axios.create(),
+  filteredCategoryName: '',
   isPreview: window.wpSettings.is_preview,
   nonce: window.wpSettings.nonce,
   isUserLoggedIn: window.wpSettings.is_logged_in

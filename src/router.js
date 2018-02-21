@@ -11,10 +11,11 @@ Vue.use(VueRouter)
 
 // detect routes
 const routes = [
-  { path: '/', component: index },
-  { path: '/:slug', component: page },
-  { path: '/post/:id', component: single },
-  { path: '/*', component: notFound }
+  { path: '/', component: index, name: 'index' },
+  { path: '/:slug', component: page, name: 'page' },
+  { path: '/post/:id', component: single, name: 'single' },
+  { path: '/category/:id', component: index, name: 'category' },
+  { path: '/*', component: notFound, name: 'notFound' }
 ]
 
 // detect scroll behavior

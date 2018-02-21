@@ -4,7 +4,14 @@
     <div class="info">
       <div class="date">{{post.date | moment}}</div>
       <ul v-if="hasCategories" class="categories">
-        <li v-for="category in categories" :key="category.id" class="category" @click.stop="filterByCategory(category.id, category.name)">{{category.name}}</li>
+        <li
+          v-for="category in categories"
+          :key="category.id"
+          class="category"
+          @click.stop="filter(category.id, category.name)"
+        >
+          {{category.name}}
+        </li>
       </ul>
     </div>
   </router-link>
@@ -68,13 +75,13 @@ export default {
 
   methods: {
     init() {
-      // PostItemがロードされたらloadedPostCountを1up
-      this.$store.dispatch('changeLoadedPostCount', 'increment')
+      // PostItemがロードされたらloadedPostを1up
+      this.$store.dispatch('changeloadedPost', 'increment')
       this.isPostItemLoaded = true
     },
 
-    filterByCategory(categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {
+    filter(categoryId, categoryName) {
+      this.$store.dispatch('filter', {
         categoryId: categoryId,
         categoryName: categoryName,
         transition: false

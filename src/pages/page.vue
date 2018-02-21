@@ -24,26 +24,22 @@ export default {
 
   data() {
     return {
-      page: {}
+      page: {},
+      isNotFound: false
     }
   },
 
   computed: {
     hasPage() {
       return Object.keys(this.page).length > 0
-    },
-
-    isNotFound() {
-      return this.$store.state.isNotFound
     }
   },
 
   methods: {
-    init() {
-      this.$store.dispatch(
-        'changeTitle',
-        this.page.title.rendered.toUpperCase()
-      )
+    onNotFound() {
+      this.isNotFound = true
+      this.$store.dispatch('changeTitle', 'Page Not Found')
+      this.$store.dispatch('loading', { status: 'end', wait: 300 })
     }
   },
 
@@ -57,11 +53,14 @@ export default {
         })
       })
       .then(() => {
-        this.init()
+        this.$store.dispatch(
+          'changeTitle',
+          this.page.title.rendered.toUpperCase()
+        )
       })
       .catch(err => {
         console.error(err)
-        this.$store.dispatch('onNotFound')
+        this.onNotFound()
       })
   }
 }

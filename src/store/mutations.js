@@ -19,11 +19,11 @@ export default {
   },
 
   INCREMENT_LOADED_POST_COUNT (state) {
-    state.loadedPostCount++
+    state.loadedPost++
   },
 
   RESET_LOADED_POST_COUNT (state) {
-    state.loadedPostCount = 0
+    state.loadedPost = 0
   },
 
   CHANGE_INFINITE_SCROLL_LOCK (state, boolean) {
@@ -47,6 +47,6 @@ export default {
   },
 
   SET_FILTERED_CATEGORY (state, categoryName) {
-    state.filteredCategory = categoryName
+    state.filteredCategoryName = categoryName
   }
 }

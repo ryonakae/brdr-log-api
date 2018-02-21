@@ -1,13 +1,13 @@
 <template>
   <nav class="nav">
     <ul class="navi">
-      <li v-if="isFiltered" class="filteredCategory" @click="filterByCategory('reset', null)">
-        <span>{{filteredCategory}}</span>
+      <li v-if="isFiltered" class="filteredCategoryName" @click="filter('reset', null)">
+        <span>{{filteredCategoryName}}</span>
       </li>
       <li class="categories">
         <span @click="toggleCategories">Category</span>
         <ul :class="{active: isCategoriesActive}">
-          <li v-for="category in categories" v-if="category.count > 0" :key="category.id" @click="filterByCategory(category.id, category.name)">
+          <li v-for="category in categories" v-if="category.count > 0" :key="category.id" @click="filter(category.id, category.name)">
             <span>{{category.name}}</span>
           </li>
         </ul>
@@ -35,14 +35,14 @@ export default {
     isFiltered() {
       return this.$store.state.isFiltered
     },
-    filteredCategory() {
-      return this.$store.state.filteredCategory
+    filteredCategoryName() {
+      return this.$store.state.filteredCategoryName
     }
   },
 
   methods: {
-    filterByCategory(categoryId, categoryName) {
-      this.$store.dispatch('filterByCategory', {
+    filter(categoryId, categoryName) {
+      this.$store.dispatch('filter', {
         categoryId: categoryId,
         categoryName: categoryName,
         transition: true
@@ -121,7 +121,7 @@ export default {
   }
 }
 
-.filteredCategory {
+.filteredCategoryName {
   & span::before {
     content: 'X';
     margin-right: 0.2em;
