@@ -56,14 +56,12 @@ export default {
 <style>
 /* @import 'sanitize.css'; */
 @import 'font-face.css';
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+@import 'config.css';
 @import 'base.css';
 </style>
 
 <style scoped>
-@import 'properties.css';
+@import 'config.css';
 
 .webfontLoaded {
   font-family: var(--fontFamily_loaded);

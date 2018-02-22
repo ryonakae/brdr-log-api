@@ -9,8 +9,7 @@
 </template>
 
 <style module>
-@import 'properties.css';
-@import 'media.css';
+@import 'config.css';
 
 .title {
   margin: 0 0 0 var(--margin_page);

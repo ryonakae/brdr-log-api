@@ -166,8 +166,7 @@ export default {
 </script>
 
 <style scoped>
-@import 'properties.css';
-@import 'media.css';
+@import 'config.css';
 
 .index {
   max-width: var(--width_content);

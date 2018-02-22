@@ -72,8 +72,7 @@ export default {
 </script>
 
 <style scoped>
-@import 'properties.css';
-@import 'property-sets.css';
+@import 'config.css';
 
 .icon {
   display: inline-block;

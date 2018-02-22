@@ -154,9 +154,7 @@ export default {
 </script>
 
 <style scoped>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+@import 'config.css';
 
 .title {
   margin: 0;

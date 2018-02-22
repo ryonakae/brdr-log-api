@@ -1,6 +1,10 @@
 /* common style */
 html {
   font-size: 10px;
+
+  @media (--mq_sp) {
+    font-size: calc(10px * 0.9);
+  }
 }
 
 body {
@@ -30,10 +34,6 @@ body {
   @media (--mq_retina) {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  @media (--mq_sp) {
-    font-size: var(--fontSize_default_sp);
   }
 }
 

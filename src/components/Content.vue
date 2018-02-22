@@ -131,9 +131,7 @@ export default {
 </script>
 
 <style module>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+@import 'config.css';
 
 .eyecatch {
   display: table;

@@ -5,9 +5,7 @@
 </template>
 
 <style scoped>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+@import 'config.css';
 
 .footer {
   font-size: var(--fontSize_small);
