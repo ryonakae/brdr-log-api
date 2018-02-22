@@ -65,7 +65,7 @@ export default {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
       if (this.isFontLoaded && this.isImagesLoaded) {
         console.log('all webfont and images loaded')
-        this.$store.dispatch('loading', { status: 'end', wait: 300 })
+        this.$store.commit('changeIsLoading', false)
       }
     }
   },
@@ -115,7 +115,7 @@ export default {
     utils.wait(100, true).then(() => {
       if (!imgLoad.isComplete) {
         console.log('images are NOT loaded')
-        this.$store.dispatch('loading', { status: 'start', wait: 0 })
+        this.$store.commit('changeIsLoading', true)
 
         imgLoad.on('always', () => {
           console.log('all images are loaded')

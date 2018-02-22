@@ -34,13 +34,11 @@ export default {
 
   methods: {
     onEnter() {
-      console.log('onEnter')
-      this.$store.dispatch('loading', { status: 'start', wait: 0 })
+      this.$store.commit('changeIsLoading', true)
     },
 
     onLeave() {
-      console.log('onLeave')
-      this.$store.dispatch('loading', { status: 'end', wait: 0 })
+      this.$store.commit('changeIsLoading', false)
     }
   }
 }

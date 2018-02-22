@@ -38,7 +38,6 @@ export default {
 
   data() {
     return {
-      post: {},
       categories: [],
       imgLoad: null,
       isNotFound: false
@@ -51,6 +50,9 @@ export default {
     },
     postId() {
       return this.$route.params.id
+    },
+    post() {
+      return this.$store.state.currentPost
     },
     hasPost() {
       return Object.keys(this.post).length > 0
@@ -80,10 +82,8 @@ export default {
 
   methods: {
     init() {
-      // ページタイトルを変更
-      this.$store.dispatch('changeTitle', this.post.title.rendered)
+      this.$store.commit('setPageTitle', this.post.title.rendered)
 
-      // カテゴリがある場合はカテゴリ取得
       if (this.hasCategories) {
         this.$store
           .dispatch('getAllCategoryName', this.post.categories)
@@ -93,34 +93,26 @@ export default {
       }
     },
 
-    getPost(id) {
-      return new Promise((resolve, reject) => {
-        this.client
-          .get('/posts/' + id, { params: { _embed: '' } })
-          .then(res => {
-            console.log('[single.vue - getPost]', res.data)
-            resolve(res.data)
-          })
-          .catch(err => {
-            console.error('[single.vue - getPost]', err)
-            reject(err)
-          })
-      })
+    async getPost(id) {
+      try {
+        const res = await this.client.get('/posts/' + id, {
+          params: { _embed: '' }
+        })
+        console.log('[single.vue - getPost]', res.data)
+        return res.data
+      } catch (err) {
+        console.error('[single.vue - getPost]', err)
+      }
     },
 
-    getPostRevisions(id) {
-      return new Promise((resolve, reject) => {
-        this.client
-          .get('/posts/' + id + '/revisions')
-          .then(res => {
-            console.log('[single.vue - getPostRevisions]', res.data)
-            resolve(res.data)
-          })
-          .catch(err => {
-            console.error('[single.vue - getPostRevisions]', err)
-            reject(err)
-          })
-      })
+    async getPostRevisions(id) {
+      try {
+        const res = await this.client.get('/posts/' + id + '/revisions')
+        console.log('[single.vue - getPostRevisions]', res.data)
+        return res.data
+      } catch (err) {
+        console.error('[single.vue - getPostRevisions]', err)
+      }
     },
 
     filter(categoryId, categoryName) {
@@ -133,36 +125,28 @@ export default {
 
     onNotFound() {
       this.isNotFound = true
-      this.$store.dispatch('changeTitle', 'Page Not Found')
-      this.$store.dispatch('loading', { status: 'end', wait: 300 })
+      this.$store.commit('setPageTitle', 'Page Not Found')
+      this.$store.commit('changeIsLoading', false)
     }
   },
 
-  mounted() {
-    // getPost/getPostRevisionsを実行
-    // エラー返ってきたらnotFoundを表示
-    if (!this.isPreview) {
-      this.getPost(this.postId)
-        .then(res => {
-          this.post = res
-          this.init()
-        })
-        .catch(() => {
-          this.onNotFound()
-        })
-    } else {
-      Promise.all([
-        this.getPost(this.postId),
-        this.getPostRevisions(this.postId)
-      ])
-        .then(res => {
-          const _res = Object.assign(res[0], res[1])
-          this.post = _res
-          this.init()
-        })
-        .catch(() => {
-          this.onNotFound()
-        })
+  async mounted() {
+    try {
+      if (!this.isPreview) {
+        const res = await this.getPost(this.postId)
+        this.$store.commit('setCurrentPost', res)
+        this.init()
+      } else {
+        const res = await Promise.all([
+          this.getPost(this.postId),
+          this.getPostRevisions(this.postId)
+        ])
+        const _res = Object.assign(res[0], res[1])
+        this.$store.commit('setCurrentPost', _res)
+        this.init()
+      }
+    } catch (err) {
+      this.onNotFound()
     }
   }
 }

@@ -24,20 +24,14 @@ export default {
   },
 
   computed: {
-    perPageMobile() {
-      return this.$store.state.perPageMobile
-    },
-
     isFontLoaded() {
       return this.$store.state.isFontLoaded
     }
   },
 
   created() {
-    // デバイスによってbodyにaddClass
     document.body.classList.add(utils.getDevice())
 
-    // webfontのロードが終わったらbodyにaddClass
     webFont.load({
       classes: false,
       timeout: 5000,
@@ -50,12 +44,11 @@ export default {
       },
       active: () => {
         console.log('all webfont loaded')
-        this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
+        this.$store.commit('changeIsFontLoaded', true)
       }
     })
 
-    // axiosのクライアントをセットアップ
-    this.$store.dispatch('initClient')
+    this.$store.commit('initClient')
   }
 }
 </script>

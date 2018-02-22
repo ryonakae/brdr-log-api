@@ -1,5 +1,6 @@
 <template>
   <router-link class="post" :class="{active: isPostItemLoaded}" :to="'/post/'+post.id" tag="div">
+    <img v-if="hasEyecatch" class="eyecatch" :src="eyecatch" ref="eyecatch">
     <h1 class="title" v-html="postTitle"></h1>
     <div class="info">
       <div class="date">{{post.date | moment}}</div>
@@ -19,6 +20,7 @@
 
 <script>
 import moment from 'moment'
+import imagesLoaded from 'imagesloaded'
 
 export default {
   props: ['post'],
@@ -66,18 +68,21 @@ export default {
       }
 
       return title
-    },
-
-    isFontLoaded() {
-      return this.$store.state.isFontLoaded
     }
   },
 
   methods: {
     init() {
-      // PostItemがロードされたらloadedPostを1up
-      this.$store.dispatch('changeloadedPost', 'increment')
+      this.$store.commit('incrementLoadedPost')
       this.isPostItemLoaded = true
+
+      if (this.hasCategories) {
+        this.$store
+          .dispatch('getAllCategoryName', this.post.categories)
+          .then(result => {
+            this.categories = result
+          })
+      }
     },
 
     filter(categoryId, categoryName) {
@@ -96,16 +101,13 @@ export default {
   },
 
   mounted() {
-    this.init()
-
-    // カテゴリがある場合はカテゴリ取得
-    if (this.hasCategories) {
-      this.$store
-        .dispatch('getAllCategoryName', this.post.categories)
-        .then(result => {
-          this.categories = result
-        })
+    if (this.hasEyecatch) {
+      const imgLoad = imagesLoaded(this.$refs.eyecatch)
+      console.log('[PostItem.vue - mounted]', imgLoad)
+      return imgLoad.on('always', this.init)
     }
+
+    this.init()
   }
 }
 </script>
@@ -118,5 +120,16 @@ export default {
 .post {
   cursor: pointer;
   @apply --header;
+  opacity: 0.3;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.eyecatch {
+  display: none;
 }
 </style>

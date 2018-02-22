@@ -5,68 +5,6 @@ import router from '@/router'
 
 // 非同期、複数のmutationsを組み合わせた処理
 export default {
-  changeTitle ({ commit, state }, title) {
-    return new Promise(resolve => {
-      // pageTitleを変更
-      commit('SET_PAGE_TITLE', title)
-
-      // document.titleも変更
-      // 引数が「''」ならサイトタイトルだけにする
-      if (title === '') {
-        document.title = state.siteTitle
-      } else {
-        document.title = title + ' - ' + state.siteTitle
-      }
-
-      resolve()
-    })
-  },
-
-  changeloadedPost ({ commit }, arg) {
-    return new Promise(resolve => {
-      if (arg === 'increment') {
-        commit('INCREMENT_LOADED_POST_COUNT')
-      } else if (arg === 'reset') {
-        commit('RESET_LOADED_POST_COUNT')
-      }
-
-      resolve()
-    })
-  },
-
-  onNotFound ({ dispatch, commit }, options) {
-    return new Promise(resolve => {
-      commit('CHANGE_IS_NOT_FOUND', true)
-      dispatch('changeTitle', 'Page Not Found')
-      dispatch('loading', { status: 'end', wait: 300 })
-      resolve()
-    })
-  },
-
-  // logoのloading
-  loading ({ commit, state }, options) {
-    return new Promise(resolve => {
-      utils.wait(options.wait, true).then(() => {
-        if (options.status === 'start') {
-          commit('CHANGE_IS_LOADING', true)
-        } else if (options.status === 'end') {
-          commit('CHANGE_IS_LOADING', false)
-        }
-        resolve()
-      })
-    })
-  },
-
-  // axiosのクライアントをセットアップ
-  initClient ({ state }) {
-    return new Promise(resolve => {
-      state.client.defaults.baseURL = state.siteUrl + '/wp-json/wp/v2'
-      state.client.defaults.timeout = 10000
-      state.client.defaults.headers = { 'X-WP-Nonce': window.wpSettings.nonce }
-      resolve()
-    })
-  },
-
   // 固定ページを取得
   getPage ({ state }, slug) {
     return new Promise((resolve, reject) => {
