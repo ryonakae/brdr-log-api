@@ -11,7 +11,7 @@
           class="category"
           @click.stop="filter(category.id, category.name)"
         >
-          {{category.name}}
+          <span>{{category.name}}</span>
         </li>
       </ul>
     </div>
@@ -119,7 +119,6 @@ export default {
 
 .post {
   cursor: pointer;
-  @apply --header;
   opacity: 0.3;
   pointer-events: none;
 
@@ -131,5 +130,15 @@ export default {
 
 .eyecatch {
   display: none;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fontSize_h1);
+}
+
+.info {
+  @apply --info;
+  margin-top: 1.5em;
 }
 </style>

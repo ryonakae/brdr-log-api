@@ -1,8 +1,8 @@
 <template>
   <div>
     <article v-if="hasPage" ref="page">
-      <header :class="$style.header">
-        <h1 :class="$style.title" v-html="page.title.rendered"></h1>
+      <header>
+        <h1 class="title" v-html="page.title.rendered"></h1>
       </header>
 
       <content-component :data="page"></content-component>
@@ -77,12 +77,13 @@ export default {
 }
 </script>
 
-<style module>
+<style scoped>
 @import 'properties.css';
 @import 'property-sets.css';
 @import 'media.css';
 
-.header {
-  @apply --header;
+.title {
+  margin: 0;
+  font-size: var(--fontSize_h1);
 }
 </style>

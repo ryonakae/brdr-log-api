@@ -25,7 +25,7 @@
   --info: {
     font-size: var(--fontSize_small);
 
-    & .date {
+    & > * {
       display: inline-block;
     }
 
@@ -39,8 +39,6 @@
     & .category {
       display: inline-block;
 
-      @apply --link;
-
       &::before {
         content: ", ";
       }
@@ -48,31 +46,10 @@
       &:first-child::before {
         content: "";
       }
-    }
-  }
 
-  /*  content header  */
-  --header: {
-    max-width: var(--width_content);
-    margin: var(--margin_top) auto 70px;
-
-    @media (--mq_sp) {
-      margin: var(--margin_top_sp) var(--margin_page_sp) 45px;
-    }
-
-    & .title {
-      margin: 0;
-      font-size: var(--fontSize_h1);
-
-      @media (--mq_sp) {
-        font-size: var(--fontSize_h1_sp);
+      & span {
+        @apply --link;
       }
-    }
-
-    & .info {
-      @apply --info;
-
-      margin-top: 1.5em;
     }
   }
 }

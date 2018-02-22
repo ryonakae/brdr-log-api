@@ -1,7 +1,7 @@
 <template>
   <div>
     <article v-if="hasPost" ref="article">
-      <header class="header">
+      <header>
         <h1 class="title" v-html="postTitle"></h1>
         <div class="info">
           <div class="date">{{post.date | moment}}</div>
@@ -158,8 +158,14 @@ export default {
 @import 'property-sets.css';
 @import 'media.css';
 
-.header {
-  @apply --header;
+.title {
+  margin: 0;
+  font-size: var(--fontSize_h1);
+}
+
+.info {
+  @apply --info;
+  margin-top: 1.5em;
 }
 
 .footer {

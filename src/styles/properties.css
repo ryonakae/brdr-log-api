@@ -3,7 +3,6 @@
   --color_bg: #fff;
   --color_key: #000;
   --color_sub: color(var(--color_key) alpha(50%));
-  --color_accent: #fc524c;
 
   /* bg color */
   --bgColor_default: #fff;
