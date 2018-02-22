@@ -1,5 +1,3 @@
-'use strict'
-
 import axios from 'axios'
 
 export default {
@@ -9,12 +7,11 @@ export default {
   siteUrl: location.protocol + '//' + location.host,
   perPage: 3,
   loadedPost: 0,
-  infiniteScrollLock: false,
-  isFontLoaded: false,
+  allPosts: [],
+  currentPost: {},
   isLoading: true,
+  isFontLoaded: false,
   isFiltered: false,
-  filteredCategoryName: '',
-  isPreview: window.wpSettings.is_preview,
-  nonce: window.wpSettings.nonce,
-  isUserLoggedIn: window.wpSettings.is_logged_in
+  categoryId: 0,
+  categoryName: ''
 }

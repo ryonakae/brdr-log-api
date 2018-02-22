@@ -2,51 +2,35 @@
 
 // 同期、単一の処理
 export default {
-  SET_PAGE_TITLE (state, title) {
+  setPageTitle (state, title) {
     state.pageTitle = title
   },
 
-  SET_ALL_POST_DATA (state, data) {
-    state.allPostData = data
+  setAllPosts (state, data) {
+    state.allPosts = data
   },
 
-  SET_CURRENT_POST_DATA (state, data) {
-    state.currentPostData = data
+  setCurrentPost (state, data) {
+    state.currentPost = data
   },
 
-  SET_PER_PAGE (state, count) {
-    state.perPage = count
+  incrementLoadedPost (state, reset) {
+    if (reset) {
+      state.loadedPost = 0
+    } else {
+      state.loadedPost++
+    }
   },
 
-  INCREMENT_LOADED_POST_COUNT (state) {
-    state.loadedPost++
-  },
-
-  RESET_LOADED_POST_COUNT (state) {
-    state.loadedPost = 0
-  },
-
-  CHANGE_INFINITE_SCROLL_LOCK (state, boolean) {
-    state.infiniteScrollLock = boolean
-  },
-
-  CHANGE_IS_WEBFONT_LOADED (state, boolean) {
+  changeIsFontLoaded (state, boolean) {
     state.isFontLoaded = boolean
   },
 
-  CHANGE_IS_LOADING (state, boolean) {
+  changeIsLoading (state, boolean) {
     state.isLoading = boolean
   },
 
-  CHANGE_IS_NOT_FOUND (state, boolean) {
-    state.isNotFound = boolean
-  },
-
-  CHANGE_IS_FILTERED (state, boolean) {
+  changeIsFiltered (state, boolean) {
     state.isFiltered = boolean
-  },
-
-  SET_FILTERED_CATEGORY (state, categoryName) {
-    state.filteredCategoryName = categoryName
   }
 }

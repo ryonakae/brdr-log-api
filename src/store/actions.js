@@ -62,7 +62,7 @@ export default {
     return new Promise(resolve => {
       state.client.defaults.baseURL = state.siteUrl + '/wp-json/wp/v2'
       state.client.defaults.timeout = 10000
-      state.client.defaults.headers = { 'X-WP-Nonce': state.nonce }
+      state.client.defaults.headers = { 'X-WP-Nonce': window.wpSettings.nonce }
       resolve()
     })
   },

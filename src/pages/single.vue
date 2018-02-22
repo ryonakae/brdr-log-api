@@ -68,7 +68,7 @@ export default {
       return title
     },
     isPreview() {
-      return this.$store.state.isPreview
+      return window.wpSettings.is_preview
     }
   },
 

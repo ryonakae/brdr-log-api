@@ -42,10 +42,10 @@ export default {
       return this.$store.state.loadedPost
     },
     isUserLoggedIn() {
-      return this.$store.state.isUserLoggedIn
+      return window.wpSettings.is_logged_in
     },
     isPreview() {
-      return this.$store.state.isPreview
+      return window.wpSettings.is_preview
     },
     isFontLoaded() {
       return this.$store.state.isFontLoaded
