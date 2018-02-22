@@ -36,32 +36,33 @@ export default {
   },
 
   methods: {
+    async getPage(slug) {
+      try {
+        const res = await this.client.get('/posts/' + id, {
+          params: { _embed: '', slug: slug }
+        })
+        console.log('[page.vue - getPage]', res.data)
+        return res.data[0]
+      } catch (err) {
+        console.error('[page.vue - getPage]', err)
+      }
+    },
+
     onNotFound() {
       this.isNotFound = true
-      this.$store.dispatch('changeTitle', 'Page Not Found')
-      this.$store.dispatch('loading', { status: 'end', wait: 300 })
+      this.$store.commit('setPageTitle', 'Page Not Found')
+      this.$store.commit('changeIsLoading', false)
     }
   },
 
-  mounted() {
-    this.$store
-      .dispatch('getPage', this.$route.params.slug)
-      .then(result => {
-        return new Promise((resolve, reject) => {
-          this.page = result
-          resolve()
-        })
-      })
-      .then(() => {
-        this.$store.dispatch(
-          'changeTitle',
-          this.page.title.rendered.toUpperCase()
-        )
-      })
-      .catch(err => {
-        console.error(err)
-        this.onNotFound()
-      })
+  async mounted() {
+    try {
+      const res = await this.getPage(this.$route.params.slug)
+      this.page = res
+      this.$store.commit('setPageTitle', this.page.title.rendered)
+    } catch (err) {
+      this.onNotFound()
+    }
   }
 }
 </script>
