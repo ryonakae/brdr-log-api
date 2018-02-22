@@ -101,7 +101,7 @@ export default {
         console.log('[single.vue - getPost]', res.data)
         return res.data
       } catch (err) {
-        console.error('[single.vue - getPost]', err)
+        throw new Error('[single.vue - getPost]', err)
       }
     },
 
@@ -111,7 +111,7 @@ export default {
         console.log('[single.vue - getPostRevisions]', res.data)
         return res.data
       } catch (err) {
-        console.error('[single.vue - getPostRevisions]', err)
+        throw new Error('[single.vue - getPostRevisions]', err)
       }
     },
 
@@ -146,6 +146,7 @@ export default {
         this.init()
       }
     } catch (err) {
+      console.error('[single.vue - mounted]', err)
       this.onNotFound()
     }
   }

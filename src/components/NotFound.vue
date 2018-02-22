@@ -13,9 +13,10 @@
 @import 'media.css';
 
 .title {
-  margin: 0 0 0 var(--margin_top);
+  margin: 0 0 0 var(--margin_page);
   padding-top: var(--margin_top);
   font-size: 20vw;
+  line-height: 1;
 
   @media (--mq_sp) {
     padding-top: var(--margin_top_sp);

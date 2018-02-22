@@ -47,10 +47,11 @@ export default {
             slug: slug
           }
         })
+        if (res.data.length === 0) throw 'no res.data'
         console.log('[page.vue - getPage]', res)
         return res.data[0]
       } catch (err) {
-        console.error('[page.vue - getPage]', err)
+        throw new Error('[page.vue - getPage]', err)
       }
     },
 
@@ -64,9 +65,12 @@ export default {
   async mounted() {
     try {
       const res = await this.getPage(this.$route.params.slug)
-      this.page = res
-      this.$store.commit('setPageTitle', this.page.title.rendered)
+      if (res) {
+        this.page = res
+        this.$store.commit('setPageTitle', this.page.title.rendered)
+      }
     } catch (err) {
+      console.error('[page.vue - mounted]', err)
       this.onNotFound()
     }
   }
