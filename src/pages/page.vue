@@ -30,6 +30,9 @@ export default {
   },
 
   computed: {
+    client() {
+      return this.$store.state.client
+    },
     hasPage() {
       return Object.keys(this.page).length > 0
     }
@@ -38,10 +41,13 @@ export default {
   methods: {
     async getPage(slug) {
       try {
-        const res = await this.client.get('/posts/' + id, {
-          params: { _embed: '', slug: slug }
+        const res = await this.client.get('/pages', {
+          params: {
+            _embed: '',
+            slug: slug
+          }
         })
-        console.log('[page.vue - getPage]', res.data)
+        console.log('[page.vue - getPage]', res)
         return res.data[0]
       } catch (err) {
         console.error('[page.vue - getPage]', err)
