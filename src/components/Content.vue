@@ -38,6 +38,57 @@ export default {
   },
 
   methods: {
+    init() {
+      // Twitterの埋め込みツイートがあったら関数実行
+      const $tweet = document.getElementsByClassName('twitter-tweet')
+      if ($tweet.length > 0) window.twttr.widgets.load(document.body)
+
+      // コードスニペットがあったらprettify実行
+      const $code = document.getElementsByTagName('pre')
+      console.log($code)
+      if ($code.length > 0) {
+        for (let i = 0; i < $code.length; i++) {
+          $code[i].classList.add('prettyprint')
+        }
+        window.prettyPrint()
+      }
+
+      // iframeをdivで囲う
+      const $iframes = document.getElementsByTagName('iframe')
+      if ($iframes.length > 0) {
+        for (let i = 0; i < $iframes.length; i++) {
+          $iframes[i].outerHTML =
+            '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
+        }
+      }
+
+      // ページ内の画像ロードした時の処理
+      const imgLoad = imagesLoaded(this.$refs.content, { background: true })
+
+      // progress
+      imgLoad.on('progress', (instance, image) => {
+        image.img.classList.add('ready')
+      })
+
+      // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
+      // 全部の画像を読み込み終わったらローディング終了
+      // すでに読み込まれている場合は即座にlogoのローディング終了
+      utils.wait(100, true).then(() => {
+        if (!imgLoad.isComplete) {
+          console.log('images are NOT loaded')
+          this.$store.commit('changeIsLoading', true)
+
+          imgLoad.on('always', () => {
+            console.log('all images are loaded')
+            this.isImagesLoaded = true
+          })
+        } else {
+          console.log('images are ALREADY loaded')
+          this.isImagesLoaded = true
+        }
+      })
+    },
+
     checkLoad() {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
       if (this.isFontLoaded && this.isImagesLoaded) {
@@ -48,54 +99,7 @@ export default {
   },
 
   mounted() {
-    // Twitterの埋め込みツイートがあったら関数実行
-    const $tweet = document.getElementsByClassName('twitter-tweet')
-    if ($tweet.length > 0) window.twttr.widgets.load(document.body)
-
-    // コードスニペットがあったらprettify実行
-    const $code = document.getElementsByTagName('pre')
-    console.log($code)
-    if ($code.length > 0) {
-      for (let i = 0; i < $code.length; i++) {
-        $code[i].classList.add('prettyprint')
-      }
-      window.prettyPrint()
-    }
-
-    // iframeをdivで囲う
-    const $iframes = document.getElementsByTagName('iframe')
-    if ($iframes.length > 0) {
-      for (let i = 0; i < $iframes.length; i++) {
-        $iframes[i].outerHTML =
-          '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
-      }
-    }
-
-    // ページ内の画像ロードした時の処理
-    const imgLoad = imagesLoaded(this.$refs.content, { background: true })
-
-    // progress
-    imgLoad.on('progress', (instance, image) => {
-      image.img.classList.add('ready')
-    })
-
-    // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
-    // 全部の画像を読み込み終わったらローディング終了
-    // すでに読み込まれている場合は即座にlogoのローディング終了
-    utils.wait(100, true).then(() => {
-      if (!imgLoad.isComplete) {
-        console.log('images are NOT loaded')
-        this.$store.commit('changeIsLoading', true)
-
-        imgLoad.on('always', () => {
-          console.log('all images are loaded')
-          this.isImagesLoaded = true
-        })
-      } else {
-        console.log('images are ALREADY loaded')
-        this.isImagesLoaded = true
-      }
-    })
+    this.init()
   }
 }
 </script>

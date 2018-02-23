@@ -80,9 +80,8 @@ export default {
     },
 
     async getMorePosts(params) {
-      const _params = Object.assign(params, { offset: this.posts.length })
-
       try {
+        const _params = Object.assign(params, { offset: this.posts.length })
         const res = await this.getPosts(_params)
         console.log('[index.vue - onScroll]', res)
         this.isScrolling = false
@@ -134,8 +133,8 @@ export default {
 
   mounted() {
     console.log('[index.vue - mounted] route', this.$route)
-    // this.$store.commit('resetLoadedPost')
     this.$store.commit('changeIsLoading', true)
+    this.$store.commit('setCurrentPost', {})
     this.$store.commit('setPageTitle', '')
     this.getPosts(this.params)
     scrollManager.add('index.onScroll', () => {
@@ -148,7 +147,6 @@ export default {
       // プレビュー時、かつ /?p=[id]&preview=true というクエリがある場合は、singleに遷移する
       // 遷移時にp(id)を渡す
       const query = vm.$route.query
-
       if (window.wpSettings.is_preview && Object.keys(query).length > 0) {
         if (Object.keys(query.p).length > 0 && query.preview) {
           vm.$router.replace({ path: '/post/' + query.p })

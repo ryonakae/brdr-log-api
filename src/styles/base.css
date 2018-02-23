@@ -36,7 +36,3 @@ body {
     -moz-osx-font-smoothing: grayscale;
   }
 }
-
-.link {
-  @apply --link;
-}

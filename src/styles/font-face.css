@@ -1,53 +1,39 @@
 @font-face {
-  font-family: "Hiragino";
-  font-weight: normal;
-  src: local("Hiragino Sans W3"), local("ヒラギノ角ゴ ProN W3"), local("Hiragino Kaku Gothic ProN");
-}
-
-@font-face {
-  font-family: "Hiragino";
-  font-weight: bold;
-  src: local("Hiragino Sans W6"), local("ヒラギノ角ゴ ProN W6"), local("Hiragino Kaku Gothic ProN W6");
-}
-
-@font-face {
-  font-family: "Sans Serif";
-  font-weight: normal;
-  src: local("Avenir Next"), local("Avenir"), local("Helvetica Neue"), local("Helvetica"), local("Arial");
-}
-
-@font-face {
-  font-family: "Sans Serif";
-  font-weight: bold;
-  src: local("AvenirNextDemiBold"), local("AvenirNext-DemiBold"), local("Avenir Next Demi Bold"), local("AvenirBlack"), local("Avenir-Black"), local("Avenir Black"), local("HelveticaNeueBold"), local("HelveticaNeue-Bold"), local("Helvetica Neue Bold"), local("HelveticaBold"), local("Helvetica-Bold"), local("Helvetica Bold"), local("Arial-BoldMT"), local("Arial Bold");
-}
-
-@font-face {
   font-family: "Neue Frutiger";
   font-weight: normal;
-  src: local("FrutigerNeueLTPro-Book"), url("~fonts/NeueFrutiger-Book.woff2") format("woff2"), url("~fonts/NeueFrutiger-Book.woff") format("woff");
+  src: local("FrutigerNeueLTPro-Book"),
+    url("~fonts/NeueFrutiger-Book.woff2") format("woff2"),
+    url("~fonts/NeueFrutiger-Book.woff") format("woff");
 }
 
 @font-face {
   font-family: "Neue Frutiger";
   font-weight: bold;
-  src: local("FrutigerNeueLTPro-Bold"), url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"), url("~fonts/NeueFrutiger-Bold.woff") format("woff");
+  src: local("FrutigerNeueLTPro-Bold"),
+    url("~fonts/NeueFrutiger-Bold.woff2") format("woff2"),
+    url("~fonts/NeueFrutiger-Bold.woff") format("woff");
 }
 
 @font-face {
   font-family: "Noto Sans Japanese";
   font-weight: normal;
-  src: local("Noto Sans CJK JP DemiLight"), local("NotoSansCJKjp-DemiLight"), url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
+  src: local("Noto Sans CJK JP DemiLight"), local("NotoSansCJKjp-DemiLight"),
+    url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"),
+    url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
 }
 
 @font-face {
   font-family: "Noto Sans Japanese";
   font-weight: bold;
-  src: local("Noto Sans CJK JP Bold"), local("NotoSansCJKjp-Bold"), url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"), url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
+  src: local("Noto Sans CJK JP Bold"), local("NotoSansCJKjp-Bold"),
+    url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"),
+    url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
 }
 
 @font-face {
   font-family: "Source Code Pro";
   font-weight: normal;
-  src: local("Source Code Pro"), local("SourceCodePro-Regular"), url("~fonts/SourceCodePro-Regular.woff2") format("woff2"), url("~fonts/SourceCodePro-Regular.woff") format("woff");
+  src: local("Source Code Pro"), local("SourceCodePro-Regular"),
+    url("~fonts/SourceCodePro-Regular.woff2") format("woff2"),
+    url("~fonts/SourceCodePro-Regular.woff") format("woff");
 }
