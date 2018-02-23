@@ -62,12 +62,10 @@ export default {
         }
       }
 
-      // ページ内の画像ロードした時の処理
+      // ページ内の画像をロードしたら、画像の親要素にaddClass
       const imgLoad = imagesLoaded(this.$refs.content, { background: true })
-
-      // progress
       imgLoad.on('progress', (instance, image) => {
-        image.img.classList.add('ready')
+        image.img.parentNode.classList.add('ready')
       })
 
       // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
@@ -126,84 +124,38 @@ export default {
   & h4,
   & h5,
   & h6 {
-    margin-bottom: 1em;
+    margin: 2em 0 1em;
     line-height: var(--lineHeight_title);
-
-    @media (--mq_sp) {
-      margin-bottom: 0.7em;
-    }
   }
 
   & h1 {
     font-size: var(--fontSize_h1);
-    margin-top: 2.5em;
   }
 
   & h2 {
     font-size: var(--fontSize_h2);
-    margin-top: 2.3em;
   }
 
   & h3 {
     font-size: var(--fontSize_h3);
-    margin-top: 2.1em;
   }
 
   & h4 {
     font-size: var(--fontSize_h4);
-    margin-top: 1.9em;
   }
 
   & h5 {
     font-size: var(--fontSize_h5);
-    margin-top: 1.7em;
   }
 
   & h6 {
     font-size: var(--fontSize_h6);
-    margin-top: 1.7em;
-  }
-
-  @media (--mq_sp) {
-    & h1 {
-      font-size: var(--fontSize_h1_sp);
-      margin-top: 2.1em;
-    }
-
-    & h2 {
-      font-size: var(--fontSize_h2_sp);
-      margin-top: 1.9em;
-    }
-
-    & h3 {
-      font-size: var(--fontSize_h3_sp);
-      margin-top: 1.7em;
-    }
-
-    & h4 {
-      font-size: var(--fontSize_h4_sp);
-      margin-top: 1.5em;
-    }
-
-    & h5 {
-      font-size: var(--fontSize_h5_sp);
-      margin-top: 1.3em;
-    }
-
-    & h6 {
-      font-size: var(--fontSize_h6_sp);
-      margin-top: 1.3em;
-    }
   }
 
   & p,
   & ul,
   & ol {
     margin: 1.5em 0;
-
-    @media (--mq_sp) {
-      margin: 1.3em 0;
-    }
   }
 
   & ul,
@@ -212,25 +164,18 @@ export default {
 
     & ul,
     & ol {
-      margin: 0;
-    }
-
-    & ul {
-      list-style-type: circle;
+      margin: 0.3em 0;
     }
   }
 
   & .img {
+    position: relative;
     display: table;
-    margin: 2.1em auto;
+    margin: 2em auto;
     background-color: var(--color_bgSub);
 
     &:first-child {
       margin-top: 0;
-    }
-
-    @media (--mq_sp) {
-      margin: 1.7em auto;
     }
 
     & img {
@@ -239,8 +184,12 @@ export default {
       height: auto;
       vertical-align: top;
       visibility: hidden;
+    }
 
-      &.ready {
+    &.ready {
+      background: none;
+
+      & img {
         visibility: visible;
       }
     }
@@ -257,11 +206,7 @@ export default {
 
   & blockquote,
   & pre {
-    margin: 2.1em 0;
-
-    @media (--mq_sp) {
-      margin: 1.7em 0;
-    }
+    margin: 2em 0;
   }
 
   & blockquote {
@@ -299,11 +244,7 @@ export default {
     height: 1px;
     background-color: var(--color_key);
     border: none;
-    margin: 3.5em 0;
-
-    @media (--mq_sp) {
-      margin: 3em 0;
-    }
+    margin: 4em 0;
   }
 
   & .iframe {
@@ -324,11 +265,7 @@ export default {
 
   & .twitter-tweet,
   & .instagram-media {
-    margin: 2.1em auto !important;
-
-    @media (--mq_sp) {
-      margin: 1.7em 0 !important;
-    }
+    margin: 2em auto !important;
   }
 }
 </style>

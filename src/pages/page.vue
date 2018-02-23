@@ -1,7 +1,7 @@
 <template>
   <div>
     <article v-if="hasPage" ref="page">
-      <header>
+      <header class="header">
         <h1 class="title" v-html="page.title.rendered"></h1>
       </header>
 
@@ -80,9 +80,15 @@ export default {
 <style scoped>
 @import 'config.css';
 
+.header {
+  @apply --postContent;
+}
+
 .title {
-  margin: 0;
-  font-size: var(--fontSize_h1);
-  line-height: var(--lineHeight_title);
+  @apply --postTitle;
+}
+
+.content {
+  @apply --postContent;
 }
 </style>

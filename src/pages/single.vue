@@ -1,7 +1,7 @@
 <template>
   <div>
     <article v-if="hasPost" ref="article">
-      <header>
+      <header class="header">
         <h1 class="title" v-html="postTitle"></h1>
         <div class="info">
           <div class="date">{{post.date | moment}}</div>
@@ -11,7 +11,7 @@
         </div>
       </header>
 
-      <content-component :data="post"></content-component>
+      <content-component class="content" :data="post"></content-component>
 
       <footer class="footer">
         <share-component v-if="hasPost" :permalink="post.link" :title="post.title.rendered" class="share"></share-component>
@@ -156,15 +156,20 @@ export default {
 <style scoped>
 @import 'config.css';
 
+.header {
+  @apply --postContent;
+}
+
 .title {
-  margin: 0;
-  font-size: var(--fontSize_h1);
-  line-height: var(--lineHeight_title);
+  @apply --postTitle;
 }
 
 .info {
-  @apply --info;
-  margin-top: 1.5em;
+  @apply --postInfo;
+}
+
+.content {
+  @apply --postContent;
 }
 
 .footer {

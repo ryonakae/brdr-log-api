@@ -131,13 +131,10 @@ export default {
 }
 
 .title {
-  margin: 0;
-  font-size: var(--fontSize_h1);
-  line-height: var(--lineHeight_title);
+  @apply --postTitle;
 }
 
 .info {
-  @apply --info;
-  margin-top: 1.5em;
+  @apply --postInfo;
 }
 </style>

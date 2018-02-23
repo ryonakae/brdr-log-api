@@ -36,3 +36,49 @@ body {
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+.link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  @nest :global(body.pc) &:hover {
+    text-decoration: none;
+    color: var(--textColor_inverse);
+    background-color: var(--textColor_default);
+  }
+}
+
+.postTitle {
+}
+
+.postInfo {
+  font-size: var(--fontSize_small);
+
+  & > * {
+    display: inline-block;
+  }
+
+  & .categories {
+    margin: 0 0 0 1.5em;
+    padding: 0;
+    list-style-type: none;
+    display: inline-block;
+  }
+
+  & .category {
+    display: inline-block;
+
+    &::before {
+      content: ", ";
+    }
+
+    &:first-child::before {
+      content: "";
+    }
+
+    & span {
+      @apply --link;
+    }
+  }
+}

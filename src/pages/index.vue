@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasPosts" class="index" ref="page">
+  <div v-if="hasPosts" class="page" ref="page">
     <div
       class="post"
       v-for="post in posts"
@@ -166,7 +166,7 @@ export default {
 <style scoped>
 @import 'config.css';
 
-.index {
+.page {
   max-width: var(--width_content);
   padding-top: var(--margin_top);
   margin: 0 var(--margin_page)
