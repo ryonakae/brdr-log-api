@@ -3,10 +3,11 @@
   --color_bg: #fff;
   --color_key: #000;
   --color_sub: color(var(--color_key) alpha(50%));
+  --color_bgSub: color(var(--color_key) alpha(5%));
 
   /* bg color */
   --bgColor_default: #fff;
-  --bgColor_gray: color(var(--color_key) alpha(10%));
+  --bgColor_gray: color(var(--color_key) alpha(5%));
   --bgColor_selection: #fc524c;
 
   /* border color */
@@ -19,20 +20,12 @@
   --textColor_lightGray: color(var(--color_key) alpha(30%));
 
   /* font family */
-  --fontFamily: system-ui, "Sans Serif", "Hiragino", "メイリオ", Meiryo,
-    sans-serif;
-  --fontFamily_loaded: "Neue Frutiger", "Noto Sans Japanese", sans-serif;
-  --fontFamily_code: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
-    Monaco, Consolas, monospace;
-  --fontFamily_code_loaded: "Source Code Pro", monospace;
+  --fontFamily: "Neue Frutiger", "Noto Sans Japanese", sans-serif;
+  --fontFamily_code: "Source Code Pro", monospace;
 
   /* font size */
   --fontSize: 1.6rem;
-  --fontSize_default: 1.6rem;
-  --fontSize_default_sp: 1.5rem;
   --fontSize_small: 1.2rem;
-  --fontSize_small_sp: 1.1rem;
-  --fontSize_xSmall: 1rem;
   --fontSize_h1: 2.8rem;
   --fontSize_h2: 2.2rem;
   --fontSize_h3: 1.8rem;
@@ -45,8 +38,6 @@
   --fontSize_h4_sp: 1.3rem;
   --fontSize_h5_sp: 1.2rem;
   --fontSize_h6_sp: 1.2rem;
-  --fontSize_code: 1.4rem;
-  --fontSize_code_sp: 1.3rem;
 
   /* line height */
   --lineHeight_default: 1.8;
@@ -56,7 +47,6 @@
 
   /* letter spacing */
   --letterSpacing: 0.05em;
-  --letterSpacing_code: 0;
 
   /* transition */
   --duration: 1000ms;

@@ -1,11 +1,5 @@
 <template>
-  <div ref="content">
-    <div v-if="hasEyecatch" :class="$style.eyecatch">
-      <img :src="eyecatch">
-    </div>
-
-    <div v-if="hasContent" :class="$style.content" v-html="data.content.rendered"></div>
-  </div>
+  <div v-if="hasContent" class="content" v-html="data.content.rendered" ref="content"></div>
 </template>
 
 <script>
@@ -24,23 +18,6 @@ export default {
   },
 
   computed: {
-    hasEyecatch() {
-      return this.data.featured_media > 0
-    },
-
-    eyecatch() {
-      if (
-        Object.keys(
-          this.data._embedded['wp:featuredmedia'][0].media_details.sizes
-        ).length > 0
-      ) {
-        return this.data._embedded['wp:featuredmedia'][0].media_details.sizes
-          .theme_eyecatch.source_url
-      } else {
-        return this.data._embedded['wp:featuredmedia'][0].source_url
-      }
-    },
-
     hasContent() {
       return this.data.content.rendered !== ''
     },
@@ -71,20 +48,13 @@ export default {
   },
 
   mounted() {
-    // 本文の画像の親要素にaddClass
-    const $images = document.getElementsByTagName('img')
-    if ($images.length > 0) {
-      for (let i = 0; i < $images.length; i++) {
-        $images[i].parentNode.classList.add('img')
-      }
-    }
-
     // Twitterの埋め込みツイートがあったら関数実行
     const $tweet = document.getElementsByClassName('twitter-tweet')
     if ($tweet.length > 0) window.twttr.widgets.load(document.body)
 
     // コードスニペットがあったらprettify実行
     const $code = document.getElementsByTagName('pre')
+    console.log($code)
     if ($code.length > 0) {
       for (let i = 0; i < $code.length; i++) {
         $code[i].classList.add('prettyprint')
@@ -130,42 +100,11 @@ export default {
 }
 </script>
 
-<style module>
+<style>
 @import 'config.css';
 
-.eyecatch {
-  display: table;
-  border: 1px solid var(--color_key);
-  max-width: var(--width_single);
-  margin: 0 auto 3em;
-  text-align: center;
-
-  & img {
-    width: var(--width_single);
-    max-width: 100%;
-    height: auto;
-    vertical-align: top;
-    transition: all var(--duration_quick) var(--easing);
-    opacity: 0;
-
-    &:global(.ready) {
-      opacity: 1;
-    }
-  }
-
-  @media (--mq_tablet) {
-    border-right: none;
-    border-left: none;
-  }
-}
-
 .content {
-  max-width: var(--width_content);
-  margin: 0 auto;
-
-  @media (--mq_sp) {
-    margin: 0 var(--margin_page_sp);
-  }
+  line-height: var(--lineHeight_default);
 
   & a {
     @apply --link;
@@ -184,6 +123,7 @@ export default {
   & h5,
   & h6 {
     margin-bottom: 1em;
+    line-height: var(--lineHeight_title);
 
     @media (--mq_sp) {
       margin-bottom: 0.7em;
@@ -262,18 +202,10 @@ export default {
     }
   }
 
-  & ul {
-    list-style-type: disc;
-    padding-left: 1.5em;
-  }
-
-  & ol {
-    list-style-type: decimal;
-    padding-left: 1.5em;
-  }
-
   & ul,
   & ol {
+    padding-left: 1.5em;
+
     & ul,
     & ol {
       margin: 0;
@@ -284,9 +216,10 @@ export default {
     }
   }
 
-  & :global(.img) {
+  & .img {
     display: table;
     margin: 2.1em auto;
+    background-color: var(--color_bgSub);
 
     &:first-child {
       margin-top: 0;
@@ -301,13 +234,10 @@ export default {
       max-width: 100%;
       height: auto;
       vertical-align: top;
-      transition: all var(--duration_quick) var(--easing);
-      opacity: 0;
-      background-color: var(--bgColor_default);
-      border: 1px solid var(--color_key);
+      visibility: hidden;
 
-      &:global(.ready) {
-        opacity: 1;
+      &.ready {
+        visibility: visible;
       }
     }
 
@@ -317,11 +247,7 @@ export default {
       margin-top: 1.2em;
       line-height: var(--lineHeight_caption);
       font-size: var(--fontSize_small);
-      color: var(--textColor_gray);
-
-      @media (--mq_sp) {
-        font-size: var(--fontSize_small_sp);
-      }
+      color: var(--color_sub);
     }
   }
 
@@ -337,48 +263,35 @@ export default {
   & blockquote {
     border-left: 1px solid var(--color_key);
     padding-left: 1.5em;
-    color: var(--textColor_gray);
+    color: var(--color_sub);
     font-style: italic;
   }
 
   & code {
-    vertical-align: top;
-    margin: 0;
-    padding: 0 0.35em;
+    background-color: var(--color_bgSub);
     font-family: var(--fontFamily_code);
-    font-size: var(--fontSize_code);
-    letter-spacing: var(--letterSpacing_code);
-    background-color: var(--bgColor_gray);
-
-    @nest :global(body.webfontLoaded) & {
-      font-family: var(--fontFamily_code_loaded);
-    }
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_code_sp);
-    }
+    letter-spacing: initial;
   }
 
   & pre {
-    border: 1px solid var(--color_key);
+    background-color: var(--color_bgSub);
     padding: 1em 1.25em;
     background-clip: padding-box;
     word-wrap: normal;
     overflow-x: auto;
 
     & code {
+      line-height: var(--lineHeight_code);
       display: block;
       white-space: pre;
       margin: 0;
       padding: 0;
-      border: none;
-      line-height: var(--lineHeight_code);
       background: none;
     }
   }
 
   & hr {
-    width: 12%;
+    width: 10%;
     height: 1px;
     background-color: var(--color_key);
     border: none;
@@ -389,7 +302,7 @@ export default {
     }
   }
 
-  & :global(.iframe) {
+  & .iframe {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
@@ -405,8 +318,8 @@ export default {
     }
   }
 
-  & :global(.twitter-tweet),
-  & :global(.instagram-media) {
+  & .twitter-tweet,
+  & .instagram-media {
     margin: 2.1em auto !important;
 
     @media (--mq_sp) {

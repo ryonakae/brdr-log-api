@@ -83,5 +83,6 @@ export default {
 .title {
   margin: 0;
   font-size: var(--fontSize_h1);
+  line-height: var(--lineHeight_title);
 }
 </style>

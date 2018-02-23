@@ -117,11 +117,11 @@ export default {
 
 .post {
   cursor: pointer;
-  opacity: 0.3;
+  color: var(--color_sub);
   pointer-events: none;
 
   &.active {
-    opacity: 1;
+    color: inherit;
     pointer-events: auto;
   }
 }
@@ -133,6 +133,7 @@ export default {
 .title {
   margin: 0;
   font-size: var(--fontSize_h1);
+  line-height: var(--lineHeight_title);
 }
 
 .info {

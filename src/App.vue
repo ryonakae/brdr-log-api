@@ -1,5 +1,5 @@
 <template>
-  <div :class="{webfontLoaded: isFontLoaded}">
+  <div>
     <header>
       <logo-component></logo-component>
       <navi-component :class="{hidden: !isFontLoaded}"></navi-component>
@@ -54,19 +54,13 @@ export default {
 </script>
 
 <style>
-/* @import 'sanitize.css'; */
+@import 'sanitize.css';
 @import 'font-face.css';
 @import 'config.css';
 @import 'base.css';
 </style>
 
 <style scoped>
-@import 'config.css';
-
-.webfontLoaded {
-  font-family: var(--fontFamily_loaded);
-}
-
 .hidden {
   visibility: hidden;
 }
