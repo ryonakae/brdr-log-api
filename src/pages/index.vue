@@ -1,6 +1,8 @@
 <template>
   <div v-if="hasPosts" class="page" ref="page">
-    <post-component class="post" v-for="post in posts" :key="post.id" :post="post"></post-component>
+    <div class="post" v-for="post in posts" :key="post.id">
+      <post-component :post="post"></post-component>
+    </div>
     <eyecatch-component class="eyecatch"></eyecatch-component>
   </div>
 </template>
@@ -169,6 +171,7 @@ export default {
 }
 
 .post {
+  display: block;
   margin-top: 3em;
 
   &:first-child {

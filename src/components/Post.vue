@@ -7,7 +7,7 @@
     @touchstart="setCurrentPost"
     @touchend="clearCurrentPost"
   >
-    <router-link :to="'/post/'+post.id" tag="div" class="link">
+    <router-link :to="'/post/'+post.id" tag="div">
       <img v-if="hasEyecatch" class="eyecatch" :src="eyecatch" ref="eyecatch">
       <h1 class="title" v-html="postTitle"></h1>
       <div class="info">
@@ -152,6 +152,7 @@ export default {
 @import 'config.css';
 
 .post {
+  display: inline-block;
   cursor: pointer;
   color: var(--color_sub);
   pointer-events: none;
@@ -161,13 +162,9 @@ export default {
     pointer-events: auto;
   }
 
-  @nest :global(body.pc) &:hover .link {
+  @nest :global(body.pc) &:hover {
     background-color: var(--color_bg);
   }
-}
-
-.link {
-  display: inline-block;
 }
 
 .eyecatch {
