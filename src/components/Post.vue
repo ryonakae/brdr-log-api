@@ -2,6 +2,7 @@
   <div
     class="post"
     :class="{active: isPostItemLoaded}"
+    @click="setTitleOffset"
     @mouseenter="setCurrentPost"
     @mouseleave="clearCurrentPost"
     @touchstart="setCurrentPost"
@@ -30,6 +31,7 @@
 <script>
 import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
+import { scrollManager } from '@/index'
 
 export default {
   props: ['post'],
@@ -127,6 +129,11 @@ export default {
       } catch (err) {
         console.log('[PostItem.vue - preloadImages]', err)
       }
+    },
+
+    setTitleOffset(e) {
+      const offset = e.currentTarget.offsetTop - scrollManager.scrollTop
+      this.$store.commit('setTitleOffset', offset)
     }
   },
 

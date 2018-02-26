@@ -75,6 +75,9 @@ export default {
     },
     isPreview() {
       return window.wpSettings.is_preview
+    },
+    titleOffset() {
+      return this.$store.state.titleOffset
     }
   },
 

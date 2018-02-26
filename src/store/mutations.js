@@ -34,6 +34,10 @@ export default {
     state.loadedPost = 0
   },
 
+  setTitleOffset (state, offset) {
+    state.titleOffset = offset
+  },
+
   changeIsFontLoaded (state, boolean) {
     state.isFontLoaded = boolean
   },

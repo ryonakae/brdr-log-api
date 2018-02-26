@@ -9,6 +9,7 @@ export default {
   loadedPost: 0,
   allPosts: [],
   currentPost: {},
+  titleOffset: 0,
   isLoading: true,
   isFontLoaded: false,
   isFiltered: false,
