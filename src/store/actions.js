@@ -1,7 +1,7 @@
-'use strict'
+import router from '@/router'
 
 export default {
-  async getAllCategoryName ({ state, dispatch }, categories) {
+  async getAllCategoryName ({ state }, categories) {
     try {
       const _categories = []
 
@@ -17,7 +17,12 @@ export default {
   },
 
   // カテゴリで絞り込む
-  async filter ({ dispatch, commit, state }, options) {
-    console.log('[action - filter]')
+  async filter ({ commit, state }, options) {
+    console.log('[action - filter]', options)
+    commit('changeIsFiltered', true)
+    commit('setCategoryId', options.categoryId)
+    commit('setCategoryName', options.categoryName)
+    router.push('/')
+    window.scrollTo(0, 0)
   }
 }

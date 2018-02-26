@@ -14,7 +14,6 @@ const routes = [
   { path: '/', component: index, name: 'index' },
   { path: '/:slug', component: page, name: 'page' },
   { path: '/post/:id', component: single, name: 'single' },
-  { path: '/category/:id', component: index, name: 'category' },
   { path: '/*', component: notFound, name: 'notFound' }
 ]
 

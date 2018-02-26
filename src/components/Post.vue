@@ -85,8 +85,7 @@ export default {
     filter(categoryId, categoryName) {
       this.$store.dispatch('filter', {
         categoryId: categoryId,
-        categoryName: categoryName,
-        transition: false
+        categoryName: categoryName
       })
     },
 

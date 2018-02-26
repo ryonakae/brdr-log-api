@@ -31,6 +31,9 @@ export default {
     posts() {
       return this.$store.state.allPosts
     },
+    currentPost() {
+      return this.$store.state.currentPost
+    },
     hasPosts() {
       return this.posts.length > 0
     },
@@ -43,16 +46,26 @@ export default {
     isFontLoaded() {
       return this.$store.state.isFontLoaded
     },
+    isFiltered() {
+      return this.$store.state.isFiltered
+    },
+    categoryId() {
+      return this.$store.state.categoryId
+    },
     params() {
-      return {
+      let params = {
         _embed: '',
         per_page: this.perPage,
         offset: this.posts.length,
         status: window.wpSettings.is_logged_in ? 'any' : 'publish'
       }
-    },
-    currentPost() {
-      return this.$store.state.currentPost
+      if (this.isFiltered) {
+        params = Object.assign(params, {
+          offset: 0,
+          categories: this.categoryId
+        })
+      }
+      return params
     }
   },
 

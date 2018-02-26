@@ -48,5 +48,13 @@ export default {
 
   changeIsFiltered (state, boolean) {
     state.isFiltered = boolean
+  },
+
+  setCategoryId (state, id) {
+    state.categoryId = id
+  },
+
+  setCategoryName (state, name) {
+    state.categoryName = name
   }
 }

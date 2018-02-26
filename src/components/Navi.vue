@@ -42,14 +42,11 @@ export default {
 
   methods: {
     filter(categoryId, categoryName) {
+      this.isCategoriesActive = false
       this.$store.dispatch('filter', {
         categoryId: categoryId,
-        categoryName: categoryName,
-        transition: true
+        categoryName: categoryName
       })
-
-      // カテゴリ一覧を閉じる
-      this.isCategoriesActive = false
     },
 
     getAllCategories() {
