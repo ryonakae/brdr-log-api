@@ -1,14 +1,6 @@
 <template>
   <div v-if="hasPosts" class="page" ref="page">
-    <div
-      class="post"
-      v-for="post in posts"
-      :key="post.id"
-      @mouseenter="preloadPost(post)"
-      @touchstart="preloadPost(post)"
-    >
-      <post-item-component :post="post"></post-item-component>
-    </div>
+    <post-item-component class="post" v-for="post in posts" :key="post.id" :post="post"></post-item-component>
   </div>
 </template>
 
@@ -109,10 +101,6 @@ export default {
         this.$store.commit('changeIsLoading', true)
         this.getMorePosts(this.params)
       }
-    },
-
-    preloadPost(post) {
-      console.log('[index.vue - preloadPost]')
     },
 
     checkLoad() {

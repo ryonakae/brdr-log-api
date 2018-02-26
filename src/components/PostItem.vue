@@ -1,21 +1,30 @@
 <template>
-  <router-link class="post" :class="{active: isPostItemLoaded}" :to="'/post/'+post.id" tag="div">
-    <img v-if="hasEyecatch" class="eyecatch" :src="eyecatch" ref="eyecatch">
-    <h1 class="title" v-html="postTitle"></h1>
-    <div class="info">
-      <div class="date">{{post.date | moment}}</div>
-      <ul v-if="hasCategories" class="categories">
-        <li
-          v-for="category in categories"
-          :key="category.id"
-          class="category"
-          @click.stop="filter(category.id, category.name)"
-        >
-          <span>{{category.name}}</span>
-        </li>
-      </ul>
-    </div>
-  </router-link>
+  <div
+    class="post"
+    :class="{active: isPostItemLoaded}"
+    @mouseenter="setCurrentPost"
+    @mouseleave="clearCurrentPost"
+    @touchstart="setCurrentPost"
+    @touchend="clearCurrentPost"
+  >
+    <router-link :to="'/post/'+post.id" tag="div">
+      <img v-if="hasEyecatch" class="eyecatch" :src="eyecatch" ref="eyecatch">
+      <h1 class="title" v-html="postTitle"></h1>
+      <div class="info">
+        <div class="date">{{post.date | moment}}</div>
+        <ul v-if="hasCategories" class="categories">
+          <li
+            v-for="category in categories"
+            :key="category.id"
+            class="category"
+            @click.stop="filter(category.id, category.name)"
+          >
+            <span>{{category.name}}</span>
+          </li>
+        </ul>
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -91,6 +100,26 @@ export default {
         categoryName: categoryName,
         transition: false
       })
+    },
+
+    setCurrentPost() {
+      console.log('[PostItem.vue - setCurrentPost]', this.post)
+      this.$store.commit('setCurrentPost', this.post)
+      this.preloadPost()
+    },
+
+    clearCurrentPost() {
+      console.log('[PostItem.vue - clearCurrentPost]')
+      this.$store.commit('setCurrentPost', {})
+    },
+
+    preloadPost() {
+      const imgArray = this.post.content.rendered.match(
+        /(https?):\/\/.*\/.*\.(jpg|jpeg|gif|png)/g
+      )
+      if (Array.isArray(imgArray)) {
+        console.log('[PostItem.vue - preloadPost]', imgArray)
+      }
     }
   },
 
