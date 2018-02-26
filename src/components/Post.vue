@@ -132,7 +132,7 @@ export default {
     },
 
     setTitleOffset(e) {
-      const offset = e.currentTarget.offsetTop - scrollManager.scrollTop
+      const offset = e.currentTarget.offsetTop - window.pageYOffset
       this.$store.commit('setTitleOffset', offset)
     }
   },

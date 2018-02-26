@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasPosts" class="page" ref="page">
+  <div v-if="hasPosts" class="page">
     <div class="post" v-for="post in posts" :key="post.id">
       <post-component :post="post"></post-component>
     </div>
@@ -94,6 +94,8 @@ export default {
       const documentHeight = document.body.clientHeight
       console.log(
         '[index.vue - onScroll]',
+        'scrollTop:',
+        scrollManager.scrollTop,
         'scrollBottom:',
         scrollManager.scrollBottom,
         'documentHeight:',
@@ -181,8 +183,5 @@ export default {
 
 .eyecatch {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
 }
 </style>

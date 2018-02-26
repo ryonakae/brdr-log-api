@@ -1,9 +1,9 @@
 <template>
   <div>
-    <article v-if="hasPost" ref="article">
-      <eyecatch-component class="eyecatch"></eyecatch-component>
+    <article v-if="hasPost">
+      <eyecatch-component class="eyecatch" ref="eyecatch"></eyecatch-component>
 
-      <header class="header">
+      <header class="header" :style="{top: titleOffset + 'px'}" ref="title">
         <h1 class="title" v-html="postTitle"></h1>
         <div class="info">
           <div class="date">{{post.date | moment}}</div>
@@ -13,7 +13,7 @@
         </div>
       </header>
 
-      <content-component class="content" :data="post"></content-component>
+      <content-component class="content" :style="{marginTop: contentOffset + 'px'}" :data="post"></content-component>
 
       <footer class="footer">
         <share-component v-if="hasPost" :permalink="post.link" :title="post.title.rendered" class="share"></share-component>
@@ -44,7 +44,8 @@ export default {
     return {
       categories: [],
       imgLoad: null,
-      isNotFound: false
+      isNotFound: false,
+      contentOffset: 0
     }
   },
 
@@ -61,24 +62,43 @@ export default {
     hasPost() {
       return Object.keys(this.post).length > 0
     },
+    hasEyecatch() {
+      return this.post.featured_media > 0
+    },
     hasCategories() {
       return this.post.categories.length >= 1
     },
     postTitle() {
       let title = this.post.title.rendered
-
       if (this.post.status === 'draft') {
         title = 'Draft: ' + this.post.title.rendered
       }
-
       return title
     },
     isPreview() {
       return window.wpSettings.is_preview
     },
     titleOffset() {
-      return this.$store.state.titleOffset
+      return this.$store.state.titleOffset > 0
+        ? this.$store.state.titleOffset
+        : ''
     }
+    // contentOffset() {
+    //   let offset = 0
+    //   if (this.hasEyecatch) {
+    //     console.log(this.$refs.eyecatch)
+    //     console.log(this.$refs.title)
+    //     const eyecatchHeight = this.$refs.eyecatch.clientHeight
+    //     const titleHeight = this.$refs.title.clientHeight
+    //     if (eyecatchHeight > this.titleOffset + titleHeight) {
+    //       offset = eyecatchHeight + 40
+    //     } else {
+    //       offset = 40
+    //     }
+    //   }
+    //   console.log(offset)
+    //   return offset
+    // }
   },
 
   filters: {
@@ -90,6 +110,7 @@ export default {
   methods: {
     init() {
       this.$store.commit('setPageTitle', this.post.title.rendered)
+      this.setContentOffset()
 
       if (this.hasCategories) {
         this.$store
@@ -134,6 +155,12 @@ export default {
       this.isNotFound = true
       this.$store.commit('setPageTitle', 'Page Not Found')
       this.$store.commit('changeIsLoading', false)
+    },
+
+    setContentOffset() {
+      console.log(this.$refs)
+      console.log(this.$refs.eyecatch)
+      console.log(this.$refs.title)
     }
   },
 
@@ -163,6 +190,10 @@ export default {
 <style scoped>
 @import 'config.css';
 
+.eyecatch {
+  position: absolute;
+}
+
 .header,
 .content,
 .footer {
@@ -170,10 +201,13 @@ export default {
 }
 
 .header {
-  margin-top: var(--margin_top);
+  display: inline-block;
+  background-color: var(--color_bg);
+  position: absolute;
+  top: var(--margin_top);
 
   @media (--mq_sp) {
-    margin-top: var(--margin_top_sp);
+    top: var(--margin_top_sp);
   }
 }
 
@@ -186,11 +220,6 @@ export default {
 }
 
 .content {
-  margin-top: var(--margin_page);
-
-  @media (--mq_sp) {
-    margin-top: var(--margin_page_sp);
-  }
 }
 
 .footer {
