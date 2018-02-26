@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav">
+  <nav>
     <ul class="navi">
       <li v-if="isFiltered" class="filteredCategoryName" @click="filter('reset', null)">
         <span>{{filteredCategoryName}}</span>
@@ -83,27 +83,19 @@ export default {
 <style scoped>
 @import 'config.css';
 
-.nav {
-  font-size: var(--fontSize_small);
-}
-
 .navi {
   position: fixed;
   z-index: 100;
   top: calc(var(--margin_page) + 8px);
-
-  @media (--mq_sp) {
-    top: calc(var(--margin_page_sp) + 8px);
-  }
-}
-
-.navi {
+  right: var(--margin_page);
+  font-size: var(--fontSize_small);
+  font-weight: bold;
   margin: 0;
   padding: 0;
   list-style-type: none;
-  right: var(--margin_page);
 
   @media (--mq_sp) {
+    top: calc(var(--margin_page_sp) + 8px);
     right: var(--margin_page_sp);
   }
 

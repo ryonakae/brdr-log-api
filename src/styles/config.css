@@ -63,6 +63,7 @@
   --info: {
     margin-top: 1.3em;
     font-size: var(--fontSize_small);
+    font-weight: bold;
     line-height: var(--lineHeight_caption);
     display: flex;
 

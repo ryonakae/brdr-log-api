@@ -273,6 +273,7 @@ export default {
   margin-top: calc(var(--margin_page) * 2);
   margin-bottom: var(--margin_page);
   font-size: var(--fontSize_small);
+  font-weight: bold;
 
   & a {
     @apply --link;

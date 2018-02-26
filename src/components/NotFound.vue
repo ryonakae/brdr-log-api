@@ -1,24 +1,20 @@
 <template>
   <div>
-    <h1 :class="$style.title">
-      Page<br>
-      Not<br>
-      Found
-    </h1>
+    <h1 class="title">Page Not Found</h1>
   </div>
 </template>
 
-<style module>
+<style scoped>
 @import 'config.css';
 
 .title {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   margin: 0 0 0 var(--margin_page);
-  padding-top: var(--margin_top);
-  font-size: 20vw;
-  line-height: 1;
+  font-size: 10vw;
 
   @media (--mq_sp) {
-    padding-top: var(--margin_top_sp);
     margin-left: var(--margin_page_sp);
   }
 }
