@@ -14,7 +14,6 @@ body {
   font-family: var(--fontFamily);
   font-size: var(--fontSize);
   letter-spacing: var(--letterSpacing);
-  text-align: justify;
   font-feature-settings: "palt" on;
   overflow-wrap: break-word;
   -webkit-text-size-adjust: 100%;

@@ -1,7 +1,7 @@
 <template>
   <div
     class="post"
-    :class="{active: isPostItemLoaded}"
+    :class="{active: isPostItemLoaded, highlight: isEnter}"
     @click="setTitleOffset"
     @mouseenter="setCurrentPost"
     @mouseleave="clearCurrentPost"
@@ -44,7 +44,8 @@ export default {
   data() {
     return {
       categories: [],
-      isPostItemLoaded: false
+      isPostItemLoaded: false,
+      isEnter: false
     }
   },
 
@@ -94,11 +95,13 @@ export default {
       this.$store.commit('setCurrentPost', this.post)
       // serviceWorkerが有効な場合、preloadImagesを実行
       if ('serviceWorker' in navigator) this.preloadImages()
+      this.isEnter = true
     },
 
     clearCurrentPost() {
       console.log('[PostItem.vue - clearCurrentPost]')
       this.$store.commit('setCurrentPost', {})
+      this.isEnter = false
     },
 
     async preloadImages() {
@@ -159,7 +162,7 @@ export default {
     pointer-events: auto;
   }
 
-  @nest :global(body.pc) &:hover {
+  &.highlight {
     background-color: var(--color_bg);
   }
 }

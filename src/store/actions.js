@@ -19,10 +19,24 @@ export default {
   // カテゴリで絞り込む
   async filter ({ commit, state }, options) {
     console.log('[action - filter]', options)
-    commit('changeIsFiltered', true)
-    commit('setCategoryId', options.categoryId)
-    commit('setCategoryName', options.categoryName)
     router.push('/')
     window.scrollTo(0, 0)
+
+    if (options.categoryId === state.categoryId) return
+
+    commit('changeIsLoading', true)
+    commit('setAllPosts', [])
+    commit('setCurrentPost', {})
+    commit('resetLoadedPost', [])
+
+    if (options.categoryId === 0) {
+      commit('changeIsFiltered', false)
+      commit('setCategoryId', 0)
+      commit('setCategoryName', '')
+    } else {
+      commit('changeIsFiltered', true)
+      commit('setCategoryId', options.categoryId)
+      commit('setCategoryName', options.categoryName)
+    }
   }
 }

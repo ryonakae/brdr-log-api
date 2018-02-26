@@ -61,7 +61,6 @@ export default {
       }
       if (this.isFiltered) {
         params = Object.assign(params, {
-          offset: 0,
           categories: this.categoryId
         })
       }
@@ -75,6 +74,9 @@ export default {
     },
     isFontLoaded() {
       this.checkLoad()
+    },
+    categoryId() {
+      this.getPosts(this.params)
     }
   },
 

@@ -107,6 +107,7 @@ export default {
 
 .content {
   line-height: var(--lineHeight_default);
+  text-align: justify;
 
   & a {
     @apply --link;

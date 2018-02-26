@@ -1,12 +1,12 @@
 <template>
   <nav>
     <ul class="navi">
-      <li v-if="isFiltered" class="filteredCategoryName" @click="filter('reset', null)">
-        <span>{{filteredCategoryName}}</span>
+      <li v-if="isFiltered" class="categoryName" @click="filter(0)">
+        <span>{{categoryName}}</span>
       </li>
-      <li class="categories">
+      <li>
         <span @click="toggleCategories">Category</span>
-        <ul :class="{active: isCategoriesActive}">
+        <ul class="categories" :class="{active: isCategoriesActive}">
           <li v-for="category in categories" v-if="category.count > 0" :key="category.id" @click="filter(category.id, category.name)">
             <span>{{category.name}}</span>
           </li>
@@ -35,8 +35,8 @@ export default {
     isFiltered() {
       return this.$store.state.isFiltered
     },
-    filteredCategoryName() {
-      return this.$store.state.filteredCategoryName
+    categoryName() {
+      return this.$store.state.categoryName
     }
   },
 
@@ -102,34 +102,33 @@ export default {
   }
 
   & > li {
+    position: relative;
     display: inline-block;
     margin-left: 1.5em;
-    pointer-events: auto;
   }
 }
 
-.filteredCategoryName {
+.categoryName {
   & span::before {
-    content: 'X';
+    content: '[X]';
     margin-right: 0.2em;
   }
 }
 
 .categories {
-  position: relative;
+  background-color: var(--color_bg);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 1.5em 0 0;
+  padding: 0;
+  list-style-type: none;
+  display: none;
+  pointer-events: none;
 
-  & ul {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin: 1.5em 0 0;
-    padding: 0;
-    list-style-type: none;
-    display: none;
-
-    &.active {
-      display: block;
-    }
+  &.active {
+    display: block;
+    pointer-events: auto;
   }
 
   & li {
