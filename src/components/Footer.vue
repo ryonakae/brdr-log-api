@@ -15,7 +15,7 @@
   @apply --link;
 
   position: fixed;
-  bottom: calc(var(--margin_page) + 0.2em);
+  bottom: var(--margin_page);
   right: var(--margin_page);
 
   @media (--mq_sp) {

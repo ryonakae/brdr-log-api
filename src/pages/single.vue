@@ -156,23 +156,38 @@ export default {
 <style scoped>
 @import 'config.css';
 
+.header,
+.content,
+.footer {
+  @apply --content;
+}
+
 .header {
-  @apply --postContent;
+  margin-top: var(--margin_top);
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_top_sp);
+  }
 }
 
 .title {
-  @apply --postTitle;
+  @apply --title;
 }
 
 .info {
-  @apply --postInfo;
+  @apply --info;
 }
 
 .content {
-  @apply --postContent;
+  margin-top: var(--margin_page);
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_page_sp);
+  }
 }
 
 .footer {
+  margin-top: calc(var(--margin_page) * 2);
   margin-bottom: var(--margin_page);
   font-size: var(--fontSize_small);
 
@@ -181,6 +196,7 @@ export default {
   }
 
   @media (--mq_sp) {
+    margin-top: calc(var(--margin_page_sp) * 2);
     margin-bottom: var(--margin_page_sp);
   }
 }

@@ -53,14 +53,14 @@
   }
 
   /* post title */
-  --postTitle {
+  --title {
     margin: 0;
     font-size: var(--fontSize_h1);
     line-height: var(--lineHeight_title);
   }
 
   /* post info */
-  --postInfo: {
+  --info: {
     margin-top: 1.3em;
     font-size: var(--fontSize_small);
     line-height: var(--lineHeight_caption);
@@ -91,14 +91,14 @@
   }
 
   /* post content */
-  --postContent: {
+  --content: {
     max-width: var(--width_content);
-    padding-top: var(--margin_page);
-    margin: 0 var(--margin_page);
+    margin-right: var(--margin_page);
+    margin-left: var(--margin_page);
 
     @media (--mq_sp) {
-      padding-top: var(--margin_page_sp);
-      margin: 0 var(--margin_page_sp);
+      margin-right: var(--margin_page_sp);
+      margin-left: var(--margin_page_sp);
     }
   }
 }

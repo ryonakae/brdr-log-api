@@ -80,15 +80,30 @@ export default {
 <style scoped>
 @import 'config.css';
 
+.header,
+.content {
+  @apply --content;
+}
+
 .header {
-  @apply --postContent;
+  margin-top: var(--margin_top);
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_top_sp);
+  }
 }
 
 .title {
-  @apply --postTitle;
+  @apply --title;
 }
 
 .content {
-  @apply --postContent;
+  margin-top: var(--margin_page);
+  margin-bottom: calc(var(--margin_page) * 2);
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_page_sp);
+    margin-bottom: calc(var(--margin_page_sp) * 2);
+  }
 }
 </style>

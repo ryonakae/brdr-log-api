@@ -131,10 +131,10 @@ export default {
 }
 
 .title {
-  @apply --postTitle;
+  @apply --title;
 }
 
 .info {
-  @apply --postInfo;
+  @apply --info;
 }
 </style>
