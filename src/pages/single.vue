@@ -1,19 +1,21 @@
 <template>
   <div>
     <article v-if="hasPost">
-      <eyecatch-component class="eyecatch" ref="eyecatch"></eyecatch-component>
+      <div class="top" :style="{height: topHeight}">
+        <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
 
-      <header class="header" :style="{top: titleOffset + 'px'}" ref="title">
-        <h1 class="title" v-html="postTitle"></h1>
-        <div class="info">
-          <div class="date">{{post.date | moment}}</div>
-          <ul v-if="hasCategories" class="categories">
-            <li v-for="category in categories" :key="category.id" class="category" @click="filter(category.id, category.name)">{{category.name}}</li>
-          </ul>
-        </div>
-      </header>
+        <header class="header" :style="titleStyle" ref="title">
+          <h1 class="title" v-html="postTitle"></h1>
+          <div class="info">
+            <div class="date">{{post.date | moment}}</div>
+            <ul v-if="hasCategories" class="categories">
+              <li v-for="category in categories" :key="category.id" class="category" @click="filter(category.id, category.name)">{{category.name}}</li>
+            </ul>
+          </div>
+        </header>
+      </div>
 
-      <content-component class="content" :style="{marginTop: contentOffset + 'px'}" :data="post"></content-component>
+      <content-component class="content" :class="{hidden: !isContentActive}" :data="post"></content-component>
 
       <footer class="footer">
         <share-component v-if="hasPost" :permalink="post.link" :title="post.title.rendered" class="share"></share-component>
@@ -27,10 +29,12 @@
 
 <script>
 import moment from 'moment'
+import imagesLoaded from 'imagesloaded'
 import EyecatchComponent from '@/components/Eyecatch.vue'
 import ContentComponent from '@/components/Content.vue'
 import ShareComponent from '@/components/Share.vue'
 import NotFoundComponent from '@/components/NotFound.vue'
+import { resizeManager } from '@/index'
 
 export default {
   components: {
@@ -45,7 +49,8 @@ export default {
       categories: [],
       imgLoad: null,
       isNotFound: false,
-      contentOffset: 0
+      topHeight: 0,
+      isContentActive: false
     }
   },
 
@@ -75,30 +80,31 @@ export default {
       }
       return title
     },
-    isPreview() {
-      return window.wpSettings.is_preview
-    },
     titleOffset() {
       return this.$store.state.titleOffset > 0
         ? this.$store.state.titleOffset
         : ''
+    },
+    titleStyle() {
+      let style
+
+      if (this.hasEyecatch) {
+        style = {
+          position: 'absolute',
+          top: this.titleOffset + 'px',
+          marginTop: 0
+        }
+      } else {
+        style = {
+          marginTop: this.titleOffset + 'px'
+        }
+      }
+
+      return style
+    },
+    isPreview() {
+      return window.wpSettings.is_preview
     }
-    // contentOffset() {
-    //   let offset = 0
-    //   if (this.hasEyecatch) {
-    //     console.log(this.$refs.eyecatch)
-    //     console.log(this.$refs.title)
-    //     const eyecatchHeight = this.$refs.eyecatch.clientHeight
-    //     const titleHeight = this.$refs.title.clientHeight
-    //     if (eyecatchHeight > this.titleOffset + titleHeight) {
-    //       offset = eyecatchHeight + 40
-    //     } else {
-    //       offset = 40
-    //     }
-    //   }
-    //   console.log(offset)
-    //   return offset
-    // }
   },
 
   filters: {
@@ -109,8 +115,9 @@ export default {
 
   methods: {
     init() {
+      console.log('[single.vue - init]')
+      this.setTopHeight()
       this.$store.commit('setPageTitle', this.post.title.rendered)
-      this.setContentOffset()
 
       if (this.hasCategories) {
         this.$store
@@ -119,6 +126,8 @@ export default {
             this.categories = result
           })
       }
+
+      resizeManager.add('single.setTopHeight', this.setTopHeight.bind(this))
     },
 
     async getPost(id) {
@@ -143,6 +152,35 @@ export default {
       }
     },
 
+    async setPost(data, delay) {
+      this.$store.commit('setCurrentPost', data)
+      await new Promise(resolve => setTimeout(resolve, delay))
+    },
+
+    setTopHeight() {
+      if (this.hasEyecatch) {
+        const eyecatch = this.$refs.eyecatch.$el
+        const imgLoad = imagesLoaded(eyecatch, { background: true })
+
+        imgLoad.on('always', () => {
+          const eyecatchHeight = this.$refs.eyecatch.$el.clientHeight
+          const titleOffset = this.$refs.title.offsetTop
+          const titleHeight = this.$refs.title.clientHeight
+
+          if (eyecatchHeight >= titleOffset + titleHeight) {
+            this.topHeight = eyecatchHeight + 'px'
+          } else {
+            this.topHeight = titleOffset + titleHeight + 'px'
+          }
+
+          this.isContentActive = true
+        })
+      } else {
+        this.topHeight = 'auto'
+        this.isContentActive = true
+      }
+    },
+
     filter(categoryId, categoryName) {
       this.$store.dispatch('filter', {
         categoryId: categoryId,
@@ -155,44 +193,44 @@ export default {
       this.isNotFound = true
       this.$store.commit('setPageTitle', 'Page Not Found')
       this.$store.commit('changeIsLoading', false)
-    },
-
-    setContentOffset() {
-      console.log(this.$refs)
-      console.log(this.$refs.eyecatch)
-      console.log(this.$refs.title)
     }
   },
 
   async mounted() {
     try {
-      if (!this.isPreview) {
-        const res = await this.getPost(this.postId)
-        this.$store.commit('setCurrentPost', res)
+      if (this.hasPost) {
         this.init()
+        const res = await this.getPost(this.postId)
+        // await this.setPost(res, 1)
       } else {
-        const res = await Promise.all([
-          this.getPost(this.postId),
-          this.getPostRevisions(this.postId)
-        ])
-        const _res = Object.assign(res[0], res[1])
-        this.$store.commit('setCurrentPost', _res)
+        let res
+        if (!this.isPreview) {
+          res = await this.getPost(this.postId)
+        } else {
+          const _res = await Promise.all([
+            this.getPost(this.postId),
+            this.getPostRevisions(this.postId)
+          ])
+          res = Object.assign(res[0], res[1])
+        }
+        await this.setPost(res, 1)
         this.init()
       }
     } catch (err) {
       console.error('[single.vue - mounted]', err)
       this.onNotFound()
     }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    resizeManager.remove('single.setTopHeight')
+    next()
   }
 }
 </script>
 
 <style scoped>
 @import 'config.css';
-
-.eyecatch {
-  position: absolute;
-}
 
 .header,
 .content,
@@ -201,13 +239,13 @@ export default {
 }
 
 .header {
-  display: inline-block;
   background-color: var(--color_bg);
-  position: absolute;
   top: var(--margin_top);
+  margin-top: var(--margin_top);
 
   @media (--mq_sp) {
     top: var(--margin_top_sp);
+    margin-top: var(--margin_top_sp);
   }
 }
 
@@ -220,6 +258,15 @@ export default {
 }
 
 .content {
+  margin-top: var(--margin_page);
+
+  &.hidden {
+    visibility: hidden;
+  }
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_page_sp);
+  }
 }
 
 .footer {

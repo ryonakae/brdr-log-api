@@ -4,10 +4,9 @@
 
 <script>
 export default {
+  props: ['post'],
+
   computed: {
-    post() {
-      return this.$store.state.currentPost
-    },
     hasEyecatch() {
       return this.post.featured_media > 0
     },

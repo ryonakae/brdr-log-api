@@ -9,7 +9,7 @@
     @touchend="clearCurrentPost"
   >
     <router-link :to="'/post/'+post.id" tag="div">
-      <img v-if="hasEyecatch" class="eyecatch" :src="eyecatch" ref="eyecatch">
+      <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
       <h1 class="title" v-html="postTitle"></h1>
       <div class="info">
         <div class="date">{{post.date | moment}}</div>
@@ -32,8 +32,13 @@
 import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
 import { scrollManager } from '@/index'
+import EyecatchComponent from '@/components/Eyecatch.vue'
 
 export default {
+  components: {
+    EyecatchComponent
+  },
+
   props: ['post'],
 
   data() {
@@ -49,22 +54,6 @@ export default {
     },
     hasEyecatch() {
       return this.post.featured_media > 0
-    },
-    eyecatch() {
-      let eyecatch
-
-      if (
-        Object.keys(
-          this.post._embedded['wp:featuredmedia'][0].media_details.sizes
-        ).length > 0
-      ) {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].media_details
-          .sizes.theme_eyecatch.source_url
-      } else {
-        eyecatch = this.post._embedded['wp:featuredmedia'][0].source_url
-      }
-
-      return eyecatch
     },
     postTitle() {
       let title
@@ -145,12 +134,14 @@ export default {
 
   mounted() {
     if (this.hasEyecatch) {
-      const imgLoad = imagesLoaded(this.$refs.eyecatch)
+      const imgLoad = imagesLoaded(this.$refs.eyecatch.$el, {
+        background: true
+      })
       console.log('[PostItem.vue - mounted]', imgLoad)
-      return imgLoad.on('always', this.init)
+      imgLoad.on('always', this.init)
+    } else {
+      this.init()
     }
-
-    this.init()
   }
 }
 </script>

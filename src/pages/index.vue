@@ -3,7 +3,7 @@
     <div class="post" v-for="post in posts" :key="post.id">
       <post-component :post="post"></post-component>
     </div>
-    <eyecatch-component class="eyecatch"></eyecatch-component>
+    <eyecatch-component class="eyecatch" :post="currentPost"></eyecatch-component>
   </div>
 </template>
 
@@ -50,6 +50,9 @@ export default {
         offset: this.posts.length,
         status: window.wpSettings.is_logged_in ? 'any' : 'publish'
       }
+    },
+    currentPost() {
+      return this.$store.state.currentPost
     }
   },
 
@@ -132,9 +135,7 @@ export default {
     this.$store.commit('setCurrentPost', {})
     this.$store.commit('setPageTitle', '')
     this.getPosts(this.params)
-    scrollManager.add('index.onScroll', () => {
-      this.onScroll()
-    })
+    scrollManager.add('index.onScroll', this.onScroll.bind(this))
   },
 
   beforeRouteEnter(to, from, next) {
