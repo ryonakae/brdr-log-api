@@ -1,16 +1,19 @@
 <template>
   <div v-if="hasPosts" class="page" ref="page">
-    <post-item-component class="post" v-for="post in posts" :key="post.id" :post="post"></post-item-component>
+    <post-component class="post" v-for="post in posts" :key="post.id" :post="post"></post-component>
+    <eyecatch-component class="eyecatch"></eyecatch-component>
   </div>
 </template>
 
 <script>
-import PostItemComponent from '@/components/PostItem.vue'
+import PostComponent from '@/components/Post.vue'
+import EyecatchComponent from '@/components/Eyecatch.vue'
 import { scrollManager } from '@/index'
 
 export default {
   components: {
-    PostItemComponent
+    PostComponent,
+    EyecatchComponent
   },
 
   data() {
@@ -171,5 +174,12 @@ export default {
   &:first-child {
     margin-top: 0;
   }
+}
+
+.eyecatch {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 </style>

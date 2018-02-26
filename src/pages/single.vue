@@ -1,6 +1,8 @@
 <template>
   <div>
     <article v-if="hasPost" ref="article">
+      <eyecatch-component class="eyecatch"></eyecatch-component>
+
       <header class="header">
         <h1 class="title" v-html="postTitle"></h1>
         <div class="info">
@@ -25,12 +27,14 @@
 
 <script>
 import moment from 'moment'
+import EyecatchComponent from '@/components/Eyecatch.vue'
 import ContentComponent from '@/components/Content.vue'
 import ShareComponent from '@/components/Share.vue'
 import NotFoundComponent from '@/components/NotFound.vue'
 
 export default {
   components: {
+    EyecatchComponent,
     ContentComponent,
     ShareComponent,
     NotFoundComponent

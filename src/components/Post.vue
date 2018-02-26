@@ -7,7 +7,7 @@
     @touchstart="setCurrentPost"
     @touchend="clearCurrentPost"
   >
-    <router-link :to="'/post/'+post.id" tag="div">
+    <router-link :to="'/post/'+post.id" tag="div" class="link">
       <img v-if="hasEyecatch" class="eyecatch" :src="eyecatch" ref="eyecatch">
       <h1 class="title" v-html="postTitle"></h1>
       <div class="info">
@@ -45,11 +45,9 @@ export default {
     hasCategories() {
       return this.post.categories.length >= 1
     },
-
     hasEyecatch() {
       return this.post.featured_media > 0
     },
-
     eyecatch() {
       let eyecatch
 
@@ -66,7 +64,6 @@ export default {
 
       return eyecatch
     },
-
     postTitle() {
       let title
 
@@ -105,7 +102,6 @@ export default {
     setCurrentPost() {
       console.log('[PostItem.vue - setCurrentPost]', this.post)
       this.$store.commit('setCurrentPost', this.post)
-
       // serviceWorkerが有効な場合、preloadImagesを実行
       if ('serviceWorker' in navigator) this.preloadImages()
     },
@@ -164,6 +160,14 @@ export default {
     color: inherit;
     pointer-events: auto;
   }
+
+  @nest :global(body.pc) &:hover .link {
+    background-color: var(--color_bg);
+  }
+}
+
+.link {
+  display: inline-block;
 }
 
 .eyecatch {
