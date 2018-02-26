@@ -106,8 +106,8 @@ export default {
       console.log('[PostItem.vue - setCurrentPost]', this.post)
       this.$store.commit('setCurrentPost', this.post)
 
-      // serviceWorkerが有効な場合、preloadPostを実行
-      if ('serviceWorker' in navigator) this.preloadPost()
+      // serviceWorkerが有効な場合、preloadImagesを実行
+      if ('serviceWorker' in navigator) this.preloadImages()
     },
 
     clearCurrentPost() {
@@ -115,7 +115,7 @@ export default {
       this.$store.commit('setCurrentPost', {})
     },
 
-    async preloadPost() {
+    async preloadImages() {
       // httpsの画像だけ配列に追加する
       const regexp = /https:\/\/.*\/.*\.(jpg|jpeg|gif|png)/g
       const imgArray = this.post.content.rendered.match(regexp)
@@ -124,12 +124,12 @@ export default {
       if (!Array.isArray(imgArray)) return
 
       try {
-        console.log('[PostItem.vue - preloadPost]', imgArray)
+        console.log('[PostItem.vue - preloadImages]', imgArray)
         const cache = await window.caches.open('brdr-log-images')
         await cache.addAll(imgArray)
-        console.log('[PostItem.vue - preloadPost] Cache success')
+        console.log('[PostItem.vue - preloadImages] Cache success')
       } catch (err) {
-        console.log('[PostItem.vue - preloadPost]', err)
+        console.log('[PostItem.vue - preloadImages]', err)
       }
     }
   },
