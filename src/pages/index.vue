@@ -90,12 +90,10 @@ export default {
 
   methods: {
     async getPosts(params) {
-      console.log('[index.vue - getPosts]', params)
-
       try {
         const res = await this.client.get('/posts', { params: params })
         this.$store.commit('setAllPosts', this.posts.concat(res.data))
-        console.log('[index.vue - getPosts]', this.posts)
+        console.log('[index.vue - getPosts]', this.posts, params)
         return res.data
       } catch (err) {
         console.error('[index.vue - getPosts]', err)

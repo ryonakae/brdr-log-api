@@ -2,7 +2,7 @@
   <div
     class="post"
     :class="{active: isLoaded, highlight: isEnter}"
-    @click="setTitleOffset"
+    @click.once="setTitleOffset"
     @mouseenter="onEnter"
     @mouseleave="onLeave"
     @touchstart="onEnter"
@@ -98,6 +98,7 @@ export default {
     },
 
     onEnter() {
+      if (this.$route.path !== '/') return
       console.log('[PostItem.vue - setCurrentPost]', this.post)
       this.$store.commit('setCurrentPost', this.post)
       // serviceWorkerが有効な場合、preloadImagesを実行
@@ -106,6 +107,7 @@ export default {
     },
 
     onLeave() {
+      if (this.$route.path !== '/') return
       console.log('[PostItem.vue - clearCurrentPost]')
       this.$store.commit('setCurrentPost', {})
       this.isEnter = false
@@ -153,6 +155,8 @@ export default {
 @import 'config.css';
 
 .post {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   display: inline-block;
   cursor: pointer;
   color: var(--color_sub);
