@@ -4,6 +4,7 @@
       <li v-if="isFiltered" class="categoryName" @click="filter(0)">
         <span>{{categoryName}}</span>
       </li>
+
       <li>
         <span @click="toggleCategories">Category</span>
         <ul class="categories" :class="{active: isCategoriesActive}">
@@ -12,6 +13,7 @@
           </li>
         </ul>
       </li>
+
       <li>
         <a href="//brdr.jp" target="_blank">BRDR</a>
       </li>
@@ -32,9 +34,11 @@ export default {
     client() {
       return this.$store.state.client
     },
+
     isFiltered() {
-      return this.$store.state.isFiltered
+      return this.$store.state.categoryId !== 0
     },
+
     categoryName() {
       return this.$store.state.categoryName
     }
@@ -42,7 +46,7 @@ export default {
 
   methods: {
     filter(categoryId, categoryName) {
-      this.isCategoriesActive = false
+      this.toggleCategories()
       this.$store.dispatch('filter', {
         categoryId: categoryId,
         categoryName: categoryName

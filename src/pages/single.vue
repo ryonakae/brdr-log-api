@@ -9,7 +9,14 @@
           <div class="info">
             <div class="date">{{post.date | moment}}</div>
             <ul v-if="hasCategories" class="categories">
-              <li v-for="category in categories" :key="category.id" class="category" @click="filter(category.id, category.name)">{{category.name}}</li>
+              <li
+                v-for="category in categories"
+                :key="category.id"
+                class="category"
+                @click.stop="filter(category.id, category.name)"
+              >
+                <span>{{category.name}}</span>
+              </li>
             </ul>
           </div>
         </header>
@@ -47,10 +54,9 @@ export default {
   data() {
     return {
       categories: [],
-      imgLoad: null,
-      isNotFound: false,
       topHeight: 0,
-      isContentActive: false
+      isContentActive: false,
+      isNotFound: false
     }
   },
 
@@ -58,21 +64,27 @@ export default {
     client() {
       return this.$store.state.client
     },
+
     postId() {
       return this.$route.params.id
     },
+
     post() {
       return this.$store.state.currentPost
     },
+
     hasPost() {
       return Object.keys(this.post).length > 0
     },
+
     hasEyecatch() {
       return this.post.featured_media > 0
     },
+
     hasCategories() {
       return this.post.categories.length >= 1
     },
+
     postTitle() {
       let title = this.post.title.rendered
       if (this.post.status === 'draft') {
@@ -80,11 +92,13 @@ export default {
       }
       return title
     },
+
     titleOffset() {
       return this.$store.state.titleOffset > 0
         ? this.$store.state.titleOffset
         : ''
     },
+
     titleStyle() {
       let style
 
@@ -102,6 +116,7 @@ export default {
 
       return style
     },
+
     isPreview() {
       return window.wpSettings.is_preview
     }

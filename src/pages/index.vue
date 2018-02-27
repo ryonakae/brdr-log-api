@@ -3,6 +3,7 @@
     <div class="post" v-for="post in posts" :key="post.id">
       <post-component :post="post"></post-component>
     </div>
+
     <eyecatch-component class="eyecatch" :post="currentPost"></eyecatch-component>
   </div>
 </template>
@@ -28,30 +29,39 @@ export default {
     client() {
       return this.$store.state.client
     },
-    posts() {
-      return this.$store.state.allPosts
-    },
-    currentPost() {
-      return this.$store.state.currentPost
-    },
-    hasPosts() {
-      return this.posts.length > 0
-    },
+
     perPage() {
       return this.$store.state.perPage
     },
+
+    posts() {
+      return this.$store.state.allPosts
+    },
+
+    currentPost() {
+      return this.$store.state.currentPost
+    },
+
+    hasPosts() {
+      return this.posts.length > 0
+    },
+
     loadedPost() {
       return this.$store.state.loadedPost
     },
+
     isFontLoaded() {
       return this.$store.state.isFontLoaded
     },
+
     isFiltered() {
-      return this.$store.state.isFiltered
+      return this.$store.state.categoryId !== 0
     },
+
     categoryId() {
       return this.$store.state.categoryId
     },
+
     params() {
       let params = {
         _embed: '',
@@ -60,9 +70,7 @@ export default {
         status: window.wpSettings.is_logged_in ? 'any' : 'publish'
       }
       if (this.isFiltered) {
-        params = Object.assign(params, {
-          categories: this.categoryId
-        })
+        params = Object.assign(params, { categories: this.categoryId })
       }
       return params
     }
@@ -109,16 +117,8 @@ export default {
     },
 
     async onScroll() {
+      console.log('[index.vue - onScroll]')
       const documentHeight = document.body.clientHeight
-      console.log(
-        '[index.vue - onScroll]',
-        'scrollTop:',
-        scrollManager.scrollTop,
-        'scrollBottom:',
-        scrollManager.scrollBottom,
-        'documentHeight:',
-        documentHeight
-      )
 
       if (scrollManager.scrollBottom > documentHeight * 0.7) {
         if (this.isScrolling) return
@@ -130,7 +130,7 @@ export default {
 
     checkLoad() {
       console.log(
-        '[index.vue - checkLoad] start check',
+        '[index.vue - checkLoad]',
         this.isFontLoaded,
         this.posts.length,
         this.loadedPost
@@ -138,18 +138,17 @@ export default {
 
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
       if (this.isFontLoaded && this.posts.length === this.loadedPost) {
-        console.log('[index.vue - checkLoad] all webfont and postitem loaded')
+        console.log('[index.vue - checkLoad] all webfont and post loaded')
         this.$store.commit('changeIsLoading', false)
       }
     }
   },
 
-  mounted() {
-    console.log('[index.vue - mounted] route', this.$route)
+  async mounted() {
     this.$store.commit('changeIsLoading', true)
     this.$store.commit('setCurrentPost', {})
     this.$store.commit('setPageTitle', '')
-    this.getPosts(this.params)
+    await this.getPosts(this.params)
     scrollManager.add('index.onScroll', this.onScroll.bind(this))
   },
 

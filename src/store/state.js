@@ -12,7 +12,6 @@ export default {
   titleOffset: 0,
   isLoading: true,
   isFontLoaded: false,
-  isFiltered: false,
   categoryId: 0,
   categoryName: ''
 }

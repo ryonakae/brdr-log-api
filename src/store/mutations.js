@@ -1,5 +1,3 @@
-'use strict'
-
 // 同期、単一の処理
 export default {
   initClient (state) {
@@ -44,10 +42,6 @@ export default {
 
   changeIsLoading (state, boolean) {
     state.isLoading = boolean
-  },
-
-  changeIsFiltered (state, boolean) {
-    state.isFiltered = boolean
   },
 
   setCategoryId (state, id) {

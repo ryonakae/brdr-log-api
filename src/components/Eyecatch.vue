@@ -10,6 +10,7 @@ export default {
     hasEyecatch() {
       return this.post.featured_media > 0
     },
+
     eyecatch() {
       let eyecatch
 

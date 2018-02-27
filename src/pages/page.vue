@@ -33,6 +33,7 @@ export default {
     client() {
       return this.$store.state.client
     },
+
     hasPage() {
       return Object.keys(this.page).length > 0
     }

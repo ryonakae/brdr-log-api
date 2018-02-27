@@ -1,12 +1,12 @@
 <template>
   <div
     class="post"
-    :class="{active: isPostItemLoaded, highlight: isEnter}"
+    :class="{active: isLoaded, highlight: isEnter}"
     @click="setTitleOffset"
-    @mouseenter="setCurrentPost"
-    @mouseleave="clearCurrentPost"
-    @touchstart="setCurrentPost"
-    @touchend="clearCurrentPost"
+    @mouseenter="onEnter"
+    @mouseleave="onLeave"
+    @touchstart="onEnter"
+    @touchend="onLeave"
   >
     <router-link :to="'/post/'+post.id" tag="div">
       <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
@@ -31,7 +31,6 @@
 <script>
 import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
-import { scrollManager } from '@/index'
 import EyecatchComponent from '@/components/Eyecatch.vue'
 
 export default {
@@ -44,7 +43,7 @@ export default {
   data() {
     return {
       categories: [],
-      isPostItemLoaded: false,
+      isLoaded: false,
       isEnter: false
     }
   },
@@ -53,9 +52,11 @@ export default {
     hasCategories() {
       return this.post.categories.length >= 1
     },
+
     hasEyecatch() {
       return this.post.featured_media > 0
     },
+
     postTitle() {
       let title
 
@@ -69,10 +70,16 @@ export default {
     }
   },
 
+  filters: {
+    moment(date) {
+      return moment(date).format('YYYY.M.D')
+    }
+  },
+
   methods: {
     init() {
       this.$store.commit('incrementLoadedPost')
-      this.isPostItemLoaded = true
+      this.isLoaded = true
 
       if (this.hasCategories) {
         this.$store
@@ -90,7 +97,7 @@ export default {
       })
     },
 
-    setCurrentPost() {
+    onEnter() {
       console.log('[PostItem.vue - setCurrentPost]', this.post)
       this.$store.commit('setCurrentPost', this.post)
       // serviceWorkerが有効な場合、preloadImagesを実行
@@ -98,7 +105,7 @@ export default {
       this.isEnter = true
     },
 
-    clearCurrentPost() {
+    onLeave() {
       console.log('[PostItem.vue - clearCurrentPost]')
       this.$store.commit('setCurrentPost', {})
       this.isEnter = false
@@ -125,12 +132,6 @@ export default {
     setTitleOffset(e) {
       const offset = e.currentTarget.offsetTop - window.pageYOffset
       this.$store.commit('setTitleOffset', offset)
-    }
-  },
-
-  filters: {
-    moment(date) {
-      return moment(date).format('YYYY.M.D')
     }
   },
 

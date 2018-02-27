@@ -31,6 +31,7 @@ export default {
 
   created() {
     document.body.classList.add(utils.getDevice())
+    this.$store.commit('initClient')
 
     webFont.load({
       classes: false,
@@ -43,12 +44,10 @@ export default {
         ]
       },
       active: () => {
-        console.log('all webfont loaded')
+        console.log('[App.vue - webFont.load] all webfont loaded')
         this.$store.commit('changeIsFontLoaded', true)
       }
     })
-
-    this.$store.commit('initClient')
   }
 }
 </script>

@@ -42,7 +42,7 @@ const vm = new Vue({
   render: h => h(App)
 })
 
-// Hot Module Replacementに対応させる
+// Hot Module Replacement
 if (module.hot) module.hot.accept()
 
 // export manager

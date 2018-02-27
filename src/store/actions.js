@@ -30,11 +30,9 @@ export default {
     commit('resetLoadedPost', [])
 
     if (options.categoryId === 0) {
-      commit('changeIsFiltered', false)
       commit('setCategoryId', 0)
       commit('setCategoryName', '')
     } else {
-      commit('changeIsFiltered', true)
       commit('setCategoryId', options.categoryId)
       commit('setCategoryName', options.categoryName)
     }

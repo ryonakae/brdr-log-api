@@ -1,12 +1,12 @@
 <template>
   <div>
-    <a class="icon twitter" :href="twitterUrl" target="_blank" @click.stop="onShare('twitter', twitterUrl)">
+    <a class="icon twitter" :href="twitterUrl" target="_blank" @click.stop="onShare('Twitter', 'Tweet', twitterUrl)">
       <svg :viewBox="icon.twitter.viewBox">
         <use :xlink:href="'#'+icon.twitter.id"></use>
       </svg>
     </a>
 
-    <a class="icon facebook" :href="facebookUrl" target="_blank" @click.stop="onShare('facebook', facebookUrl)">
+    <a class="icon facebook" :href="facebookUrl" target="_blank" @click.stop="onShare('Facebook', 'Share', facebookUrl)">
       <svg :viewBox="icon.facebook.viewBox">
         <use :xlink:href="'#'+icon.facebook.id"></use>
       </svg>
@@ -32,38 +32,30 @@ export default {
 
   computed: {
     twitterUrl() {
-      const url =
+      return (
         'https://twitter.com/share?url=' +
         encodeURIComponent(this.permalink) +
         '&text=' +
         encodeURIComponent(this.title) +
         ' - ' +
         this.$store.state.siteTitle
-      return url
+      )
     },
 
     facebookUrl() {
-      const url =
+      return (
         'https://www.facebook.com/sharer/sharer.php?u=' +
         encodeURIComponent(this.permalink)
-      return url
+      )
     }
   },
 
   methods: {
-    onShare(network, url) {
-      let socialNetwork
-      if (network === 'twitter') socialNetwork = 'Twitter'
-      else if (network === 'facebook') socialNetwork = 'Facebook'
-
-      let socialAction
-      if (network === 'twitter') socialAction = 'Tweet'
-      else if (network === 'facebook') socialAction = 'Share'
-
+    onShare(network, action, url) {
       window.ga('send', {
         hitType: 'social',
-        socialNetwork: socialNetwork,
-        socialAction: socialAction,
+        socialNetwork: network,
+        socialAction: action,
         socialTarget: url
       })
     }
