@@ -8,12 +8,8 @@ export default {
 
   setPageTitle (state, title) {
     state.pageTitle = title
-
-    if (title === '') {
-      document.title = state.siteTitle
-    } else {
-      document.title = title + ' - ' + state.siteTitle
-    }
+    document.title =
+      title === '' ? state.siteTitle : title + ' - ' + state.siteTitle
   },
 
   setAllPosts (state, data) {

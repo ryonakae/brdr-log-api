@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 export default {
-  client: axios.create(),
   pageTitle: '',
   siteTitle: document.title,
   siteUrl: location.protocol + '//' + location.host,
+  client: axios.create(),
   perPage: 3,
   loadedPost: 0,
   allPosts: [],
