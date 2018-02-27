@@ -5,9 +5,9 @@
         <span>{{categoryName}}</span>
       </li>
 
-      <li>
+      <li class="categories" :class="{active: isCategoriesActive}">
         <span @click="toggleCategories">Category</span>
-        <ul class="categories" :class="{active: isCategoriesActive}">
+        <ul>
           <li v-for="category in categories" v-if="category.count > 0" :key="category.id" @click="filter(category.id, category.name)">
             <span>{{category.name}}</span>
           </li>
@@ -120,19 +120,25 @@ export default {
 }
 
 .categories {
-  background-color: var(--color_bg);
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin: 1.5em 0 0;
-  padding: 0;
-  list-style-type: none;
-  display: none;
-  pointer-events: none;
-
   &.active {
-    display: block;
-    pointer-events: auto;
+    background-color: var(--color_bg);
+
+    & ul {
+      display: block;
+      background-color: var(--color_bg);
+      pointer-events: auto;
+    }
+  }
+
+  & ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin: 1.5em 0 0;
+    padding: 0;
+    list-style-type: none;
+    display: none;
+    pointer-events: none;
   }
 
   & li {

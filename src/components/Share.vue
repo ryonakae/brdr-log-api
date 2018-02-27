@@ -97,8 +97,12 @@ export default {
   }
 }
 
-.facebook svg {
-  width: 8px;
-  height: 14px;
+.facebook {
+  margin-top: -1px;
+
+  & svg {
+    width: 8px;
+    height: 14px;
+  }
 }
 </style>

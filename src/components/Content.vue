@@ -156,12 +156,12 @@ export default {
   & p,
   & ul,
   & ol {
-    margin: 1.5em 0;
+    margin: 1.2em 0;
   }
 
   & ul,
   & ol {
-    padding-left: 1.5em;
+    padding-left: 1.3em;
 
     & ul,
     & ol {
@@ -207,12 +207,12 @@ export default {
 
   & blockquote,
   & pre {
-    margin: 2em 0;
+    margin: 1.5em 0;
   }
 
   & blockquote {
     border-left: 1px solid var(--color_key);
-    padding-left: 1.5em;
+    padding-left: 1.3em;
     color: var(--color_sub);
     font-style: italic;
   }
@@ -225,7 +225,7 @@ export default {
 
   & pre {
     background-color: var(--color_bgSub);
-    padding: 1em 1.25em;
+    padding: 1em 1.3em;
     background-clip: padding-box;
     word-wrap: normal;
     overflow-x: auto;
@@ -241,11 +241,11 @@ export default {
   }
 
   & hr {
-    width: 10%;
+    width: 5%;
     height: 1px;
     background-color: var(--color_key);
     border: none;
-    margin: 4em 0;
+    margin: 3em 0;
   }
 
   & .iframe {
