@@ -5,7 +5,7 @@ export default {
   siteTitle: document.title,
   siteUrl: location.protocol + '//' + location.host,
   client: axios.create(),
-  perPage: 3,
+  perPage: window.wpSettings.posts_per_page,
   loadedPost: 0,
   allPosts: [],
   currentPost: {},
