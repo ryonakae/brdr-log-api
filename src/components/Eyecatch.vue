@@ -36,6 +36,7 @@ export default {
 
 .eyecatch {
   pointer-events: none;
+  touch-action: none;
   top: 0;
   left: 0;
   z-index: -1;
