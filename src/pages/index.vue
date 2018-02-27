@@ -1,114 +1,153 @@
 <template>
-  <div :class="$style.page" ref="page">
-    <ul v-if="hasPosts">
-      <li v-for="post in posts" :key="post.id" :class="[$style.post, {[$style.eyecatch]: checkHasEyecatch(post)}]" @mouseenter="setCurrentPost(post)" @mouseleave="clearCurrentPost" @touchstart="setCurrentPost(post)" @touchend="clearCurrentPost">
-        <post-item-component :post="post"></post-item-component>
-      </li>
-    </ul>
+  <div v-if="hasPosts" class="page">
+    <div class="post" v-for="post in posts" :key="post.id">
+      <post-component :post="post"></post-component>
+    </div>
+
+    <eyecatch-component class="eyecatch" :post="currentPost"></eyecatch-component>
   </div>
 </template>
 
 <script>
-import PostItemComponent from '@/components/PostItem.vue'
+import PostComponent from '@/components/Post.vue'
+import EyecatchComponent from '@/components/Eyecatch.vue'
 import { scrollManager } from '@/index'
 
 export default {
   components: {
-    PostItemComponent
+    PostComponent,
+    EyecatchComponent
+  },
+
+  data() {
+    return {
+      isScrolling: false
+    }
   },
 
   computed: {
-    posts() {
-      return this.$store.state.allPostData
-    },
-
-    hasPosts() {
-      return this.posts.length > 0
+    client() {
+      return this.$store.state.client
     },
 
     perPage() {
       return this.$store.state.perPage
     },
 
-    loadedPostCount() {
-      return this.$store.state.loadedPostCount
+    posts() {
+      return this.$store.state.allPosts
     },
 
-    isPreview() {
-      return this.$store.state.isPreview
+    currentPost() {
+      return this.$store.state.currentPost
     },
 
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded
+    hasPosts() {
+      return this.posts.length > 0
+    },
+
+    loadedPost() {
+      return this.$store.state.loadedPost
+    },
+
+    isFontLoaded() {
+      return this.$store.state.isFontLoaded
+    },
+
+    isFiltered() {
+      return this.$store.state.categoryId !== 0
+    },
+
+    categoryId() {
+      return this.$store.state.categoryId
+    },
+
+    params() {
+      let params = {
+        _embed: '',
+        per_page: this.perPage,
+        offset: this.posts.length,
+        status: window.wpSettings.is_logged_in ? 'any' : 'publish'
+      }
+      if (this.isFiltered) {
+        params = Object.assign(params, { categories: this.categoryId })
+      }
+      return params
     }
   },
 
   watch: {
-    loadedPostCount() {
+    loadedPost() {
       this.checkLoad()
     },
-
-    isWebfontLoaded() {
+    isFontLoaded() {
       this.checkLoad()
+    },
+    categoryId() {
+      this.getPosts(this.params)
     }
   },
 
   methods: {
-    setCurrentPost(post) {
-      if (this.$route.path === '/') {
-        this.$store.dispatch('setCurrentPost', post)
+    async getPosts(params) {
+      try {
+        const res = await this.client.get('/posts', { params: params })
+        this.$store.commit('setAllPosts', this.posts.concat(res.data))
+        console.log('[index.vue - getPosts]', this.posts, params)
+        return res.data
+      } catch (err) {
+        console.error('[index.vue - getPosts]', err)
       }
     },
 
-    clearCurrentPost() {
-      if (this.$route.path === '/') {
-        this.$store.dispatch('clearCurrentPost')
+    async getMorePosts(params) {
+      try {
+        const _params = Object.assign(params, { offset: this.posts.length })
+        const res = await this.getPosts(_params)
+        console.log('[index.vue - onScroll]', res)
+        this.isScrolling = false
+        if (res.length === 0) scrollManager.remove('index.onScroll')
+      } catch (err) {
+        console.error('[index.vue - onScroll]', err)
+      } finally {
+        this.checkLoad()
+      }
+    },
+
+    async onScroll() {
+      console.log('[index.vue - onScroll]')
+      const documentHeight = document.body.clientHeight
+
+      if (scrollManager.scrollBottom > documentHeight * 0.7) {
+        if (this.isScrolling) return
+        this.isScrolling = true
+        this.$store.commit('changeIsLoading', true)
+        this.getMorePosts(this.params)
       }
     },
 
     checkLoad() {
+      console.log(
+        '[index.vue - checkLoad]',
+        this.isFontLoaded,
+        this.posts.length,
+        this.loadedPost
+      )
+
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
-      if (this.isWebfontLoaded && this.posts.length === this.loadedPostCount) {
-        console.log('all webfont and postitem loaded')
-        this.$store.dispatch('loading', { status: 'end', wait: 300 })
+      if (this.isFontLoaded && this.posts.length === this.loadedPost) {
+        console.log('[index.vue - checkLoad] all webfont and post loaded')
+        this.$store.commit('changeIsLoading', false)
       }
-    },
-
-    init() {
-      // allPostDataがある(一度indexを表示した時)ときは、通信せずにallPostDataをそのまま使う
-      if (this.hasPosts) {
-        console.log('allPostData already exsist')
-        this.$store.dispatch('loading', { status: 'end', wait: 0 })
-      } else {
-        this.$store
-          .dispatch('loading', { status: 'start', wait: 0 })
-          .then(() => {
-            this.$store.dispatch('createIndex', {
-              per_page: this.perPage,
-              offset: 0
-            })
-          })
-      }
-    },
-
-    checkHasEyecatch(post) {
-      return post.featured_media > 0
     }
   },
 
-  created() {
-    // ページタイトルを変更
-    this.$store.dispatch('changeTitle', '')
-
-    // currentPostDataを空にする
-    this.clearCurrentPost()
-
-    // loadedPostCountをリセット
-    this.$store.dispatch('changeLoadedPostCount', 'reset')
-  },
-
-  mounted() {
-    this.init()
+  async mounted() {
+    this.$store.commit('changeIsLoading', true)
+    this.$store.commit('setCurrentPost', {})
+    this.$store.commit('setPageTitle', '')
+    await this.getPosts(this.params)
+    scrollManager.add('index.onScroll', this.onScroll.bind(this))
   },
 
   beforeRouteEnter(to, from, next) {
@@ -116,8 +155,7 @@ export default {
       // プレビュー時、かつ /?p=[id]&preview=true というクエリがある場合は、singleに遷移する
       // 遷移時にp(id)を渡す
       const query = vm.$route.query
-
-      if (vm.isPreview && Object.keys(query).length > 0) {
+      if (window.wpSettings.is_preview && Object.keys(query).length > 0) {
         if (Object.keys(query.p).length > 0 && query.preview) {
           vm.$router.replace({ path: '/post/' + query.p })
         }
@@ -126,41 +164,37 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    scrollManager.remove('index.infiniteScroll')
+    this.$store.commit('resetLoadedPost')
+    scrollManager.remove('index.onScroll')
     next()
   }
 }
 </script>
 
-<style module>
-@import 'properties.css';
-@import 'media.css';
+<style scoped>
+@import 'config.css';
 
 .page {
-  max-width: var(--width_index);
-  padding-top: var(--margin_top);
-  margin: 0 auto;
+  @apply --content;
+  margin-top: var(--margin_top);
+  margin-bottom: calc(var(--margin_bottom) + var(--margin_page) + 1em);
 
   @media (--mq_sp) {
-    padding-top: var(--margin_top_sp);
+    margin-top: var(--margin_top_sp);
+    margin-bottom: calc(var(--margin_bottom_sp) + var(--margin_page_sp) + 1em);
   }
 }
 
 .post {
-  margin-top: 75px;
+  display: block;
+  margin-top: 3em;
 
   &:first-child {
     margin-top: 0;
   }
-
-  @media (--mq_sp) {
-    margin-top: 45px;
-  }
 }
 
-@media (--mq_sp) {
-  .post.eyecatch + .post.eyecatch {
-    margin-top: -1px;
-  }
+.eyecatch {
+  position: fixed;
 }
 </style>

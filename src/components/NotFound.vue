@@ -1,30 +1,21 @@
 <template>
   <div>
-    <h1 :class="$style.title">Page Not Found</h1>
+    <h1 class="title">Page Not Found</h1>
   </div>
 </template>
 
-<style module>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+<style scoped>
+@import 'config.css';
 
 .title {
-  width: 100%;
-  font-size: 7rem;
-  letter-spacing: 0;
-  text-align: center;
-  position: fixed;
+  position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  @media (--mq_tablet) {
-    font-size: 6rem;
-  }
+  transform: translateY(-50%);
+  margin: 0 0 0 var(--margin_page);
+  font-size: 10vw;
 
   @media (--mq_sp) {
-    font-size: 4rem;
+    margin-left: var(--margin_page_sp);
   }
 }
 </style>

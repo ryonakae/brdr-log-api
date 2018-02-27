@@ -1,8 +1,8 @@
 <template>
   <div>
     <article v-if="hasPage" ref="page">
-      <header :class="$style.header">
-        <h1 :class="$style.title" v-html="page.title.rendered"></h1>
+      <header class="header">
+        <h1 class="title" v-html="page.title.rendered"></h1>
       </header>
 
       <content-component :data="page"></content-component>
@@ -24,55 +24,87 @@ export default {
 
   data() {
     return {
-      page: {}
+      page: {},
+      isNotFound: false
     }
   },
 
   computed: {
-    hasPage() {
-      return Object.keys(this.page).length > 0
+    client() {
+      return this.$store.state.client
     },
 
-    isNotFound() {
-      return this.$store.state.isNotFound
+    hasPage() {
+      return Object.keys(this.page).length > 0
     }
   },
 
   methods: {
-    init() {
-      this.$store.dispatch(
-        'changeTitle',
-        this.page.title.rendered.toUpperCase()
-      )
+    async getPage(slug) {
+      try {
+        const res = await this.client.get('/pages', {
+          params: {
+            _embed: '',
+            slug: slug
+          }
+        })
+        if (res.data.length === 0) throw 'no res.data'
+        console.log('[page.vue - getPage]', res)
+        return res.data[0]
+      } catch (err) {
+        throw new Error('[page.vue - getPage]', err)
+      }
+    },
+
+    onNotFound() {
+      this.isNotFound = true
+      this.$store.commit('setPageTitle', 'Page Not Found')
+      this.$store.commit('changeIsLoading', false)
     }
   },
 
-  mounted() {
-    this.$store
-      .dispatch('getPage', this.$route.params.slug)
-      .then(result => {
-        return new Promise((resolve, reject) => {
-          this.page = result
-          resolve()
-        })
-      })
-      .then(() => {
-        this.init()
-      })
-      .catch(err => {
-        console.error(err)
-        this.$store.dispatch('onNotFound')
-      })
+  async mounted() {
+    try {
+      const res = await this.getPage(this.$route.params.slug)
+      if (res) {
+        this.page = res
+        this.$store.commit('setPageTitle', this.page.title.rendered)
+      }
+    } catch (err) {
+      console.error('[page.vue - mounted]', err)
+      this.onNotFound()
+    }
   }
 }
 </script>
 
-<style module>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+<style scoped>
+@import 'config.css';
+
+.header,
+.content {
+  @apply --content;
+}
 
 .header {
-  @apply --header;
+  margin-top: var(--margin_top);
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_top_sp);
+  }
+}
+
+.title {
+  @apply --title;
+}
+
+.content {
+  margin-top: var(--margin_page);
+  margin-bottom: calc(var(--margin_page) * 2);
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_page_sp);
+    margin-bottom: calc(var(--margin_page_sp) * 2);
+  }
 }
 </style>

@@ -1,11 +1,5 @@
 <template>
-  <div ref="content">
-    <div v-if="hasEyecatch" :class="$style.eyecatch">
-      <img :src="eyecatch">
-    </div>
-
-    <div v-if="hasContent" :class="$style.content" v-html="data.content.rendered"></div>
-  </div>
+  <div v-if="hasContent" class="content" v-html="data.content.rendered" ref="content"></div>
 </template>
 
 <script>
@@ -24,29 +18,12 @@ export default {
   },
 
   computed: {
-    hasEyecatch() {
-      return this.data.featured_media > 0
-    },
-
-    eyecatch() {
-      if (
-        Object.keys(
-          this.data._embedded['wp:featuredmedia'][0].media_details.sizes
-        ).length > 0
-      ) {
-        return this.data._embedded['wp:featuredmedia'][0].media_details.sizes
-          .theme_eyecatch.source_url
-      } else {
-        return this.data._embedded['wp:featuredmedia'][0].source_url
-      }
-    },
-
     hasContent() {
       return this.data.content.rendered !== ''
     },
 
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded
+    isFontLoaded() {
+      return this.$store.state.isFontLoaded
     }
   },
 
@@ -55,119 +32,82 @@ export default {
       this.checkLoad()
     },
 
-    isWebfontLoaded() {
+    isFontLoaded() {
       this.checkLoad()
     }
   },
 
   methods: {
+    init() {
+      // Twitterの埋め込みツイートがあったら関数実行
+      const $tweet = document.getElementsByClassName('twitter-tweet')
+      if ($tweet.length > 0) window.twttr.widgets.load(document.body)
+
+      // コードスニペットがあったらprettify実行
+      const $code = document.getElementsByTagName('pre')
+      console.log($code)
+      if ($code.length > 0) {
+        for (let i = 0; i < $code.length; i++) {
+          $code[i].classList.add('prettyprint')
+        }
+        window.prettyPrint()
+      }
+
+      // iframeをdivで囲う
+      const $iframes = document.getElementsByTagName('iframe')
+      if ($iframes.length > 0) {
+        for (let i = 0; i < $iframes.length; i++) {
+          $iframes[i].outerHTML =
+            '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
+        }
+      }
+
+      // ページ内の画像をロードしたら、画像の親要素にaddClass
+      const imgLoad = imagesLoaded(this.$refs.content, { background: true })
+      imgLoad.on('progress', (instance, image) => {
+        image.img.parentNode.classList.add('ready')
+      })
+
+      // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
+      // 全部の画像を読み込み終わったらローディング終了
+      // すでに読み込まれている場合は即座にlogoのローディング終了
+      utils.wait(100, true).then(() => {
+        if (!imgLoad.isComplete) {
+          console.log('images are NOT loaded')
+          this.$store.commit('changeIsLoading', true)
+
+          imgLoad.on('always', () => {
+            console.log('all images are loaded')
+            this.isImagesLoaded = true
+          })
+        } else {
+          console.log('images are ALREADY loaded')
+          this.isImagesLoaded = true
+        }
+      })
+    },
+
     checkLoad() {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
-      if (this.isWebfontLoaded && this.isImagesLoaded) {
+      if (this.isFontLoaded && this.isImagesLoaded) {
         console.log('all webfont and images loaded')
-        this.$store.dispatch('loading', { status: 'end', wait: 300 })
+        this.$store.commit('changeIsLoading', false)
       }
     }
   },
 
   mounted() {
-    // 本文の画像の親要素にaddClass
-    const $images = document.getElementsByTagName('img')
-    if ($images.length > 0) {
-      for (let i = 0; i < $images.length; i++) {
-        $images[i].parentNode.classList.add('img')
-      }
-    }
-
-    // Twitterの埋め込みツイートがあったら関数実行
-    const $tweet = document.getElementsByClassName('twitter-tweet')
-    if ($tweet.length > 0) window.twttr.widgets.load(document.body)
-
-    // コードスニペットがあったらprettify実行
-    const $code = document.getElementsByTagName('pre')
-    if ($code.length > 0) {
-      for (let i = 0; i < $code.length; i++) {
-        $code[i].classList.add('prettyprint')
-      }
-      window.prettyPrint()
-    }
-
-    // iframeをdivで囲う
-    const $iframes = document.getElementsByTagName('iframe')
-    if ($iframes.length > 0) {
-      for (let i = 0; i < $iframes.length; i++) {
-        $iframes[i].outerHTML =
-          '<div class="iframe">' + $iframes[i].outerHTML + '</div>'
-      }
-    }
-
-    // ページ内の画像ロードした時の処理
-    const imgLoad = imagesLoaded(this.$refs.content, { background: true })
-
-    // progress
-    imgLoad.on('progress', (instance, image) => {
-      image.img.classList.add('ready')
-    })
-
-    // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
-    // 全部の画像を読み込み終わったらローディング終了
-    // すでに読み込まれている場合は即座にlogoのローディング終了
-    utils.wait(100, true).then(() => {
-      if (!imgLoad.isComplete) {
-        console.log('images are NOT loaded')
-        this.$store.dispatch('loading', { status: 'start', wait: 0 })
-
-        imgLoad.on('always', () => {
-          console.log('all images are loaded')
-          this.isImagesLoaded = true
-        })
-      } else {
-        console.log('images are ALREADY loaded')
-        this.isImagesLoaded = true
-      }
-    })
+    this.init()
   }
 }
 </script>
 
-<style module>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
-
-.eyecatch {
-  display: table;
-  border: 1px solid var(--color_key);
-  max-width: var(--width_single);
-  margin: 0 auto 3em;
-  text-align: center;
-
-  & img {
-    width: var(--width_single);
-    max-width: 100%;
-    height: auto;
-    vertical-align: top;
-    transition: all var(--duration_quick) var(--easing);
-    opacity: 0;
-
-    &:global(.ready) {
-      opacity: 1;
-    }
-  }
-
-  @media (--mq_tablet) {
-    border-right: none;
-    border-left: none;
-  }
-}
+<style>
+@import 'config.css';
 
 .content {
-  max-width: var(--width_content);
-  margin: 0 auto;
-
-  @media (--mq_sp) {
-    margin: 0 var(--margin_page_sp);
-  }
+  line-height: var(--lineHeight_default);
+  text-align: justify;
 
   & a {
     @apply --link;
@@ -185,117 +125,58 @@ export default {
   & h4,
   & h5,
   & h6 {
-    margin-bottom: 1em;
-
-    @media (--mq_sp) {
-      margin-bottom: 0.7em;
-    }
+    margin: 2em 0 1em;
+    line-height: var(--lineHeight_title);
   }
 
   & h1 {
     font-size: var(--fontSize_h1);
-    margin-top: 2.5em;
   }
 
   & h2 {
     font-size: var(--fontSize_h2);
-    margin-top: 2.3em;
   }
 
   & h3 {
     font-size: var(--fontSize_h3);
-    margin-top: 2.1em;
   }
 
   & h4 {
     font-size: var(--fontSize_h4);
-    margin-top: 1.9em;
   }
 
   & h5 {
     font-size: var(--fontSize_h5);
-    margin-top: 1.7em;
   }
 
   & h6 {
     font-size: var(--fontSize_h6);
-    margin-top: 1.7em;
-  }
-
-  @media (--mq_sp) {
-    & h1 {
-      font-size: var(--fontSize_h1_sp);
-      margin-top: 2.1em;
-    }
-
-    & h2 {
-      font-size: var(--fontSize_h2_sp);
-      margin-top: 1.9em;
-    }
-
-    & h3 {
-      font-size: var(--fontSize_h3_sp);
-      margin-top: 1.7em;
-    }
-
-    & h4 {
-      font-size: var(--fontSize_h4_sp);
-      margin-top: 1.5em;
-    }
-
-    & h5 {
-      font-size: var(--fontSize_h5_sp);
-      margin-top: 1.3em;
-    }
-
-    & h6 {
-      font-size: var(--fontSize_h6_sp);
-      margin-top: 1.3em;
-    }
   }
 
   & p,
   & ul,
   & ol {
-    margin: 1.5em 0;
-
-    @media (--mq_sp) {
-      margin: 1.3em 0;
-    }
-  }
-
-  & ul {
-    list-style-type: disc;
-    padding-left: 1.5em;
-  }
-
-  & ol {
-    list-style-type: decimal;
-    padding-left: 1.5em;
+    margin: 1.2em 0;
   }
 
   & ul,
   & ol {
+    padding-left: 1.3em;
+
     & ul,
     & ol {
-      margin: 0;
-    }
-
-    & ul {
-      list-style-type: circle;
+      margin: 0.3em 0;
     }
   }
 
-  & :global(.img) {
+  & .img {
+    position: relative;
     display: table;
-    margin: 2.1em auto;
+    margin: 2em auto;
+    background-color: var(--color_bgSub);
 
     &:first-child {
       margin-top: 0;
-    }
-
-    @media (--mq_sp) {
-      margin: 1.7em auto;
     }
 
     & img {
@@ -303,13 +184,14 @@ export default {
       max-width: 100%;
       height: auto;
       vertical-align: top;
-      transition: all var(--duration_quick) var(--easing);
-      opacity: 0;
-      background-color: var(--bgColor_default);
-      border: 1px solid var(--color_key);
+      visibility: hidden;
+    }
 
-      &:global(.ready) {
-        opacity: 1;
+    &.ready {
+      background: none;
+
+      & img {
+        visibility: visible;
       }
     }
 
@@ -319,79 +201,54 @@ export default {
       margin-top: 1.2em;
       line-height: var(--lineHeight_caption);
       font-size: var(--fontSize_small);
-      color: var(--textColor_gray);
-
-      @media (--mq_sp) {
-        font-size: var(--fontSize_small_sp);
-      }
+      color: var(--color_sub);
     }
   }
 
   & blockquote,
   & pre {
-    margin: 2.1em 0;
-
-    @media (--mq_sp) {
-      margin: 1.7em 0;
-    }
+    margin: 1.5em 0;
   }
 
   & blockquote {
     border-left: 1px solid var(--color_key);
-    padding-left: 1.5em;
-    color: var(--textColor_gray);
+    padding-left: 1.3em;
+    color: var(--color_sub);
     font-style: italic;
   }
 
   & code {
-    vertical-align: top;
-    margin: 0;
-    padding: 0 0.35em;
+    background-color: var(--color_bgSub);
     font-family: var(--fontFamily_code);
-    font-size: var(--fontSize_code);
-    letter-spacing: var(--letterSpacing_code);
-    background-color: var(--bgColor_gray);
-
-    @nest :global(body.webfontLoaded) & {
-      font-family: var(--fontFamily_code_loaded);
-    }
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_code_sp);
-    }
+    letter-spacing: initial;
   }
 
   & pre {
-    border: 1px solid var(--color_key);
-    padding: 1em 1.25em;
+    background-color: var(--color_bgSub);
+    padding: 1em 1.3em;
     background-clip: padding-box;
     word-wrap: normal;
     overflow-x: auto;
 
     & code {
+      line-height: var(--lineHeight_code);
       display: block;
       white-space: pre;
       margin: 0;
       padding: 0;
-      border: none;
-      line-height: var(--lineHeight_code);
       background: none;
     }
   }
 
   & hr {
-    width: 12%;
+    width: 5%;
     height: 1px;
     background-color: var(--color_key);
     border: none;
-    margin: 3.5em 0;
-
-    @media (--mq_sp) {
-      margin: 3em 0;
-    }
+    margin: 3em 0;
   }
 
-  & :global(.iframe) {
+  & .iframe {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
@@ -407,13 +264,9 @@ export default {
     }
   }
 
-  & :global(.twitter-tweet),
-  & :global(.instagram-media) {
-    margin: 2.1em auto !important;
-
-    @media (--mq_sp) {
-      margin: 1.7em 0 !important;
-    }
+  & .twitter-tweet,
+  & .instagram-media {
+    margin: 2em auto !important;
   }
 }
 </style>

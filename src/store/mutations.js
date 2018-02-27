@@ -1,52 +1,50 @@
-'use strict'
-
 // 同期、単一の処理
 export default {
-  SET_PAGE_TITLE (state, title) {
+  initClient (state) {
+    state.client.defaults.baseURL = state.siteUrl + '/wp-json/wp/v2'
+    state.client.defaults.timeout = 10000
+    state.client.defaults.headers = { 'X-WP-Nonce': window.wpSettings.nonce }
+  },
+
+  setPageTitle (state, title) {
     state.pageTitle = title
+    document.title =
+      title === '' ? state.siteTitle : title + ' - ' + state.siteTitle
   },
 
-  SET_ALL_POST_DATA (state, data) {
-    state.allPostData = data
+  setAllPosts (state, data) {
+    state.allPosts = data
   },
 
-  SET_CURRENT_POST_DATA (state, data) {
-    state.currentPostData = data
+  setCurrentPost (state, data) {
+    state.currentPost = data
   },
 
-  SET_PER_PAGE (state, count) {
-    state.perPage = count
+  incrementLoadedPost (state) {
+    state.loadedPost++
   },
 
-  INCREMENT_LOADED_POST_COUNT (state) {
-    state.loadedPostCount++
+  resetLoadedPost (state) {
+    state.loadedPost = 0
   },
 
-  RESET_LOADED_POST_COUNT (state) {
-    state.loadedPostCount = 0
+  setTitleOffset (state, offset) {
+    state.titleOffset = offset
   },
 
-  CHANGE_INFINITE_SCROLL_LOCK (state, boolean) {
-    state.infiniteScrollLock = boolean
+  changeIsFontLoaded (state, boolean) {
+    state.isFontLoaded = boolean
   },
 
-  CHANGE_IS_WEBFONT_LOADED (state, boolean) {
-    state.isWebfontLoaded = boolean
-  },
-
-  CHANGE_IS_LOADING (state, boolean) {
+  changeIsLoading (state, boolean) {
     state.isLoading = boolean
   },
 
-  CHANGE_IS_NOT_FOUND (state, boolean) {
-    state.isNotFound = boolean
+  setCategoryId (state, id) {
+    state.categoryId = id
   },
 
-  CHANGE_IS_FILTERED (state, boolean) {
-    state.isFiltered = boolean
-  },
-
-  SET_FILTERED_CATEGORY (state, categoryName) {
-    state.filteredCategory = categoryName
+  setCategoryName (state, name) {
+    state.categoryName = name
   }
 }

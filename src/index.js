@@ -8,6 +8,21 @@ import ResizeManager from '@/utilities/ResizeManager'
 import ScrollManager from '@/utilities/ScrollManager'
 import App from '@/App.vue'
 
+// registor service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register(window.wpSettings.template_directory_url + '/service-worker.js', {
+      scope: '/'
+    })
+    .then(registration => {
+      registration.update()
+      console.log('[Service Worker]', 'registered: ', registration)
+    })
+    .catch(err => {
+      console.log('[Service Worker]', 'registration failed: ', err)
+    })
+}
+
 // create manager instance
 const utils = new Utils()
 const resizeManager = new ResizeManager()
@@ -27,7 +42,7 @@ const vm = new Vue({
   render: h => h(App)
 })
 
-// Hot Module Replacementに対応させる
+// Hot Module Replacement
 if (module.hot) module.hot.accept()
 
 // export manager

@@ -1,17 +1,17 @@
 <template>
-  <div id="app">
+  <div>
     <header>
       <logo-component></logo-component>
-      <header-component :class="{[$style.hidden]: !isWebfontLoaded}"></header-component>
+      <navi-component :class="{hidden: !isFontLoaded}"></navi-component>
     </header>
-    <router-view :class="{[$style.hidden]: !isWebfontLoaded}"></router-view>
-    <footer-component :class="{[$style.hidden]: !isWebfontLoaded}"></footer-component>
+    <router-view :class="{hidden: !isFontLoaded}"></router-view>
+    <footer-component :class="{hidden: !isFontLoaded}"></footer-component>
   </div>
 </template>
 
 <script>
 import LogoComponent from '@/components/Logo.vue'
-import HeaderComponent from '@/components/Header.vue'
+import NaviComponent from '@/components/Navi.vue'
 import FooterComponent from '@/components/Footer.vue'
 import { utils } from '@/index'
 import webFont from 'webfontloader'
@@ -19,32 +19,20 @@ import webFont from 'webfontloader'
 export default {
   components: {
     LogoComponent,
-    HeaderComponent,
+    NaviComponent,
     FooterComponent
   },
 
   computed: {
-    perPageMobile() {
-      return this.$store.state.perPageMobile
-    },
-
-    isWebfontLoaded() {
-      return this.$store.state.isWebfontLoaded
+    isFontLoaded() {
+      return this.$store.state.isFontLoaded
     }
   },
 
   created() {
-    // ページタイトルを変更
-    this.$store.dispatch('changeTitle', '')
-
-    // デバイスによってbodyにaddClass
     document.body.classList.add(utils.getDevice())
+    this.$store.commit('initClient')
 
-    // mobileのときだけperPageを少なくする
-    if (utils.getDevice() === 'mobile')
-      this.$store.commit('SET_PER_PAGE', this.perPageMobile)
-
-    // webfontのロードが終わったらbodyにaddClass
     webFont.load({
       classes: false,
       timeout: 5000,
@@ -56,32 +44,22 @@ export default {
         ]
       },
       active: () => {
-        console.log('all webfont loaded')
-        document.body.classList.add('webfontLoaded')
-        this.$store.commit('CHANGE_IS_WEBFONT_LOADED', true)
+        console.log('[App.vue - webFont.load] all webfont loaded')
+        this.$store.commit('changeIsFontLoaded', true)
       }
     })
-
-    // axiosのクライアントをセットアップ
-    this.$store.dispatch('initClient')
   }
 }
 </script>
 
 <style>
-@import 'reset-css';
+@import 'sanitize.css';
 @import 'font-face.css';
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+@import 'config.css';
 @import 'base.css';
-
-body.webfontLoaded {
-  font-family: var(--fontFamily_loaded);
-}
 </style>
 
-<style module>
+<style scoped>
 .hidden {
   visibility: hidden;
 }

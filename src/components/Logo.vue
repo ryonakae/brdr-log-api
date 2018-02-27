@@ -1,12 +1,12 @@
 <template>
-  <h1 :class="[$style.logo, {[$style.ready]: !isLoading}]" @mouseenter="onEnter" @mouseleave="onLeave" @touchstart="onEnter" @touchend="onLeave">
+  <h1 class="logo" :class="{ready: !isLoading}" @mouseenter="onEnter" @mouseleave="onLeave" @touchstart="onEnter" @touchend="onLeave">
     <router-link :to="'/'">
-      <div :class="$style.inner">
-        <div :class="$style.loading"></div>
-        <div :class="$style.default"></div>
+      <div class="inner">
+        <div class="loading"></div>
+        <div class="default"></div>
       </div>
 
-      <div :class="$style.logoForFirefox">
+      <div class="logoForFirefox">
         <svg :viewBox="logo.viewBox">
           <use :xlink:href="'#'+logo.id"></use>
         </svg>
@@ -34,22 +34,18 @@ export default {
 
   methods: {
     onEnter() {
-      console.log('onEnter')
-      this.$store.dispatch('loading', { status: 'start', wait: 0 })
+      this.$store.commit('changeIsLoading', true)
     },
 
     onLeave() {
-      console.log('onLeave')
-      this.$store.dispatch('loading', { status: 'end', wait: 0 })
+      this.$store.commit('changeIsLoading', false)
     }
   }
 }
 </script>
 
-<style module>
-@import 'properties.css';
-@import 'property-sets.css';
-@import 'media.css';
+<style scoped>
+@import 'config.css';
 
 @keyframes loading {
   0% {
@@ -61,6 +57,7 @@ export default {
 }
 
 .logo {
+  margin: 0;
   position: fixed;
   z-index: 100;
   top: var(--margin_page);
@@ -117,7 +114,6 @@ export default {
 
   & .default {
     background-color: var(--color_key);
-    transition: all var(--duration_quick) cubic-bezier(0.25, 0.46, 0.45, 0.94); /* easeOutQuad */
     opacity: 0;
   }
 
