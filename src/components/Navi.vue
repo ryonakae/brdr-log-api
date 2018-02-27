@@ -46,26 +46,20 @@ export default {
 
   methods: {
     filter(categoryId, categoryName) {
-      this.toggleCategories()
+      this.isCategoriesActive = false
       this.$store.dispatch('filter', {
         categoryId: categoryId,
         categoryName: categoryName
       })
     },
 
-    getAllCategories() {
-      return new Promise((resolve, reject) => {
-        this.client
-          .get('/categories')
-          .then(res => {
-            console.log(res)
-            resolve(res.data)
-          })
-          .catch(err => {
-            console.erorr(err)
-            reject(err)
-          })
-      })
+    async getAllCategories() {
+      try {
+        const res = await this.client.get('/categories')
+        return res.data
+      } catch (err) {
+        console.log('[Navi.vue - getAllCategories]', err)
+      }
     },
 
     toggleCategories() {
