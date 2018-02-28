@@ -3,10 +3,8 @@
 import Vue from 'vue'
 import store from '@/store'
 import router from '@/router'
-import Utils from '@/utilities/Utils'
-import ResizeManager from '@/utilities/ResizeManager'
-import ScrollManager from '@/utilities/ScrollManager'
 import App from '@/App.vue'
+import { Utils, Resizer, Scroller } from 'web-utility-js'
 
 // registor service worker
 if ('serviceWorker' in navigator) {
@@ -25,14 +23,11 @@ if ('serviceWorker' in navigator) {
 
 // create manager instance
 const utils = new Utils()
-const resizeManager = new ResizeManager()
-const scrollManager = new ScrollManager({
-  resizeManager: resizeManager,
-  utils: utils
-})
+const resizer = new Resizer()
+const scroller = new Scroller()
 utils.init()
-resizeManager.init()
-scrollManager.init()
+resizer.init()
+scroller.init()
 
 // create vue instance
 const vm = new Vue({
@@ -46,4 +41,4 @@ const vm = new Vue({
 if (module.hot) module.hot.accept()
 
 // export manager
-export { utils, resizeManager, scrollManager }
+export { utils, resizer, scroller }

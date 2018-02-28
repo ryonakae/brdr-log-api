@@ -41,7 +41,7 @@ import EyecatchComponent from '@/components/Eyecatch.vue'
 import ContentComponent from '@/components/Content.vue'
 import ShareComponent from '@/components/Share.vue'
 import NotFoundComponent from '@/components/NotFound.vue'
-import { resizeManager } from '@/index'
+import { resizer } from '@/index'
 
 export default {
   components: {
@@ -131,8 +131,8 @@ export default {
   methods: {
     init() {
       console.log('[single.vue - init]')
-      this.setTopHeight()
       this.$store.commit('setPageTitle', this.post.title.rendered)
+      resizer.add('single.setTopHeight', this.setTopHeight.bind(this))
 
       if (this.hasCategories) {
         this.$store
@@ -141,8 +141,6 @@ export default {
             this.categories = result
           })
       }
-
-      resizeManager.add('single.setTopHeight', this.setTopHeight.bind(this))
     },
 
     async getPost(id) {
@@ -172,25 +170,24 @@ export default {
       await new Promise(resolve => setTimeout(resolve, delay))
     },
 
-    setTopHeight() {
+    async setTopHeight() {
       if (this.hasEyecatch) {
-        const eyecatch = this.$refs.eyecatch.$el
-        const imgLoad = imagesLoaded(eyecatch, { background: true })
-
-        imgLoad.on('always', () => {
-          const eyecatchHeight = this.$refs.eyecatch.$el.clientHeight
-          const titleOffset = this.$refs.title.offsetTop
-          const titleHeight = this.$refs.title.clientHeight
-
-          if (eyecatchHeight >= titleOffset + titleHeight) {
-            this.topHeight = eyecatchHeight + 'px'
-          } else {
-            this.topHeight = titleOffset + titleHeight + 'px'
-          }
-
-          this.isContentActive = true
+        console.log('[single.vue - setTopHeight] has eyecatch')
+        const imgLoad = imagesLoaded(this.$refs.eyecatch.$el, {
+          background: true
         })
+        await new Promise(resolve => imgLoad.on('always', resolve))
+        const eyecatchHeight = this.$refs.eyecatch.$el.clientHeight
+        const titleOffset = this.$refs.title.offsetTop
+        const titleHeight = this.$refs.title.clientHeight
+        if (eyecatchHeight >= titleOffset + titleHeight) {
+          this.topHeight = eyecatchHeight + 'px'
+        } else {
+          this.topHeight = titleOffset + titleHeight + 'px'
+        }
+        this.isContentActive = true
       } else {
+        console.log('[single.vue - setTopHeight] no eyecatch')
         this.topHeight = 'auto'
         this.isContentActive = true
       }
@@ -237,7 +234,7 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    resizeManager.remove('single.setTopHeight')
+    resizer.remove('single.setTopHeight')
     next()
   }
 }
@@ -307,8 +304,4 @@ export default {
   display: inline-block;
   margin-left: 1.5em;
 }
-</style>
-
-<style>
-@import 'prettify';
 </style>

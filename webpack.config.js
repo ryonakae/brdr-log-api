@@ -67,7 +67,7 @@ const common = {
   resolve: {
     alias: {
       '@': path.join(__dirname, 'src'),
-      styles: path.join(__dirname, 'src/styles'),
+      styles: path.join(__dirname, 'src/assets/styles'),
       images: path.join(__dirname, 'src/assets/images'),
       fonts: path.join(__dirname, 'src/assets/fonts')
     }

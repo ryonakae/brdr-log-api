@@ -5,8 +5,8 @@
 <script>
 import imagesLoaded from 'imagesloaded'
 import { utils } from '@/index'
-import '@/library/twitter_widgets'
-import '@/library/prettify'
+import '@/libraries/twitter_widgets'
+import '@/libraries/prettify'
 
 export default {
   props: ['data'],
@@ -71,26 +71,26 @@ export default {
       // 100ms後にまだ画像が全部読み込まれていない場合、logoのローディングを開始する
       // 全部の画像を読み込み終わったらローディング終了
       // すでに読み込まれている場合は即座にlogoのローディング終了
-      utils.wait(100, true).then(() => {
-        if (!imgLoad.isComplete) {
-          console.log('images are NOT loaded')
-          this.$store.commit('changeIsLoading', true)
+      ;(async () => {
+        await new Promise(resolve => setTimeout(resolve, 100))
 
-          imgLoad.on('always', () => {
-            console.log('all images are loaded')
-            this.isImagesLoaded = true
-          })
+        if (!imgLoad.isComplete) {
+          console.log('[Content.vue - init] images are NOT loaded')
+          this.$store.commit('changeIsLoading', true)
+          await new Promise(resolve => imgLoad.on('always', resolve))
+          this.isImagesLoaded = true
+          console.log('[Content.vue - init] all images are loaded')
         } else {
-          console.log('images are ALREADY loaded')
+          console.log('[Content.vue - init] images are ALREADY loaded')
           this.isImagesLoaded = true
         }
-      })
+      })()
     },
 
     checkLoad() {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
       if (this.isFontLoaded && this.isImagesLoaded) {
-        console.log('all webfont and images loaded')
+        console.log('[Content.vue - checkLoad] all webfont/images loaded')
         this.$store.commit('changeIsLoading', false)
       }
     }
@@ -101,6 +101,10 @@ export default {
   }
 }
 </script>
+
+<style>
+@import 'prettify.css';
+</style>
 
 <style>
 @import 'config.css';
@@ -125,6 +129,7 @@ export default {
   & h4,
   & h5,
   & h6 {
+    text-align: left;
     margin: 2em 0 1em;
     line-height: var(--lineHeight_title);
   }
@@ -184,14 +189,14 @@ export default {
       max-width: 100%;
       height: auto;
       vertical-align: top;
-      visibility: hidden;
+      opacity: 0;
     }
 
     &.ready {
       background: none;
 
       & img {
-        visibility: visible;
+        opacity: 1;
       }
     }
 
@@ -224,6 +229,7 @@ export default {
   }
 
   & pre {
+    text-align: left;
     background-color: var(--color_bgSub);
     padding: 1em 1.3em;
     background-clip: padding-box;

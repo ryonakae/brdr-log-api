@@ -11,7 +11,7 @@
 <script>
 import PostComponent from '@/components/Post.vue'
 import EyecatchComponent from '@/components/Eyecatch.vue'
-import { scrollManager } from '@/index'
+import { scroller } from '@/index'
 
 export default {
   components: {
@@ -106,7 +106,7 @@ export default {
         const res = await this.getPosts(_params)
         console.log('[index.vue - onScroll]', res)
         this.isScrolling = false
-        if (res.length === 0) scrollManager.remove('index.onScroll')
+        if (res.length === 0) scroller.remove('index.onScroll')
       } catch (err) {
         console.error('[index.vue - onScroll]', err)
       } finally {
@@ -117,8 +117,9 @@ export default {
     async onScroll() {
       console.log('[index.vue - onScroll]')
       const documentHeight = document.body.clientHeight
+      const scrollBottom = scroller.getScrollBottom()
 
-      if (scrollManager.scrollBottom > documentHeight * 0.7) {
+      if (scrollBottom > documentHeight * 0.7) {
         if (this.isScrolling) return
         this.isScrolling = true
         this.$store.commit('changeIsLoading', true)
@@ -147,7 +148,7 @@ export default {
     this.$store.commit('setCurrentPost', {})
     this.$store.commit('setPageTitle', '')
     await this.getPosts(this.params)
-    scrollManager.add('index.onScroll', this.onScroll.bind(this))
+    scroller.add('index.onScroll', this.onScroll.bind(this))
   },
 
   beforeRouteEnter(to, from, next) {
@@ -165,7 +166,7 @@ export default {
 
   beforeRouteLeave(to, from, next) {
     this.$store.commit('resetLoadedPost')
-    scrollManager.remove('index.onScroll')
+    scroller.remove('index.onScroll')
     next()
   }
 }

@@ -71,6 +71,12 @@ export default {
     left: var(--margin_page_sp);
   }
 
+  &.ready {
+    & .default {
+      opacity: 1;
+    }
+  }
+
   & .inner {
     width: 100%;
     height: 100%;
@@ -117,12 +123,6 @@ export default {
     opacity: 0;
   }
 
-  &.ready {
-    & .default {
-      opacity: 1;
-    }
-  }
-
   & .logoForFirefox {
     display: none;
   }
@@ -136,15 +136,15 @@ export default {
     }
 
     & .logoForFirefox {
-      display: block;
+      display: block !important;
       width: 100%;
       height: 100%;
-    }
 
-    & .logoForFirefox svg {
-      fill: var(--color_key);
-      width: 22px;
-      height: 30px;
+      & svg {
+        fill: var(--color_key);
+        width: 22px;
+        height: 30px;
+      }
     }
   }
 }
