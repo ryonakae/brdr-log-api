@@ -129,6 +129,7 @@ export default {
   & h4,
   & h5,
   & h6 {
+    text-align: left;
     margin: 2em 0 1em;
     line-height: var(--lineHeight_title);
   }
@@ -228,6 +229,7 @@ export default {
   }
 
   & pre {
+    text-align: left;
     background-color: var(--color_bgSub);
     padding: 1em 1.3em;
     background-clip: padding-box;
