@@ -25,6 +25,7 @@
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
+    "web-utility-js": "^0.0.4",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
