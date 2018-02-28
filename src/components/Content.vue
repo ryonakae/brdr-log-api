@@ -103,6 +103,10 @@ export default {
 </script>
 
 <style>
+@import 'prettify.css';
+</style>
+
+<style>
 @import 'config.css';
 
 .content {

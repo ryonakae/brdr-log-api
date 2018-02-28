@@ -308,7 +308,3 @@ export default {
   margin-left: 1.5em;
 }
 </style>
-
-<style>
-@import 'prettify';
-</style>
