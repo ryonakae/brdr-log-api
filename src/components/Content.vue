@@ -5,8 +5,8 @@
 <script>
 import imagesLoaded from 'imagesloaded'
 import { utils } from '@/index'
-import '@/library/twitter_widgets'
-import '@/library/prettify'
+import '@/libraries/twitter_widgets'
+import '@/libraries/prettify'
 
 export default {
   props: ['data'],
