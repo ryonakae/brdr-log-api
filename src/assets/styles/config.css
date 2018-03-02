@@ -6,7 +6,7 @@
   --color_bgSub: color(var(--color_key) alpha(5%));
 
   /* font family */
-  --fontFamily: "Neue Frutiger", "Noto Sans Japanese", sans-serif;
+  --fontFamily: YakuHanJP, "Neue Frutiger", "Noto Sans Japanese", sans-serif;
   --fontFamily_code: "Source Code Pro", monospace;
 
   /* font size */
@@ -20,13 +20,13 @@
   --fontSize_h6: calc(var(--fontSize) * 1);
 
   /* line height */
-  --lineHeight_default: 1.8;
+  --lineHeight_default: 1.7;
   --lineHeight_title: 1.4;
   --lineHeight_code: 1.5;
   --lineHeight_caption: 1.5;
 
   /* letter spacing */
-  --letterSpacing: 0.05em;
+  --letterSpacing: 0.005em;
 
   /* margin */
   --margin_page: 40px;
@@ -61,7 +61,7 @@
 
   /* post info */
   --info: {
-    margin-top: 1.2em;
+    margin-top: 15px; /* 1.2em */
     font-size: var(--fontSize_small);
     font-weight: bold;
     line-height: var(--lineHeight_caption);

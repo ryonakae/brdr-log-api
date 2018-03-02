@@ -8,7 +8,7 @@
           <h1 class="title" v-html="postTitle"></h1>
           <div class="info">
             <div class="date">{{post.date | moment}}</div>
-            <ul v-if="hasCategories" class="categories">
+            <ul class="categories">
               <li
                 v-for="category in categories"
                 :key="category.id"
@@ -81,8 +81,8 @@ export default {
       return this.post.featured_media > 0
     },
 
-    hasCategories() {
-      return this.post.categories.length >= 1
+    hasCategoriyNames() {
+      return this.post.hasOwnProperty('_categories')
     },
 
     postTitle() {
@@ -132,15 +132,8 @@ export default {
     init() {
       console.log('[single.vue - init]')
       this.$store.commit('setPageTitle', this.post.title.rendered)
+      this.getCategory()
       resizer.add('single.setTopHeight', this.setTopHeight.bind(this))
-
-      if (this.hasCategories) {
-        this.$store
-          .dispatch('getAllCategoryName', this.post.categories)
-          .then(result => {
-            this.categories = result
-          })
-      }
     },
 
     async getPost(id) {
@@ -165,9 +158,18 @@ export default {
       }
     },
 
-    async setPost(data, delay) {
-      this.$store.commit('setCurrentPost', data)
-      await new Promise(resolve => setTimeout(resolve, delay))
+    async getCategory() {
+      console.log('[single.vue - getCategory]')
+      // indexから遷移した時、this.post._categoryにカテゴリの情報がすでに入っているので、それを使う
+      if (this.hasCategoriyNames) {
+        this.categories = this.post._categories
+      } else {
+        const res = await this.$store.dispatch(
+          'getAllCategoryName',
+          this.post.categories
+        )
+        this.categories = res
+      }
     },
 
     async setTopHeight() {
@@ -211,8 +213,7 @@ export default {
     try {
       if (this.hasPost) {
         this.init()
-        const res = await this.getPost(this.postId)
-        // await this.setPost(res, 1)
+        // const res = await this.getPost(this.postId)
       } else {
         let res
         if (!this.isPreview) {
@@ -222,9 +223,10 @@ export default {
             this.getPost(this.postId),
             this.getPostRevisions(this.postId)
           ])
-          res = Object.assign(res[0], res[1])
+          res = Object.assign(_res[0], _res[1])
         }
-        await this.setPost(res, 1)
+        this.$store.commit('setCurrentPost', { data: res })
+        await new Promise(resolve => setTimeout(resolve, 1))
         this.init()
       }
     } catch (err) {
@@ -296,12 +298,12 @@ export default {
   }
 }
 
-.share {
+.share,
+.back {
   display: inline-block;
 }
 
 .back {
-  display: inline-block;
   margin-left: 1.5em;
 }
 </style>

@@ -145,7 +145,7 @@ export default {
 
   async mounted() {
     this.$store.commit('changeIsLoading', true)
-    this.$store.commit('setCurrentPost', {})
+    this.$store.commit('setCurrentPost', { data: {} })
     this.$store.commit('setPageTitle', '')
     await this.getPosts(this.params)
     scroller.add('index.onScroll', this.onScroll.bind(this))

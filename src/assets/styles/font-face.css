@@ -1,4 +1,20 @@
 @font-face {
+  font-family: YakuHanJP;
+  font-weight: normal;
+  src: local("Yaku Han JP DemiLight"), local("YakuHanJP-DemiLight"),
+    url("~fonts/YakuHanJP-DemiLight.woff2") format("woff2"),
+    url("~fonts/YakuHanJP-DemiLight.woff") format("woff");
+}
+
+@font-face {
+  font-family: YakuHanJP;
+  font-weight: bold;
+  src: local("Yaku Han JP Bold"), local("YakuHanJP-Bold"),
+    url("~fonts/YakuHanJP-Bold.woff2") format("woff2"),
+    url("~fonts/YakuHanJP-Bold.woff") format("woff");
+}
+
+@font-face {
   font-family: "Neue Frutiger";
   font-weight: normal;
   src: local("FrutigerNeueLTPro-Book"),
