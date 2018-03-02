@@ -78,7 +78,10 @@ export default {
   @apply --link;
 
   & svg {
+    display: block;
     fill: var(--color_key);
+    width: 100%;
+    height: 100%;
   }
 
   @nest :global(body.pc) &:hover {
@@ -89,20 +92,13 @@ export default {
 }
 
 .twitter {
-  margin-top: 1px;
-
-  & svg {
-    width: 14px;
-    height: 11px;
-  }
+  width: 14px;
+  height: 11px;
 }
 
 .facebook {
-  margin-top: -1px;
-
-  & svg {
-    width: 8px;
-    height: 14px;
-  }
+  margin-top: -2px;
+  width: 8px;
+  height: 14px;
 }
 </style>

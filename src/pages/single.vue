@@ -298,12 +298,12 @@ export default {
   }
 }
 
-.share {
+.share,
+.back {
   display: inline-block;
 }
 
 .back {
-  display: inline-block;
   margin-left: 1.5em;
 }
 </style>
