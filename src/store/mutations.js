@@ -16,8 +16,11 @@ export default {
     state.allPosts = data
   },
 
-  setCurrentPost (state, data) {
-    state.currentPost = data
+  setCurrentPost (state, options) {
+    state.currentPost = options.data
+    if (options.categories) {
+      state.currentPost._categories = options.categories
+    }
   },
 
   incrementLoadedPost (state) {

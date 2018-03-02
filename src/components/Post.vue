@@ -13,7 +13,7 @@
       <h1 class="title" v-html="postTitle"></h1>
       <div class="info">
         <div class="date">{{post.date | moment}}</div>
-        <ul v-if="hasCategories" class="categories">
+        <ul class="categories">
           <li
             v-for="category in categories"
             :key="category.id"
@@ -49,10 +49,6 @@ export default {
   },
 
   computed: {
-    hasCategories() {
-      return this.post.categories.length >= 1
-    },
-
     hasEyecatch() {
       return this.post.featured_media > 0
     },
@@ -78,29 +74,28 @@ export default {
 
   methods: {
     init() {
+      this.getCategory()
       this.$store.commit('incrementLoadedPost')
       this.isLoaded = true
-
-      if (this.hasCategories) {
-        this.$store
-          .dispatch('getAllCategoryName', this.post.categories)
-          .then(result => {
-            this.categories = result
-          })
-      }
     },
 
-    filter(categoryId, categoryName) {
-      this.$store.dispatch('filter', {
-        categoryId: categoryId,
-        categoryName: categoryName
-      })
+    async getCategory() {
+      const res = await this.$store.dispatch(
+        'getAllCategoryName',
+        this.post.categories
+      )
+      this.categories = res
     },
 
     onEnter() {
       if (this.$route.path !== '/') return
       console.log('[PostItem.vue - setCurrentPost]', this.post)
-      this.$store.commit('setCurrentPost', this.post)
+      // currentPostにgetCategoryで取得したカテゴリー情報を格納する
+      // singleに遷移した時にカテゴリーを再度取得するのを避けるため
+      this.$store.commit('setCurrentPost', {
+        data: this.post,
+        categories: this.categories
+      })
       // serviceWorkerが有効な場合、preloadImagesを実行
       if ('serviceWorker' in navigator) this.preloadImages()
       this.isEnter = true
@@ -109,7 +104,7 @@ export default {
     onLeave() {
       if (this.$route.path !== '/') return
       console.log('[PostItem.vue - clearCurrentPost]')
-      this.$store.commit('setCurrentPost', {})
+      this.$store.commit('setCurrentPost', { data: {} })
       this.isEnter = false
     },
 
@@ -134,6 +129,13 @@ export default {
     setTitleOffset(e) {
       const offset = e.currentTarget.offsetTop - window.pageYOffset
       this.$store.commit('setTitleOffset', offset)
+    },
+
+    filter(categoryId, categoryName) {
+      this.$store.dispatch('filter', {
+        categoryId: categoryId,
+        categoryName: categoryName
+      })
     }
   },
 
