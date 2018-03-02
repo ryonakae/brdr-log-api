@@ -73,23 +73,18 @@ export default {
   },
 
   methods: {
-    init() {
-      this.getCategory()
-      this.$store.commit('incrementLoadedPost')
-      this.isLoaded = true
-    },
-
-    async getCategory() {
+    async init() {
       const res = await this.$store.dispatch(
         'getAllCategoryName',
         this.post.categories
       )
       this.categories = res
+      this.$store.commit('incrementLoadedPost')
+      this.isLoaded = true
     },
 
     onEnter() {
       if (this.$route.path !== '/') return
-      console.log('[PostItem.vue - setCurrentPost]', this.post)
       // currentPostにgetCategoryで取得したカテゴリー情報を格納する
       // singleに遷移した時にカテゴリーを再度取得するのを避けるため
       this.$store.commit('setCurrentPost', {
@@ -99,13 +94,20 @@ export default {
       // serviceWorkerが有効な場合、preloadImagesを実行
       if ('serviceWorker' in navigator) this.preloadImages()
       this.isEnter = true
+      console.log(
+        '[PostItem.vue - setCurrentPost]',
+        this.$store.state.currentPost
+      )
     },
 
     onLeave() {
       if (this.$route.path !== '/') return
-      console.log('[PostItem.vue - clearCurrentPost]')
       this.$store.commit('setCurrentPost', { data: {} })
       this.isEnter = false
+      console.log(
+        '[PostItem.vue - clearCurrentPost]',
+        this.$store.state.currentPost
+      )
     },
 
     async preloadImages() {

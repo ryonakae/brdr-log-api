@@ -67,10 +67,9 @@ export default {
     }
   },
 
-  mounted() {
-    this.getAllCategories().then(result => {
-      this.categories = result
-    })
+  async mounted() {
+    const res = await this.getAllCategories()
+    this.categories = res
   }
 }
 </script>

@@ -132,8 +132,8 @@ export default {
     init() {
       console.log('[single.vue - init]')
       this.$store.commit('setPageTitle', this.post.title.rendered)
-      resizer.add('single.setTopHeight', this.setTopHeight.bind(this))
       this.getCategory()
+      resizer.add('single.setTopHeight', this.setTopHeight.bind(this))
     },
 
     async getPost(id) {
