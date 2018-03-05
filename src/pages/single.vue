@@ -41,7 +41,7 @@ import EyecatchComponent from '@/components/Eyecatch.vue'
 import ContentComponent from '@/components/Content.vue'
 import ShareComponent from '@/components/Share.vue'
 import NotFoundComponent from '@/components/NotFound.vue'
-import { resizer } from '@/index'
+import { resizer, viewportUnitsBuggyfill } from '@/index'
 
 export default {
   components: {
@@ -131,6 +131,10 @@ export default {
   methods: {
     init() {
       console.log('[single.vue - init]')
+
+      // アイキャッチがある場合、viewportUnitsBuggyfillをrefreshする
+      if (this.hasEyecatch) viewportUnitsBuggyfill.refresh()
+
       this.$store.commit('setPageTitle', this.post.title.rendered)
       this.getCategory()
       resizer.add('single.setTopHeight', this.setTopHeight.bind(this))

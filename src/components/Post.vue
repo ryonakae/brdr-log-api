@@ -32,6 +32,7 @@
 import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
 import EyecatchComponent from '@/components/Eyecatch.vue'
+import { viewportUnitsBuggyfill } from '@/index'
 
 export default {
   components: {
@@ -84,15 +85,22 @@ export default {
     },
 
     onEnter() {
+      // singleでclickイベントが発火してしまう対策
       if (this.$route.path !== '/') return
+
+      // アイキャッチがある場合、viewportUnitsBuggyfillをrefreshする
+      if (this.hasEyecatch) viewportUnitsBuggyfill.refresh()
+
       // currentPostにgetCategoryで取得したカテゴリー情報を格納する
       // singleに遷移した時にカテゴリーを再度取得するのを避けるため
       this.$store.commit('setCurrentPost', {
         data: this.post,
         categories: this.categories
       })
+
       // serviceWorkerが有効な場合、preloadImagesを実行
       if ('serviceWorker' in navigator) this.preloadImages()
+
       this.isEnter = true
       console.log(
         '[PostItem.vue - setCurrentPost]',
@@ -101,7 +109,9 @@ export default {
     },
 
     onLeave() {
+      // singleでclickイベントが発火してしまう対策
       if (this.$route.path !== '/') return
+
       this.$store.commit('setCurrentPost', { data: {} })
       this.isEnter = false
       console.log(
