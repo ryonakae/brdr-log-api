@@ -31,9 +31,7 @@ resizer.init()
 scroller.init()
 
 // viewportUnitsBuggyfillを初期化
-// resizerにrefresh()を追加
 viewportUnitsBuggyfill.init()
-resizer.add('refleshViewportUnits', viewportUnitsBuggyfill.refresh)
 
 // Vueのインスタンスを作成
 const vm = new Vue({
@@ -47,4 +45,4 @@ const vm = new Vue({
 if (module.hot) module.hot.accept()
 
 // utilityをexport
-export { utils, resizer, scroller }
+export { utils, resizer, scroller, viewportUnitsBuggyfill }
