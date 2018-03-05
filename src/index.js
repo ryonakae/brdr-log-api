@@ -5,8 +5,9 @@ import store from '@/store'
 import router from '@/router'
 import App from '@/App.vue'
 import { Utils, Resizer, Scroller } from 'web-utility-js'
+import viewportUnitsBuggyfill from 'viewport-units-buggyfill'
 
-// registor service worker
+// ServiceWorkerを登録する
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register(window.wpSettings.template_directory_url + '/service-worker.js', {
@@ -21,7 +22,7 @@ if ('serviceWorker' in navigator) {
     })
 }
 
-// create manager instance
+// utilityのインスタンスを作り、初期化
 const utils = new Utils()
 const resizer = new Resizer()
 const scroller = new Scroller()
@@ -29,7 +30,12 @@ utils.init()
 resizer.init()
 scroller.init()
 
-// create vue instance
+// viewportUnitsBuggyfillを初期化
+// resizerにrefresh()を追加
+viewportUnitsBuggyfill.init()
+resizer.add('refleshViewportUnits', viewportUnitsBuggyfill.refresh)
+
+// Vueのインスタンスを作成
 const vm = new Vue({
   el: '#app',
   router,
@@ -40,5 +46,5 @@ const vm = new Vue({
 // Hot Module Replacement
 if (module.hot) module.hot.accept()
 
-// export manager
+// utilityをexport
 export { utils, resizer, scroller }
