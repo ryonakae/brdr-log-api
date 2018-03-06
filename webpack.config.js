@@ -101,7 +101,6 @@ const common = {
         },
         {
           urlPattern: /^(https?):\/\/.*\/.*\.(jpg|jpeg|gif|png)/,
-          // urlPattern: /(https?)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)\.(jpg|jpeg|gif|png)$/,
           handler: 'cacheFirst',
           options: {
             cacheName: 'images',
