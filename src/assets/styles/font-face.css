@@ -1,17 +1,22 @@
 @font-face {
-  font-family: "Yaku Han JP";
+  font-family: YakuHanJPs;
   font-weight: normal;
-  src: local("Yaku Han JP Light"), local("YakuHanJP-Light"),
-    url("~fonts/YakuHanJP-Light.woff2") format("woff2"),
-    url("~fonts/YakuHanJP-Light.woff") format("woff");
+  src: url("~fonts/YakuHanJPs-Light.woff2") format("woff2"),
+    url("~fonts/YakuHanJPs-Light.woff") format("woff");
 }
 
 @font-face {
-  font-family: "Yaku Han JP";
+  font-family: YakuHanJP;
+  font-weight: normal;
+  src: url("~fonts/YakuHanJP-DemiLight.woff2") format("woff2"),
+    url("~fonts/YakuHanJP-DemiLight.woff") format("woff");
+}
+
+@font-face {
+  font-family: YakuHanJP;
   font-weight: bold;
-  src: local("Yaku Han JP Regular"), local("YakuHanJP-Regular"),
-    url("~fonts/YakuHanJP-Regular.woff2") format("woff2"),
-    url("~fonts/YakuHanJP-Regular.woff") format("woff");
+  src: url("~fonts/YakuHanJP-Bold.woff2") format("woff2"),
+    url("~fonts/YakuHanJP-Bold.woff") format("woff");
 }
 
 @font-face {
@@ -44,12 +49,4 @@
   src: local("Noto Sans CJK JP Bold"), local("NotoSansCJKjp-Bold"),
     url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"),
     url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Source Code Pro";
-  font-weight: normal;
-  src: local("Source Code Pro"), local("SourceCodePro-Regular"),
-    url("~fonts/SourceCodePro-Regular.woff2") format("woff2"),
-    url("~fonts/SourceCodePro-Regular.woff") format("woff");
 }

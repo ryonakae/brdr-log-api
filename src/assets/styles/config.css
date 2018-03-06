@@ -6,8 +6,10 @@
   --color_bgSub: color(var(--color_key) alpha(5%));
 
   /* font family */
-  --fontFamily: "Yaku Han JP", "Neue Frutiger", "Noto Sans Japanese", sans-serif;
-  --fontFamily_code: "Source Code Pro", monospace;
+  --fontFamily: YakuHanJPs, YakuHanJP, "Neue Frutiger", "Noto Sans Japanese",
+    sans-serif;
+  --fontFamily_code: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
 
   /* font size */
   --fontSize: 1.6rem;
@@ -18,6 +20,7 @@
   --fontSize_h4: calc(var(--fontSize) * 1.2);
   --fontSize_h5: calc(var(--fontSize) * 1.1);
   --fontSize_h6: calc(var(--fontSize) * 1);
+  --fontSize_code: calc(var(--fontSize) * 0.9);
 
   /* line height */
   --lineHeight_default: 1.7;
