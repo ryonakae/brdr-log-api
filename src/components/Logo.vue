@@ -34,6 +34,8 @@ export default {
 
   methods: {
     onEnter() {
+      // indexの時はホバーを無効
+      if (this.$route.path === '/') return
       this.$store.commit('changeIsLoading', true)
     },
 
