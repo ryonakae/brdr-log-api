@@ -188,7 +188,7 @@ export default {
 
 .post {
   display: block;
-  margin-top: 3em;
+  margin-top: 2.5em;
 
   &:first-child {
     margin-top: 0;

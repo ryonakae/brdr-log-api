@@ -99,11 +99,11 @@ export default {
 }
 
 .content {
-  margin-top: var(--margin_page);
+  margin-top: calc(var(--margin_page) * 1.5);
   margin-bottom: calc(var(--margin_page) * 2);
 
   @media (--mq_sp) {
-    margin-top: var(--margin_page_sp);
+    margin-top: calc(var(--margin_page_sp) * 1.5);
     margin-bottom: calc(var(--margin_page_sp) * 2);
   }
 }
