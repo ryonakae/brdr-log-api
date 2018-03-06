@@ -19,7 +19,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "imagesloaded": "^4.1.4",
-    "moment": "^2.20.1",
+    "moment": "^2.21.0",
     "sanitize.css": "^5.0.0",
     "viewport-units-buggyfill": "^0.6.2",
     "vue": "^2.5.13",

@@ -130,7 +130,7 @@ export default {
   & h5,
   & h6 {
     text-align: left;
-    margin: 2em 0 1em;
+    margin: 1.5em 0 0.5em;
     line-height: var(--lineHeight_title);
   }
 
@@ -177,7 +177,7 @@ export default {
   & .img {
     position: relative;
     display: table;
-    margin: 2em auto;
+    margin: 1.5em auto;
     background-color: var(--color_bgSub);
 
     &:first-child {
@@ -203,7 +203,7 @@ export default {
     & small {
       display: block;
       text-align: center;
-      margin-top: 1.2em;
+      margin-top: 1em;
       line-height: var(--lineHeight_caption);
       font-size: var(--fontSize_small);
       color: var(--color_sub);
@@ -251,7 +251,7 @@ export default {
     height: 1px;
     background-color: var(--color_key);
     border: none;
-    margin: 3em 0;
+    margin: 2.5em 0;
   }
 
   & .iframe {
@@ -272,7 +272,7 @@ export default {
 
   & .twitter-tweet,
   & .instagram-media {
-    margin: 2em auto !important;
+    margin: 1.5em auto !important;
   }
 }
 </style>
