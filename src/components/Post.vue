@@ -85,6 +85,7 @@ export default {
     },
 
     onEnter() {
+      console.log('[PostItem.vue - onEnter]', this.$route.path)
       // singleでclickイベントが発火してしまう対策
       if (this.$route.path !== '/') return
 
@@ -102,22 +103,21 @@ export default {
       if ('serviceWorker' in navigator) this.preloadImages()
 
       this.isEnter = true
-      console.log(
-        '[PostItem.vue - setCurrentPost]',
-        this.$store.state.currentPost
-      )
+      console.log('[PostItem.vue - onEnter]', this.$store.state.currentPost)
     },
 
-    onLeave() {
-      // singleでclickイベントが発火してしまう対策
+    async onLeave() {
       if (this.$route.path !== '/') return
 
-      this.$store.commit('setCurrentPost', { data: {} })
       this.isEnter = false
-      console.log(
-        '[PostItem.vue - clearCurrentPost]',
-        this.$store.state.currentPost
-      )
+
+      // singleに遷移する時にアイキャッチが一瞬消えてしまいチラついて見える
+      // currentPostをクリアするのを少しだけ遅らせる
+      // すでにsingleに遷移している場合はクリアしない
+      await new Promise(resolve => setTimeout(resolve, 50))
+      if (this.$route.path !== '/') return
+      this.$store.commit('setCurrentPost', { data: {} })
+      console.log('[PostItem.vue - onLeave]', this.$store.state.currentPost)
     },
 
     async preloadImages() {

@@ -215,24 +215,22 @@ export default {
 
   async mounted() {
     try {
-      if (this.hasPost) {
-        this.init()
-        // const res = await this.getPost(this.postId)
+      if (this.hasPost) return this.init()
+
+      let res
+      if (!this.isPreview) {
+        res = await this.getPost(this.postId)
       } else {
-        let res
-        if (!this.isPreview) {
-          res = await this.getPost(this.postId)
-        } else {
-          const _res = await Promise.all([
-            this.getPost(this.postId),
-            this.getPostRevisions(this.postId)
-          ])
-          res = Object.assign(_res[0], _res[1])
-        }
-        this.$store.commit('setCurrentPost', { data: res })
-        await new Promise(resolve => setTimeout(resolve, 1))
-        this.init()
+        const _res = await Promise.all([
+          this.getPost(this.postId),
+          this.getPostRevisions(this.postId)
+        ])
+        res = Object.assign(_res[0], _res[1])
       }
+      this.$store.commit('setCurrentPost', { data: res })
+
+      await new Promise(resolve => setTimeout(resolve, 10))
+      this.init()
     } catch (err) {
       console.error('[single.vue - mounted]', err)
       this.onNotFound()
