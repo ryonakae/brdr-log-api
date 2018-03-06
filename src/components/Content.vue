@@ -226,10 +226,12 @@ export default {
     background-color: var(--color_bgSub);
     font-family: var(--fontFamily_code);
     letter-spacing: initial;
+    word-break: break-all;
   }
 
   & pre {
     text-align: left;
+    font-size: var(--fontSize_code);
     background-color: var(--color_bgSub);
     padding: 1em 1.3em;
     background-clip: padding-box;

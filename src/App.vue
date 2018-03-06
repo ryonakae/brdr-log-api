@@ -38,10 +38,10 @@ export default {
       timeout: 10000,
       custom: {
         families: [
-          'Yaku Han JP:n4,n7',
+          'YakuHanJPs:n4',
+          'YakuHanJP:n4,n7',
           'Neue Frutiger:n4,n7',
-          'Noto Sans Japanese:n4,n7',
-          'Source Code Pro:n4'
+          'Noto Sans Japanese:n4,n7'
         ]
       },
       fontloading: (familyName, fvd) => {
