@@ -35,20 +35,29 @@ export default {
 
     webFont.load({
       classes: false,
-      timeout: 5000,
+      timeout: 10000,
       custom: {
         families: [
-          'YakuHanJP:n4,n7',
+          'Yaku Han JP:n4,n7',
           'Neue Frutiger:n4,n7',
           'Noto Sans Japanese:n4,n7',
           'Source Code Pro:n4'
         ]
       },
+      fontloading: (familyName, fvd) => {
+        console.log('[App.vue - webFont.load] fontloading -', familyName, fvd)
+      },
       fontactive: (familyName, fvd) => {
-        console.log('[App.vue - webFont.load] fontactive', familyName, fvd)
+        console.log('[App.vue - webFont.load] fontactive -', familyName, fvd)
       },
       active: () => {
-        console.log('[App.vue - webFont.load] active')
+        console.log('[App.vue - webFont.load] active - all webfonts are loaded')
+        this.$store.commit('changeIsFontLoaded', true)
+      },
+      inactive: () => {
+        console.log(
+          '[App.vue - webFont.load] inactive - the browser does not support OR if none of the fonts could be loaded'
+        )
         this.$store.commit('changeIsFontLoaded', true)
       }
     })

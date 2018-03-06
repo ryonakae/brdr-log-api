@@ -6,7 +6,7 @@
   --color_bgSub: color(var(--color_key) alpha(5%));
 
   /* font family */
-  --fontFamily: YakuHanJP, "Neue Frutiger", "Noto Sans Japanese", sans-serif;
+  --fontFamily: "Yaku Han JP", "Neue Frutiger", "Noto Sans Japanese", sans-serif;
   --fontFamily_code: "Source Code Pro", monospace;
 
   /* font size */
@@ -26,7 +26,7 @@
   --lineHeight_caption: 1.5;
 
   /* letter spacing */
-  --letterSpacing: 0.003em;
+  --letterSpacing: 0.05em;
 
   /* margin */
   --margin_page: 30px;
