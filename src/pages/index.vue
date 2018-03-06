@@ -128,13 +128,6 @@ export default {
     },
 
     checkLoad() {
-      console.log(
-        '[index.vue - checkLoad]',
-        this.isFontLoaded,
-        this.posts.length,
-        this.loadedPost
-      )
-
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
       if (this.isFontLoaded && this.posts.length === this.loadedPost) {
         console.log('[index.vue - checkLoad] all webfont and post loaded')
