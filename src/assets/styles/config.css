@@ -1,7 +1,7 @@
 :root {
   /* color */
   --color_bg: #fff;
-  --color_key: #000;
+  --color_key: #121212;
   --color_sub: color(var(--color_key) alpha(50%));
   --color_bgSub: color(var(--color_key) alpha(5%));
 
@@ -22,11 +22,11 @@
   /* line height */
   --lineHeight_default: 1.7;
   --lineHeight_title: 1.4;
-  --lineHeight_code: 1.5;
+  --lineHeight_code: 1.4;
   --lineHeight_caption: 1.5;
 
   /* letter spacing */
-  --letterSpacing: 0.005em;
+  --letterSpacing: 0.003em;
 
   /* margin */
   --margin_page: 30px;
