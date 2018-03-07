@@ -171,11 +171,11 @@ export default {
 .page {
   @apply --content;
   margin-top: var(--margin_top);
-  margin-bottom: calc(var(--margin_bottom) + var(--margin_page) + 1em);
+  margin-bottom: calc(var(--margin_page) * 3 + 1em);
 
   @media (--mq_sp) {
     margin-top: var(--margin_top_sp);
-    margin-bottom: calc(var(--margin_bottom_sp) + var(--margin_page_sp) + 1em);
+    margin-bottom: calc(var(--margin_page_sp) * 3 + 1em);
   }
 }
 
