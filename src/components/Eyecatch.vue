@@ -41,12 +41,12 @@ export default {
   left: 0;
   z-index: -1;
   width: 100vw;
-  height: calc(100vh - var(--margin_bottom) - 1em);
+  height: calc(100vh - var(--margin_page) * 2 - 1em);
   background-size: cover;
   background-position: 50% 50%;
 
   @media (--mq_sp) {
-    height: calc(100vh - var(--margin_bottom_sp) - 1em);
+    height: calc(100vh - var(--margin_page_sp) * 2 - 1em);
   }
 }
 </style>

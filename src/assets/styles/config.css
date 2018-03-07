@@ -34,10 +34,8 @@
   /* margin */
   --margin_page: 30px;
   --margin_page_sp: 15px;
-  --margin_top: 130px;
-  --margin_top_sp: 90px;
-  --margin_bottom: 60px;
-  --margin_bottom_sp: 30px;
+  --margin_top: 9em;
+  --margin_top_sp: 6em;
 
   /* width */
   --width_content: 700px;
