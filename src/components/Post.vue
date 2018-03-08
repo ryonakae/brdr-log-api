@@ -109,10 +109,6 @@ export default {
       )
     },
 
-    wait(delay, func) {
-      return setTimeout(func, delay)
-    },
-
     async onLeave() {
       // singleに遷移する時にアイキャッチが一瞬消えてしまいチラついて見える
       // currentPostをクリアするのを少しだけ遅らせる
@@ -161,14 +157,18 @@ export default {
     }
   },
 
-  mounted() {
-    if (this.hasEyecatch) {
-      const imgLoad = imagesLoaded(this.$refs.eyecatch.$el, {
-        background: true
-      })
-      console.log('[PostItem.vue - mounted]', imgLoad)
-      imgLoad.on('always', this.init)
-    } else {
+  async mounted() {
+    try {
+      if (this.hasEyecatch) {
+        const imgLoad = imagesLoaded(this.$refs.eyecatch.$el, {
+          background: true
+        })
+        await new Promise(resolve => imgLoad.on('always', resolve))
+      }
+      return
+    } catch (err) {
+      console.log(err)
+    } finally {
       this.init()
     }
   }

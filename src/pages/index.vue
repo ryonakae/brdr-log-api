@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasPosts" class="page">
-    <div class="post" v-for="post in posts" :key="post.id">
+    <div class="post" :class="{hidden: !isTypekitLoaded}" v-for="post in posts" :key="post.id">
       <post-component :post="post"></post-component>
     </div>
 
@@ -21,7 +21,8 @@ export default {
 
   data() {
     return {
-      isScrolling: false
+      isScrolling: false,
+      isTypekitLoaded: false
     }
   },
 
@@ -141,6 +142,8 @@ export default {
     this.$store.commit('setCurrentPost', { data: {} })
     this.$store.commit('setPageTitle', '')
     await this.getPosts(this.params)
+    await this.$store.dispatch('loadTypekit')
+    this.isTypekitLoaded = true
     scroller.add('index.onScroll', this.onScroll.bind(this))
   },
 
@@ -182,6 +185,10 @@ export default {
 .post {
   display: block;
   margin-top: 2.5em;
+
+  &.hidden {
+    visibility: hidden;
+  }
 
   &:first-child {
     margin-top: 0;

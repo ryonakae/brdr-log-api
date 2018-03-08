@@ -1,11 +1,11 @@
 <template>
   <div>
     <article v-if="hasPage" ref="page">
-      <header class="header">
+      <header class="header" :class="{hidden: !isTypekitLoaded}">
         <h1 class="title" v-html="page.title.rendered"></h1>
       </header>
 
-      <content-component :data="page"></content-component>
+      <content-component :data="page" :class="{hidden: !isTypekitLoaded}"></content-component>
     </article>
 
     <not-found-component v-if="isNotFound"></not-found-component>
@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       page: {},
-      isNotFound: false
+      isNotFound: false,
+      isTypekitLoaded: false
     }
   },
 
@@ -56,6 +57,11 @@ export default {
       }
     },
 
+    async loadTypekit() {
+      await this.$store.dispatch('loadTypekit')
+      this.isTypekitLoaded = true
+    },
+
     onNotFound() {
       this.isNotFound = true
       this.$store.commit('setPageTitle', 'Page Not Found')
@@ -69,6 +75,7 @@ export default {
       if (res) {
         this.page = res
         this.$store.commit('setPageTitle', this.page.title.rendered)
+        this.loadTypekit()
       }
     } catch (err) {
       console.error('[page.vue - mounted]', err)
@@ -84,6 +91,10 @@ export default {
 .header,
 .content {
   @apply --content;
+
+  &.hidden {
+    visibility: hidden;
+  }
 }
 
 .header {

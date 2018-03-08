@@ -4,7 +4,7 @@
       <div class="top" :style="{height: topHeight}">
         <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
 
-        <header class="header" :class="{hidden: !isTypekitLoaded}" :style="titleStyle" ref="title">
+        <header class="header" :class="{hidden: !isTitleTypekitLoaded}" :style="titleStyle" ref="title">
           <h1 class="title" v-html="postTitle"></h1>
           <div class="info">
             <div class="date">{{post.date | moment}}</div>
@@ -57,7 +57,8 @@ export default {
       topHeight: 0,
       isContentActive: false,
       isNotFound: false,
-      isTypekitLoaded: false
+      isTypekitLoaded: false,
+      isTitleTypekitLoaded: false
     }
   },
 
@@ -146,6 +147,7 @@ export default {
     async loadTypekit() {
       await this.$store.dispatch('loadTypekit')
       this.isTypekitLoaded = true
+      this.isTitleTypekitLoaded = true
     },
 
     async getPost(id) {
@@ -221,10 +223,14 @@ export default {
     }
   },
 
-  async mounted() {
-    try {
-      if (this.hasPost) return this.init()
+  created() {
+    if (this.hasPost) this.isTitleTypekitLoaded = true
+  },
 
+  async mounted() {
+    if (this.hasPost) return this.init()
+
+    try {
       let res
       if (!this.isPreview) {
         res = await this.getPost(this.postId)
@@ -255,14 +261,14 @@ export default {
 <style scoped>
 @import 'config.css';
 
-.hidden {
-  visibility: hidden;
-}
-
 .header,
 .content,
 .footer {
   @apply --content;
+
+  &.hidden {
+    visibility: hidden;
+  }
 }
 
 .header {
@@ -286,10 +292,6 @@ export default {
 
 .content {
   margin-top: calc(var(--margin_page) * 1.5);
-
-  &.hidden {
-    visibility: hidden;
-  }
 
   @media (--mq_sp) {
     margin-top: calc(var(--margin_page_sp) * 1.5);
