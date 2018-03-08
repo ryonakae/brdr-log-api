@@ -4,7 +4,7 @@
       <div class="top" :style="{height: topHeight}">
         <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
 
-        <header class="header" :style="titleStyle" ref="title">
+        <header class="header" :class="{hidden: !isTypekitLoaded}" :style="titleStyle" ref="title">
           <h1 class="title" v-html="postTitle"></h1>
           <div class="info">
             <div class="date">{{post.date | moment}}</div>
@@ -22,7 +22,7 @@
         </header>
       </div>
 
-      <content-component class="content" :class="{hidden: !isContentActive}" :data="post"></content-component>
+      <content-component class="content" :class="{hidden: !isContentActive || !isTypekitLoaded}" :data="post"></content-component>
 
       <footer class="footer">
         <share-component v-if="hasPost" :permalink="post.link" :title="post.title.rendered" class="share"></share-component>
@@ -56,7 +56,8 @@ export default {
       categories: [],
       topHeight: 0,
       isContentActive: false,
-      isNotFound: false
+      isNotFound: false,
+      isTypekitLoaded: false
     }
   },
 
@@ -132,12 +133,19 @@ export default {
     init() {
       console.log('[single.vue - init]')
 
+      this.loadTypekit()
+
       // アイキャッチがある場合、viewportUnitsBuggyfillをrefreshする
       if (this.hasEyecatch) viewportUnitsBuggyfill.refresh()
 
       this.$store.commit('setPageTitle', this.post.title.rendered)
       this.getCategory()
       resizer.add('single.setTopHeight', this.setTopHeight.bind(this))
+    },
+
+    async loadTypekit() {
+      await this.$store.dispatch('loadTypekit')
+      this.isTypekitLoaded = true
     },
 
     async getPost(id) {
@@ -246,6 +254,10 @@ export default {
 
 <style scoped>
 @import 'config.css';
+
+.hidden {
+  visibility: hidden;
+}
 
 .header,
 .content,

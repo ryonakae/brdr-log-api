@@ -129,9 +129,10 @@ export default {
   & h4,
   & h5,
   & h6 {
-    text-align: left;
     margin: 1.5em 0 0.5em;
+    font-family: var(--fontFamily_title);
     line-height: var(--lineHeight_title);
+    text-align: left;
   }
 
   & h1 {

@@ -22,6 +22,7 @@
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     ga('create', 'UA-46325777-11', 'auto');
   </script>
+  <script src="https://use.typekit.net/vhr8xpy.js"></script>
 </head>
 <body>
   <div id="app"></div>

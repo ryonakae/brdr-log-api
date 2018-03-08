@@ -35,5 +35,31 @@ export default {
       commit('setCategoryId', options.categoryId)
       commit('setCategoryName', options.categoryName)
     }
+  },
+
+  loadTypekit () {
+    return new Promise((resolve, reject) => {
+      window.Typekit.load({
+        async: false,
+        classes: false,
+        timeout: 10000,
+        fontloading: (familyName, fvd) => {
+          console.log('[action - loadTypekit] fontloading -', familyName, fvd)
+        },
+        fontactive: (familyName, fvd) => {
+          console.log('[action - loadTypekit] fontactive -', familyName, fvd)
+        },
+        active: () => {
+          console.log('[action - loadTypekit] active - all typekit are loaded')
+          return resolve()
+        },
+        inactive: () => {
+          console.log(
+            '[action - loadTypekit] inactive - the browser does not support OR if none of the fonts could be loaded'
+          )
+          return reject()
+        }
+      })
+    })
   }
 }

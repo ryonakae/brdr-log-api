@@ -6,8 +6,10 @@
   --color_bgSub: color(var(--color_key) alpha(5%));
 
   /* font family */
-  --fontFamily: YakuHanJPs, YakuHanJP, "Neue Frutiger", "Noto Sans Japanese",
-    sans-serif;
+  --fontFamily: YakuHanJPs, YakuHanJP, "Neue Frutiger",
+    "dnp-shuei-gothic-gin-std", sans-serif;
+  --fontFamily_title: YakuHanJPs, YakuHanJP, "Neue Frutiger",
+    "a-otf-midashi-go-mb31-pr6n", sans-serif;
   --fontFamily_code: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier,
     monospace;
 
@@ -56,6 +58,7 @@
   /* post title */
   --title {
     margin: 0;
+    font-family: var(--fontFamily_title);
     font-size: var(--fontSize_h1);
     line-height: var(--lineHeight_title);
   }
