@@ -214,9 +214,9 @@ export default {
   },
 
   async mounted() {
-    try {
-      if (this.hasPost) return this.init()
+    if (this.hasPost) return this.init()
 
+    try {
       let res
       if (!this.isPreview) {
         res = await this.getPost(this.postId)

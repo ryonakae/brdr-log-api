@@ -66,10 +66,8 @@ export default {
   async mounted() {
     try {
       const res = await this.getPage(this.$route.params.slug)
-      if (res) {
-        this.page = res
-        this.$store.commit('setPageTitle', this.page.title.rendered)
-      }
+      this.page = res
+      this.$store.commit('setPageTitle', this.page.title.rendered)
     } catch (err) {
       console.error('[page.vue - mounted]', err)
       this.onNotFound()
