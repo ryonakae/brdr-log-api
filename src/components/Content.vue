@@ -110,7 +110,7 @@ export default {
 @import 'config.css';
 
 .content {
-  line-height: var(--lineHeight_default);
+  line-height: var(--lineHeight_content);
   text-align: justify;
 
   & a {

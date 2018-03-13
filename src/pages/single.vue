@@ -22,7 +22,7 @@
         </header>
       </div>
 
-      <content-component class="content" :class="{hidden: !isContentActive}" :data="post"></content-component>
+      <content-component class="body" :class="{hidden: !isContentActive}" :data="post"></content-component>
 
       <footer class="footer">
         <share-component v-if="hasPost" :permalink="post.link" :title="post.title.rendered" class="share"></share-component>
@@ -248,7 +248,7 @@ export default {
 @import 'config.css';
 
 .header,
-.content,
+.body,
 .footer {
   @apply --content;
 }
@@ -272,7 +272,7 @@ export default {
   @apply --info;
 }
 
-.content {
+.body {
   margin-top: calc(var(--margin_page) * 1.5);
 
   &.hidden {
