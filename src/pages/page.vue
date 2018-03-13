@@ -5,7 +5,7 @@
         <h1 class="title" v-html="page.title.rendered"></h1>
       </header>
 
-      <content-component :data="page"></content-component>
+      <content-component class="body" :data="page"></content-component>
     </article>
 
     <not-found-component v-if="isNotFound"></not-found-component>
@@ -80,7 +80,7 @@ export default {
 @import 'config.css';
 
 .header,
-.content {
+.body {
   @apply --content;
 }
 
@@ -96,7 +96,7 @@ export default {
   @apply --title;
 }
 
-.content {
+.body {
   margin-top: calc(var(--margin_page) * 1.5);
   margin-bottom: calc(var(--margin_page) * 2);
 

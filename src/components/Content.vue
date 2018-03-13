@@ -106,75 +106,75 @@ export default {
 @import 'prettify.css';
 </style>
 
-<style>
+<style scoped>
 @import 'config.css';
 
 .content {
-  line-height: var(--lineHeight_default);
+  line-height: var(--lineHeight_content);
   text-align: justify;
 
-  & a {
+  & :global(a) {
     @apply --link;
 
     text-decoration: underline;
   }
 
-  & strong {
+  & :global(strong) {
     font-weight: bold;
   }
 
-  & h1,
-  & h2,
-  & h3,
-  & h4,
-  & h5,
-  & h6 {
+  & :global(h1),
+  & :global(h2),
+  & :global(h3),
+  & :global(h4),
+  & :global(h5),
+  & :global(h6) {
     margin: 1.5em 0 0.5em;
     line-height: var(--lineHeight_title);
     text-align: left;
   }
 
-  & h1 {
+  & :global(h1) {
     font-size: var(--fontSize_h1);
   }
 
-  & h2 {
+  & :global(h2) {
     font-size: var(--fontSize_h2);
   }
 
-  & h3 {
+  & :global(h3) {
     font-size: var(--fontSize_h3);
   }
 
-  & h4 {
+  & :global(h4) {
     font-size: var(--fontSize_h4);
   }
 
-  & h5 {
+  & :global(h5) {
     font-size: var(--fontSize_h5);
   }
 
-  & h6 {
+  & :global(h6) {
     font-size: var(--fontSize_h6);
   }
 
-  & p,
-  & ul,
-  & ol {
+  & :global(p),
+  & :global(ul),
+  & :global(ol) {
     margin: 1.2em 0;
   }
 
-  & ul,
-  & ol {
+  & :global(ul),
+  & :global(ol) {
     padding-left: 1.3em;
 
-    & ul,
-    & ol {
+    & :global(ul),
+    & :global(ol) {
       margin: 0.3em 0;
     }
   }
 
-  & .img {
+  & :global(.img) {
     position: relative;
     display: table;
     margin: 1.5em auto;
@@ -184,7 +184,7 @@ export default {
       margin-top: 0;
     }
 
-    & img {
+    & :global(img) {
       line-height: 0;
       max-width: 100%;
       height: auto;
@@ -192,15 +192,15 @@ export default {
       opacity: 0;
     }
 
-    &.ready {
+    &:global(.ready) {
       background: none;
 
-      & img {
+      & :global(img) {
         opacity: 1;
       }
     }
 
-    & small {
+    & :global(small) {
       display: block;
       text-align: center;
       margin-top: 1em;
@@ -210,26 +210,26 @@ export default {
     }
   }
 
-  & blockquote,
-  & pre {
+  & :global(blockquote),
+  & :global(pre) {
     margin: 1.5em 0;
   }
 
-  & blockquote {
+  & :global(blockquote) {
     border-left: 1px solid var(--color_key);
     padding-left: 1.3em;
     color: var(--color_sub);
     font-style: italic;
   }
 
-  & code {
+  & :global(code) {
     background-color: var(--color_bgSub);
     font-family: var(--fontFamily_code);
     letter-spacing: initial;
     word-break: break-all;
   }
 
-  & pre {
+  & :global(pre) {
     text-align: left;
     font-size: var(--fontSize_code);
     background-color: var(--color_bgSub);
@@ -238,7 +238,7 @@ export default {
     word-wrap: normal;
     overflow-x: auto;
 
-    & code {
+    & :global(code) {
       line-height: var(--lineHeight_code);
       display: block;
       white-space: pre;
@@ -248,7 +248,7 @@ export default {
     }
   }
 
-  & hr {
+  & :global(hr) {
     width: 5%;
     height: 1px;
     background-color: var(--color_key);
@@ -256,14 +256,14 @@ export default {
     margin: 2.5em 0;
   }
 
-  & .iframe {
+  & :global(.iframe) {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
     max-width: 100%;
 
-    & iframe {
+    & :global(iframe) {
       position: absolute;
       top: 0;
       left: 0;
@@ -272,8 +272,8 @@ export default {
     }
   }
 
-  & .twitter-tweet,
-  & .instagram-media {
+  & :global(.twitter-tweet),
+  & :global(.instagram-media) {
     margin: 1.5em auto !important;
   }
 }
