@@ -194,7 +194,7 @@ export default {
     }
 
     &:global(.small) {
-      max-width: var(--width_content);
+      @apply --content;
     }
 
     &:global(.ready) {
