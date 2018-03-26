@@ -3,8 +3,8 @@
   "scripts": {
     "clean": "rimraf theme/*",
     "server": "browser-sync start -c 'bs-config.js'",
-    "copy:public": "cpx 'public/**/{*,.*}' theme -u",
-    "watch:public": "chokidar 'public' -c 'yarn copy:public'",
+    "copy:public": "cpx 'src/public/**/{*,.*}' theme -u",
+    "watch:public": "chokidar 'src/public' -c 'yarn copy:public'",
     "watch:webpack": "webpack -w",
     "build:webpack": "NODE_ENV=production webpack",
     "format:js": "prettier-eslint 'src/!(library)/*.{js,vue}' --write",
