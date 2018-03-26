@@ -83,7 +83,6 @@ export default {
   top: calc(var(--margin_page) + 8px);
   right: var(--margin_page);
   font-size: var(--fontSize_small);
-  font-weight: bold;
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -135,7 +134,7 @@ export default {
   }
 
   & li {
-    margin-top: 0.8em;
+    margin-top: 0.5em;
 
     &:first-child {
       margin-top: 0;

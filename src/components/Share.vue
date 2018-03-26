@@ -84,7 +84,7 @@ export default {
     height: 100%;
   }
 
-  @nest :global(body.pc) &:hover {
+  @nest :global(body[data-device="pc"]) &:hover {
     & svg {
       fill: var(--color_bg);
     }
