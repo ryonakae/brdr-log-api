@@ -2,7 +2,7 @@
   /* color */
   --color_bg: #fff;
   --color_key: #0d0d0d;
-  --color_sub: color(var(--color_key) alpha(50%));
+  --color_sub: color(var(--color_key) alpha(60%));
   --color_bgSub: color(var(--color_key) alpha(5%));
 
   /* font family */

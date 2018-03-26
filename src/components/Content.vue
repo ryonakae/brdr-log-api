@@ -186,7 +186,6 @@ export default {
     display: table;
     max-width: 100%;
     margin-top: 1.5em;
-    margin-right: calc(var(--margin_page) * 2);
     margin-bottom: 1.5em;
     background-color: var(--color_bgSub);
 
@@ -196,10 +195,6 @@ export default {
 
     &:global(.small) {
       max-width: var(--width_content);
-
-      @media (--mq_sp) {
-        margin-left: var(--margin_page_sp);
-      }
     }
 
     &:global(.ready) {
@@ -212,7 +207,7 @@ export default {
 
     @media (--mq_sp) {
       margin-left: 0;
-      margin-right: var(--margin_page_sp);
+      margin-right: 0;
     }
 
     & :global(img) {
@@ -255,7 +250,6 @@ export default {
 
   & :global(pre) {
     max-width: 100%;
-    margin-right: calc(var(--margin_page) * 2);
     padding: 1em 1.3em;
     text-align: left;
     font-size: var(--fontSize_code);
@@ -275,7 +269,7 @@ export default {
 
     @media (--mq_sp) {
       margin-left: 0;
-      margin-right: var(--margin_page_sp);
+      margin-right: 0;
       padding-left: var(--margin_page_sp);
       padding-right: var(--margin_page_sp);
     }
