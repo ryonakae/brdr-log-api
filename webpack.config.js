@@ -1,14 +1,9 @@
 const webpack = require('webpack')
-const WorkBoxPlugin = require('workbox-webpack-plugin')
-const merge = require('webpack-merge')
 const path = require('path')
+const { GenerateSW } = require('workbox-webpack-plugin')
+const THEME_PATH = '/wp-content/themes/l/'
 
-const filePath = {
-  theme: '/wp-content/themes/l/'
-}
-
-// common config
-const common = {
+module.exports = {
   entry: {
     index: path.join(__dirname, 'src/index.js')
   },
@@ -20,6 +15,11 @@ const common = {
 
   module: {
     rules: [
+      // svg images
+      {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader'
+      },
       // images
       {
         test: /\.(jpg|png|bmp|gif)$/,
@@ -28,13 +28,8 @@ const common = {
           limit: 20000,
           name: '[name].[ext]',
           outputPath: 'images/',
-          publicPath: filePath.theme + 'images/'
+          publicPath: THEME_PATH + 'images/'
         }
-      },
-      // images(svg)
-      {
-        test: /\.svg$/,
-        loader: 'svg-sprite-loader'
       },
 
       // webfont
@@ -45,7 +40,7 @@ const common = {
           limit: 1,
           name: '[name].[ext]',
           outputPath: 'fonts/',
-          publicPath: filePath.theme + 'fonts/'
+          publicPath: THEME_PATH + 'fonts/'
         }
       },
 
@@ -73,15 +68,21 @@ const common = {
     }
   },
 
-  plugins: [
-    new webpack.NamedModulesPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: module => {
-        return module.context && module.context.includes('node_modules')
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          name: 'vendor',
+          chunks: 'initial',
+          enforce: true
+        }
       }
-    }),
-    new WorkBoxPlugin({
+    }
+  },
+
+  plugins: [
+    new GenerateSW({
       cacheId: 'brdr-log',
       globDirectory: path.join(__dirname, 'theme'),
       globPatterns: ['**/*.{html,css,js}', 'fonts/**/*'],
@@ -94,7 +95,7 @@ const common = {
           handler: 'networkFirst',
           options: {
             cacheName: 'api',
-            cacheExpiration: {
+            expiration: {
               maxAgeSeconds: 60 * 60 * 24
             }
           }
@@ -104,7 +105,7 @@ const common = {
           handler: 'cacheFirst',
           options: {
             cacheName: 'images',
-            cacheExpiration: {
+            expiration: {
               maxAgeSeconds: 60 * 60 * 24 * 7
             }
           }
@@ -113,56 +114,3 @@ const common = {
     })
   ]
 }
-
-// development config
-const dev = {
-  entry: {
-    index: [
-      path.join(__dirname, 'src/index.js'),
-      'webpack-hot-middleware/client?noinfo=true&quiet=true'
-    ]
-  },
-
-  output: {
-    publicPath: filePath.theme
-  },
-
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      debug: true
-    })
-  ],
-
-  cache: true,
-  devtool: 'inline-source-map'
-}
-
-// production config
-const prod = {
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        drop_console: true
-      },
-      comments: false
-    }),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin()
-  ]
-}
-
-// exports
-module.exports = merge(
-  common,
-  process.env.NODE_ENV === 'production' ? prod : dev
-)
