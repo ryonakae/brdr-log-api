@@ -37,14 +37,11 @@ body {
   text-decoration: none;
   cursor: pointer;
 
-  @nest :global(body.pc) &:hover {
+  @nest :global(body[data-device="pc"]) &:hover {
     text-decoration: none;
     color: var(--textColor_inverse);
     background-color: var(--textColor_default);
   }
-}
-
-.postTitle {
 }
 
 .postInfo {

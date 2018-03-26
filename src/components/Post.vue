@@ -33,6 +33,7 @@ import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
 import EyecatchComponent from '@/components/Eyecatch.vue'
 import { viewportUnitsBuggyfill } from '@/index'
+import { utils } from '@/index'
 
 export default {
   components: {
@@ -50,6 +51,10 @@ export default {
   },
 
   computed: {
+    leaveDelay() {
+      return utils.getDevice() === 'mobile' ? 150 : 0
+    },
+
     hasEyecatch() {
       return this.post.featured_media > 0
     },
@@ -110,10 +115,11 @@ export default {
     },
 
     async onLeave() {
-      // singleに遷移する時にアイキャッチが一瞬消えてしまいチラついて見える
-      // currentPostをクリアするのを少しだけ遅らせる
+      // singleに遷移する時にアイキャッチが一瞬消えてしまいチラついて見えるので、
+      // currentPostをクリアするのを少しだけ遅らせる（SPだけ）
       // すでにsingleに遷移している場合はクリアしない
-      await new Promise(resolve => setTimeout(resolve, 150))
+      await new Promise(resolve => setTimeout(resolve, this.leaveDelay))
+      console.log(this.leaveDelay)
 
       console.log('[PostItem.vue - onLeave] start', this.$route.path)
       if (this.$route.path !== '/') return
@@ -179,6 +185,7 @@ export default {
 @import 'config.css';
 
 .post {
+  position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   display: inline-block;

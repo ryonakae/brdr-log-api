@@ -113,6 +113,10 @@ export default {
   line-height: var(--lineHeight_content);
   text-align: justify;
 
+  & > :global(*) {
+    @apply --content;
+  }
+
   & :global(a) {
     @apply --link;
 
@@ -129,7 +133,8 @@ export default {
   & :global(h4),
   & :global(h5),
   & :global(h6) {
-    margin: 1.5em 0 0.5em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
     line-height: var(--lineHeight_title);
     text-align: left;
   }
@@ -161,7 +166,8 @@ export default {
   & :global(p),
   & :global(ul),
   & :global(ol) {
-    margin: 1.2em 0;
+    margin-top: 1.2em;
+    margin-bottom: 1.2em;
   }
 
   & :global(ul),
@@ -170,14 +176,18 @@ export default {
 
     & :global(ul),
     & :global(ol) {
-      margin: 0.3em 0;
+      margin-top: 0.3em;
+      margin-bottom: 0.3em;
     }
   }
 
   & :global(.img) {
     position: relative;
     display: table;
-    margin: 1.5em auto;
+    max-width: 100%;
+    margin-top: 1.5em;
+    margin-right: calc(var(--margin_page) * 2);
+    margin-bottom: 1.5em;
     background-color: var(--color_bgSub);
 
     &:first-child {
@@ -190,6 +200,10 @@ export default {
       height: auto;
       vertical-align: top;
       opacity: 0;
+    }
+
+    &:global(.small) {
+      max-width: var(--width_content);
     }
 
     &:global(.ready) {
@@ -208,11 +222,17 @@ export default {
       font-size: var(--fontSize_small);
       color: var(--color_sub);
     }
+
+    @media (--mq_sp) {
+      margin-left: 0;
+      margin-right: var(--margin_page_sp);
+    }
   }
 
   & :global(blockquote),
   & :global(pre) {
-    margin: 1.5em 0;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
   }
 
   & :global(blockquote) {
@@ -230,10 +250,12 @@ export default {
   }
 
   & :global(pre) {
+    max-width: 100%;
+    margin-right: calc(var(--margin_page) * 2);
+    padding: 1em 1.3em;
     text-align: left;
     font-size: var(--fontSize_code);
     background-color: var(--color_bgSub);
-    padding: 1em 1.3em;
     background-clip: padding-box;
     word-wrap: normal;
     overflow-x: auto;
@@ -246,6 +268,13 @@ export default {
       padding: 0;
       background: none;
     }
+
+    @media (--mq_sp) {
+      margin-left: 0;
+      margin-right: var(--margin_page_sp);
+      padding-left: var(--margin_page_sp);
+      padding-right: var(--margin_page_sp);
+    }
   }
 
   & :global(hr) {
@@ -253,7 +282,8 @@ export default {
     height: 1px;
     background-color: var(--color_key);
     border: none;
-    margin: 2.5em 0;
+    margin-top: 2.5em;
+    margin-bottom: 2.5em;
   }
 
   & :global(.iframe) {
@@ -274,7 +304,8 @@ export default {
 
   & :global(.twitter-tweet),
   & :global(.instagram-media) {
-    margin: 1.5em auto !important;
+    margin-top: 1.5em !important;
+    margin-bottom: 1.5em !important;
   }
 }
 </style>
