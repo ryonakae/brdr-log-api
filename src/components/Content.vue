@@ -194,16 +194,12 @@ export default {
       margin-top: 0;
     }
 
-    & :global(img) {
-      line-height: 0;
-      max-width: 100%;
-      height: auto;
-      vertical-align: top;
-      opacity: 0;
-    }
-
     &:global(.small) {
       max-width: var(--width_content);
+
+      @media (--mq_sp) {
+        margin-left: var(--margin_page_sp);
+      }
     }
 
     &:global(.ready) {
@@ -214,6 +210,19 @@ export default {
       }
     }
 
+    @media (--mq_sp) {
+      margin-left: 0;
+      margin-right: var(--margin_page_sp);
+    }
+
+    & :global(img) {
+      line-height: 0;
+      max-width: 100%;
+      height: auto;
+      vertical-align: top;
+      opacity: 0;
+    }
+
     & :global(small) {
       display: block;
       text-align: center;
@@ -221,11 +230,6 @@ export default {
       line-height: var(--lineHeight_caption);
       font-size: var(--fontSize_small);
       color: var(--color_sub);
-    }
-
-    @media (--mq_sp) {
-      margin-left: 0;
-      margin-right: var(--margin_page_sp);
     }
   }
 
