@@ -71,7 +71,7 @@ export default {
   },
 
   async created() {
-    document.body.classList.add(utils.getDevice())
+    document.body.dataset.device = utils.getDevice()
     this.$store.commit('initClient')
 
     try {

@@ -9,7 +9,6 @@
 
 .footer {
   font-size: var(--fontSize_small);
-  font-weight: bold;
 }
 
 .copyright {
