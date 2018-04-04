@@ -85,11 +85,7 @@ export default {
 }
 
 .header {
-  margin-top: var(--margin_top);
-
-  @media (--mq_sp) {
-    margin-top: var(--margin_top_sp);
-  }
+  @apply --header;
 }
 
 .title {
