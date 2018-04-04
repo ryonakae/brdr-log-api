@@ -141,16 +141,15 @@ const dev = {
     publicPath: themePath
   },
 
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  plugins: [new webpack.HotModuleReplacementPlugin()],
+
+  devtool: 'inline-source-map'
 }
 
 const prod = {
   mode: 'production',
 
-  plugins: [
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin()
-  ]
+  plugins: [new webpack.optimize.AggressiveMergingPlugin()]
 }
 
 module.exports = merge(
