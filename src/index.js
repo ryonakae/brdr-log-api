@@ -33,12 +33,14 @@ scroller.init()
 // viewportUnitsBuggyfillを初期化
 viewportUnitsBuggyfill.init()
 
-// Vueのインスタンスを作成
-const vm = new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+// DOM構築後にVueのインスタンスを作成
+document.addEventListener('DOMContentLoaded', () => {
+  const vm = new Vue({
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
+  })
 })
 
 // Hot Module Replacement
