@@ -1,10 +1,6 @@
 /* common style */
 html {
   font-size: 10px;
-
-  @media (--mq_sp) {
-    font-size: calc(10px * 0.94);
-  }
 }
 
 body {

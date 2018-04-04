@@ -175,21 +175,17 @@ export default {
 .page {
   @apply --content;
   margin-top: var(--margin_top);
-  margin-bottom: calc(var(--margin_page) * 2 + 1em);
+  margin-bottom: calc(var(--margin_page) * 2.5 + 1em);
 
   @media (--mq_sp) {
     margin-top: var(--margin_top_sp);
-    margin-bottom: calc(var(--margin_page_sp) * 2 + 1em);
+    margin-bottom: calc(var(--margin_page_sp) * 2.5 + 1em);
   }
 }
 
 .post {
   display: block;
-  margin-top: calc(2.6em - var(--margin_page));
-
-  @media (--mq_sp) {
-    margin-top: calc(2.6em - var(--margin_page_sp));
-  }
+  margin-top: calc(2.6em - var(--margin_title) * 2);
 
   &:first-child {
     margin-top: 0;

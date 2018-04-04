@@ -79,13 +79,18 @@ export default {
 <style scoped>
 @import 'config.css';
 
-.header,
-.body {
+.header {
   @apply --content;
 }
 
 .header {
   @apply --header;
+
+  margin-top: var(--margin_top);
+
+  @media (--mq_sp) {
+    margin-top: var(--margin_top_sp);
+  }
 }
 
 .title {
