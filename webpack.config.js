@@ -7,8 +7,6 @@ const themePath = '/wp-content/themes/l/'
 
 const swOptions = {
   cacheId: 'brdr-log',
-  // globDirectory: path.join(__dirname, 'theme'),
-  // globPatterns: ['**/*.{html,css,js}', 'fonts/**/*'],
   swDest: path.join(__dirname, 'theme/service-worker.js'),
   clientsClaim: true,
   skipWaiting: true,
@@ -48,12 +46,11 @@ const common = {
 
   module: {
     rules: [
-      // svg images
       {
         test: /\.svg$/,
         loader: 'svg-sprite-loader'
       },
-      // images
+
       {
         test: /\.(jpg|png|bmp|gif)$/,
         loader: 'url-loader',
@@ -65,7 +62,6 @@ const common = {
         }
       },
 
-      // webfont
       {
         test: /\.(otf|eot|ttf|woff|woff2)$/,
         loader: 'url-loader',
@@ -77,14 +73,12 @@ const common = {
         }
       },
 
-      // js
       {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
       },
 
-      // vue
       {
         test: /\.vue$/,
         loader: 'vue-loader'
