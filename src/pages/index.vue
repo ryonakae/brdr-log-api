@@ -1,10 +1,10 @@
 <template>
-  <div v-if="hasPosts" class="page">
+  <div v-if="hasAllPosts" class="page">
     <div class="post" v-for="post in posts" :key="post.id">
       <post-component :post="post"></post-component>
     </div>
 
-    <eyecatch-component class="eyecatch" :post="currentPost"></eyecatch-component>
+    <eyecatch-component v-if="hasCurrentPost" class="eyecatch" :post="currentPost"></eyecatch-component>
   </div>
 </template>
 
@@ -42,8 +42,12 @@ export default {
       return this.$store.state.currentPost
     },
 
-    hasPosts() {
+    hasAllPosts() {
       return this.posts.length > 0
+    },
+
+    hasCurrentPost() {
+      return this.$store.state.currentPost !== void 0
     },
 
     loadedPost() {
