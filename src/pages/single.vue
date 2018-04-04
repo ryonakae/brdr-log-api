@@ -37,10 +37,10 @@
 <script>
 import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
-import EyecatchComponent from '@/components/Eyecatch.vue'
-import ContentComponent from '@/components/Content.vue'
-import ShareComponent from '@/components/Share.vue'
-import NotFoundComponent from '@/components/NotFound.vue'
+import EyecatchComponent from '@/components/Eyecatch'
+import ContentComponent from '@/components/Content'
+import ShareComponent from '@/components/Share'
+import NotFoundComponent from '@/components/NotFound'
 import { resizer, viewportUnitsBuggyfill } from '@/index'
 
 export default {
@@ -130,7 +130,7 @@ export default {
 
   methods: {
     init() {
-      console.log('[single.vue - init]')
+      console.log('[single - init]')
 
       // アイキャッチがある場合、viewportUnitsBuggyfillをrefreshする
       if (this.hasEyecatch) viewportUnitsBuggyfill.refresh()
@@ -145,25 +145,25 @@ export default {
         const res = await this.client.get('/posts/' + id, {
           params: { _embed: '' }
         })
-        console.log('[single.vue - getPost]', res.data)
+        console.log('[single - getPost]', res.data)
         return res.data
       } catch (err) {
-        throw new Error('[single.vue - getPost]', err)
+        throw new Error('[single - getPost]', err)
       }
     },
 
     async getPostRevisions(id) {
       try {
         const res = await this.client.get('/posts/' + id + '/revisions')
-        console.log('[single.vue - getPostRevisions]', res.data)
+        console.log('[single - getPostRevisions]', res.data)
         return res.data
       } catch (err) {
-        throw new Error('[single.vue - getPostRevisions]', err)
+        throw new Error('[single - getPostRevisions]', err)
       }
     },
 
     async getCategory() {
-      console.log('[single.vue - getCategory]')
+      console.log('[single - getCategory]')
       // indexから遷移した時、this.post._categoryにカテゴリの情報がすでに入っているので、それを使う
       if (this.hasCategoriyNames) {
         this.categories = this.post._categories
@@ -178,7 +178,7 @@ export default {
 
     async setTopHeight() {
       if (this.hasEyecatch) {
-        console.log('[single.vue - setTopHeight] has eyecatch')
+        console.log('[single - setTopHeight] has eyecatch')
         const imgLoad = imagesLoaded(this.$refs.eyecatch.$el, {
           background: true
         })
@@ -193,7 +193,7 @@ export default {
         }
         this.isContentActive = true
       } else {
-        console.log('[single.vue - setTopHeight] no eyecatch')
+        console.log('[single - setTopHeight] no eyecatch')
         this.topHeight = 'auto'
         this.isContentActive = true
       }
@@ -232,7 +232,7 @@ export default {
       await new Promise(resolve => setTimeout(resolve, 10))
       this.init()
     } catch (err) {
-      console.error('[single.vue - mounted]', err)
+      console.error('[single - mounted]', err)
       this.onNotFound()
     }
   },
