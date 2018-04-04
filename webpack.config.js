@@ -1,16 +1,48 @@
 const webpack = require('webpack')
+const merge = require('webpack-merge')
 const path = require('path')
 const { GenerateSW } = require('workbox-webpack-plugin')
-const THEME_PATH = '/wp-content/themes/l/'
+const themePath = '/wp-content/themes/l/'
 
-module.exports = {
+const swOptions = {
+  cacheId: 'brdr-log',
+  // globDirectory: path.join(__dirname, 'theme'),
+  // globPatterns: ['**/*.{html,css,js}', 'fonts/**/*'],
+  swDest: path.join(__dirname, 'theme/service-worker.js'),
+  clientsClaim: true,
+  skipWaiting: true,
+  runtimeCaching: [
+    {
+      urlPattern: /\/wp-json\/.+/,
+      handler: 'networkFirst',
+      options: {
+        cacheName: 'api',
+        expiration: {
+          maxAgeSeconds: 60 * 60 * 24
+        }
+      }
+    },
+    {
+      urlPattern: /^(https?):\/\/.*\/.*\.(jpg|jpeg|gif|png)/,
+      handler: 'cacheFirst',
+      options: {
+        cacheName: 'images',
+        expiration: {
+          maxAgeSeconds: 60 * 60 * 24 * 7
+        }
+      }
+    }
+  ]
+}
+
+const common = {
   entry: {
     index: path.join(__dirname, 'src/index.js')
   },
 
   output: {
-    filename: '[name].js',
-    path: path.join(__dirname, 'theme')
+    path: path.join(__dirname, 'theme'),
+    filename: '[name].js'
   },
 
   module: {
@@ -28,7 +60,7 @@ module.exports = {
           limit: 20000,
           name: '[name].[ext]',
           outputPath: 'images/',
-          publicPath: THEME_PATH + 'images/'
+          publicPath: themePath + 'images/'
         }
       },
 
@@ -40,7 +72,7 @@ module.exports = {
           limit: 1,
           name: '[name].[ext]',
           outputPath: 'fonts/',
-          publicPath: THEME_PATH + 'fonts/'
+          publicPath: themePath + 'fonts/'
         }
       },
 
@@ -60,6 +92,7 @@ module.exports = {
   },
 
   resolve: {
+    extensions: ['.js', '.vue'],
     alias: {
       '@': path.join(__dirname, 'src'),
       styles: path.join(__dirname, 'src/assets/styles'),
@@ -81,36 +114,36 @@ module.exports = {
     }
   },
 
+  plugins: [new GenerateSW(swOptions)]
+}
+
+const dev = {
+  mode: 'development',
+
+  entry: {
+    index: [
+      path.join(__dirname, 'src/index.js'),
+      'webpack-hot-middleware/client?noinfo=true&quiet=true'
+    ]
+  },
+
+  output: {
+    publicPath: themePath
+  },
+
+  plugins: [new webpack.HotModuleReplacementPlugin()]
+}
+
+const prod = {
+  mode: 'production',
+
   plugins: [
-    new GenerateSW({
-      cacheId: 'brdr-log',
-      globDirectory: path.join(__dirname, 'theme'),
-      globPatterns: ['**/*.{html,css,js}', 'fonts/**/*'],
-      swDest: path.join(__dirname, 'theme/service-worker.js'),
-      clientsClaim: true,
-      skipWaiting: true,
-      runtimeCaching: [
-        {
-          urlPattern: /\/wp-json\/.+/,
-          handler: 'networkFirst',
-          options: {
-            cacheName: 'api',
-            expiration: {
-              maxAgeSeconds: 60 * 60 * 24
-            }
-          }
-        },
-        {
-          urlPattern: /^(https?):\/\/.*\/.*\.(jpg|jpeg|gif|png)/,
-          handler: 'cacheFirst',
-          options: {
-            cacheName: 'images',
-            expiration: {
-              maxAgeSeconds: 60 * 60 * 24 * 7
-            }
-          }
-        }
-      ]
-    })
+    new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin()
   ]
 }
+
+module.exports = merge(
+  common,
+  process.env.NODE_ENV === 'production' ? prod : dev
+)
