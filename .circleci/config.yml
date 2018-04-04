@@ -19,7 +19,7 @@ jobs:
             - brdr-log-
 
       - run:
-          name: Install node packages
+          name: Install
           command: yarn install --cache-folder ~/.cache/yarn
 
       - save_cache:
@@ -32,7 +32,7 @@ jobs:
           command: yarn run build
 
       - run:
-          name: Erase and move files
+          name: Erase files
           command: |
             find . -maxdepth 1 -type f -not -name '.gitmodules' | xargs rm -rf
             find . -maxdepth 1 -type d -not -name '.' -not -name '.git' -not -name 'server' -not -name 'theme' | xargs rm -rf

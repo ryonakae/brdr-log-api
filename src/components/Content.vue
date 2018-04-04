@@ -141,26 +141,50 @@ export default {
 
   & :global(h1) {
     font-size: var(--fontSize_h1);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h1_sp);
+    }
   }
 
   & :global(h2) {
     font-size: var(--fontSize_h2);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h2_sp);
+    }
   }
 
   & :global(h3) {
     font-size: var(--fontSize_h3);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h3_sp);
+    }
   }
 
   & :global(h4) {
     font-size: var(--fontSize_h4);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h4_sp);
+    }
   }
 
   & :global(h5) {
     font-size: var(--fontSize_h5);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h5_sp);
+    }
   }
 
   & :global(h6) {
     font-size: var(--fontSize_h6);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h6_sp);
+    }
   }
 
   & :global(p),

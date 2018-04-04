@@ -20,6 +20,12 @@
   --fontSize_h4: calc(var(--fontSize) * 1.2);
   --fontSize_h5: calc(var(--fontSize) * 1.1);
   --fontSize_h6: calc(var(--fontSize) * 1);
+  --fontSize_h1_sp: calc(var(--fontSize) * 1.4);
+  --fontSize_h2_sp: calc(var(--fontSize) * 1.3);
+  --fontSize_h3_sp: calc(var(--fontSize) * 1.2);
+  --fontSize_h4_sp: calc(var(--fontSize) * 1.1);
+  --fontSize_h5_sp: calc(var(--fontSize) * 1);
+  --fontSize_h6_sp: calc(var(--fontSize) * 0.9);
   --fontSize_code: calc(var(--fontSize) * 0.9);
 
   /* line height */
@@ -36,6 +42,7 @@
   --margin_page_sp: 20px;
   --margin_top: 8em;
   --margin_top_sp: 6em;
+  --margin_title: 10px;
 
   /* width */
   --width_content: 680px;
@@ -55,16 +62,13 @@
 
   /* post header */
   --header: {
-    padding: calc(var(--margin_page) / 2);
-    margin-top: var(--margin_top);
-    margin-left: calc(var(--margin_page) / 2);
-    margin-right: calc(var(--margin_page) / 2);
+    padding: calc(var(--margin_title));
+    margin-left: calc(var(--margin_page) - var(--margin_title));
+    margin-right: calc(var(--margin_page) - var(--margin_title));
 
     @media (--mq_sp) {
-      padding: calc(var(--margin_page_sp) / 2);
-      margin-top: var(--margin_top_sp);
-      margin-left: calc(var(--margin_page_sp) / 2);
-      margin-right: calc(var(--margin_page_sp) / 2);
+      margin-left: calc(var(--margin_page_sp) - var(--margin_title));
+      margin-right: calc(var(--margin_page_sp) - var(--margin_title));
     }
   }
 
@@ -73,6 +77,10 @@
     margin: 0;
     font-size: var(--fontSize_h1);
     line-height: var(--lineHeight_title);
+
+    @media (--mq_sp) {
+      font-size: var(--fontSize_h1_sp);
+    }
   }
 
   /* post info */

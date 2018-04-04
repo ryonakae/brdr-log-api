@@ -182,6 +182,10 @@ export default {
 @import 'config.css';
 
 .post {
+  @apply --header;
+
+  margin-left: -var(--margin_title);
+  margin-right: -var(--margin_title);
   position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -189,15 +193,6 @@ export default {
   cursor: pointer;
   color: var(--color_sub);
   pointer-events: none;
-  padding: calc(var(--margin_page) / 2);
-  margin-left: calc(var(--margin_page) / -2);
-  margin-right: calc(var(--margin_page) / -2);
-
-  @media (--mq_sp) {
-    padding: calc(var(--margin_page_sp) / 2);
-    margin-left: calc(var(--margin_page_sp) / -2);
-    margin-right: calc(var(--margin_page_sp) / -2);
-  }
 
   &.active {
     color: inherit;
