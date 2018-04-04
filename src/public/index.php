@@ -28,7 +28,7 @@
   <script src="<?php echo get_template_directory_uri(); ?>/index.js"></script>
 </head>
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div id="app" style="position: static; opacity: 1; visibility: visible; overflow: hidden;">
+  <div id="app" style="position: fixed; opacity: 0; visibility: hidden; overflow: hidden;">
     <!-- site header -->
     <header itemscope itemtype="http://schema.org/WPHeader" role="banner">
       <?php if (is_singular()) : ?>
