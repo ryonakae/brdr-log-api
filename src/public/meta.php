@@ -50,7 +50,7 @@
 
 <meta charset="<?php echo get_bloginfo('charset'); ?>">
 
-<title><?php echo get_bloginfo('name'); ?></title>
+<title><?php echo $title; ?></title>
 
 <meta name="description" content="<?php echo $description; ?>">
 <meta name="robots" content="index,follow">
