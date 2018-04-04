@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import NotFoundComponent from '@/components/NotFound.vue'
-import ContentComponent from '@/components/Content.vue'
+import NotFoundComponent from '@/components/NotFound'
+import ContentComponent from '@/components/Content'
 
 export default {
   components: {
@@ -49,10 +49,10 @@ export default {
           }
         })
         if (res.data.length === 0) throw 'no res.data'
-        console.log('[page.vue - getPage]', res)
+        console.log('[page - getPage]', res)
         return res.data[0]
       } catch (err) {
-        throw new Error('[page.vue - getPage]', err)
+        throw new Error('[page - getPage]', err)
       }
     },
 
@@ -69,7 +69,7 @@ export default {
       this.page = res
       this.$store.commit('setPageTitle', this.page.title.rendered)
     } catch (err) {
-      console.error('[page.vue - mounted]', err)
+      console.error('[page - mounted]', err)
       this.onNotFound()
     }
   }

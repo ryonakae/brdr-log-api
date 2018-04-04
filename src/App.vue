@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import LogoComponent from '@/components/Logo.vue'
-import NaviComponent from '@/components/Navi.vue'
-import FooterComponent from '@/components/Footer.vue'
+import LogoComponent from '@/components/Logo'
+import NaviComponent from '@/components/Navi'
+import FooterComponent from '@/components/Footer'
 import { utils } from '@/index'
 import webFont from 'webfontloader'
 
@@ -44,24 +44,18 @@ export default {
             ]
           },
           fontloading: (familyName, fvd) => {
-            console.log(
-              '[App.vue - loadWebfont] fontloading -',
-              familyName,
-              fvd
-            )
+            console.log('[App - loadWebfont] fontloading -', familyName, fvd)
           },
           fontactive: (familyName, fvd) => {
-            console.log('[App.vue - loadWebfont] fontactive -', familyName, fvd)
+            console.log('[App - loadWebfont] fontactive -', familyName, fvd)
           },
           active: () => {
-            console.log(
-              '[App.vue - loadWebfont] active - all webfonts are loaded'
-            )
+            console.log('[App - loadWebfont] active - all webfonts are loaded')
             return resolve()
           },
           inactive: () => {
             console.log(
-              '[App.vue - loadWebfont] inactive - the browser does not support OR if none of the fonts could be loaded'
+              '[App - loadWebfont] inactive - the browser does not support OR if none of the fonts could be loaded'
             )
             return reject()
           }
@@ -77,9 +71,9 @@ export default {
     try {
       await this.loadWebfont()
     } catch (err) {
-      console.log('[App.vue - created]', err)
+      console.log('[App - created]', err)
     } finally {
-      console.log('[App.vue - created] created done')
+      console.log('[App - created] created done')
       this.$store.commit('changeIsFontLoaded', true)
     }
   }

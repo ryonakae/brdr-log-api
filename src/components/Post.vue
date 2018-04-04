@@ -31,7 +31,7 @@
 <script>
 import moment from 'moment'
 import imagesLoaded from 'imagesloaded'
-import EyecatchComponent from '@/components/Eyecatch.vue'
+import EyecatchComponent from '@/components/Eyecatch'
 import { viewportUnitsBuggyfill } from '@/index'
 import { utils } from '@/index'
 
@@ -90,7 +90,7 @@ export default {
     },
 
     onEnter() {
-      console.log('[PostItem.vue - onEnter] start', this.$route.path)
+      console.log('[PostItem - onEnter] start', this.$route.path)
       // singleでclickイベントが発火してしまう対策
       if (this.$route.path !== '/') return
 
@@ -108,10 +108,7 @@ export default {
       if ('serviceWorker' in navigator) this.preloadImages()
 
       this.isEnter = true
-      console.log(
-        '[PostItem.vue - onEnter] done',
-        this.$store.state.currentPost
-      )
+      console.log('[PostItem - onEnter] done', this.$store.state.currentPost)
     },
 
     async onLeave() {
@@ -121,15 +118,12 @@ export default {
       await new Promise(resolve => setTimeout(resolve, this.leaveDelay))
       console.log(this.leaveDelay)
 
-      console.log('[PostItem.vue - onLeave] start', this.$route.path)
+      console.log('[PostItem - onLeave] start', this.$route.path)
       if (this.$route.path !== '/') return
 
       this.$store.commit('setCurrentPost', { data: {} })
       this.isEnter = false
-      console.log(
-        '[PostItem.vue - onLeave] done',
-        this.$store.state.currentPost
-      )
+      console.log('[PostItem - onLeave] done', this.$store.state.currentPost)
     },
 
     async preloadImages() {
@@ -141,12 +135,12 @@ export default {
       if (!Array.isArray(imgArray)) return
 
       try {
-        console.log('[PostItem.vue - preloadImages]', imgArray)
+        console.log('[PostItem - preloadImages]', imgArray)
         const cache = await window.caches.open('brdr-log-images')
         await cache.addAll(imgArray)
-        console.log('[PostItem.vue - preloadImages] Cache success')
+        console.log('[PostItem - preloadImages] Cache success')
       } catch (err) {
-        console.log('[PostItem.vue - preloadImages]', err)
+        console.log('[PostItem - preloadImages]', err)
       }
     },
 
