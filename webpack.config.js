@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const path = require('path')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
 const themePath = '/wp-content/themes/l/'
 
@@ -111,7 +112,16 @@ const common = {
           enforce: true
         }
       }
-    }
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            drop_console: true
+          }
+        }
+      })
+    ]
   },
 
   plugins: [new GenerateSW(swOptions)]
