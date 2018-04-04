@@ -1,10 +1,10 @@
 <template>
-  <div v-if="hasPosts" class="page">
+  <div v-if="hasAllPosts" class="page">
     <div class="post" v-for="post in posts" :key="post.id">
       <post-component :post="post"></post-component>
     </div>
 
-    <eyecatch-component class="eyecatch" :post="currentPost"></eyecatch-component>
+    <eyecatch-component v-if="hasCurrentPost" class="eyecatch" :post="currentPost"></eyecatch-component>
   </div>
 </template>
 
@@ -42,8 +42,12 @@ export default {
       return this.$store.state.currentPost
     },
 
-    hasPosts() {
+    hasAllPosts() {
       return this.posts.length > 0
+    },
+
+    hasCurrentPost() {
+      return this.$store.state.currentPost !== void 0
     },
 
     loadedPost() {
@@ -171,17 +175,21 @@ export default {
 .page {
   @apply --content;
   margin-top: var(--margin_top);
-  margin-bottom: calc(var(--margin_page) * 3 + 1em);
+  margin-bottom: calc(var(--margin_page) * 2 + 1em);
 
   @media (--mq_sp) {
     margin-top: var(--margin_top_sp);
-    margin-bottom: calc(var(--margin_page_sp) * 3 + 1em);
+    margin-bottom: calc(var(--margin_page_sp) * 2 + 1em);
   }
 }
 
 .post {
   display: block;
-  margin-top: 2.6em;
+  margin-top: calc(2.6em - var(--margin_page));
+
+  @media (--mq_sp) {
+    margin-top: calc(2.6em - var(--margin_page_sp));
+  }
 
   &:first-child {
     margin-top: 0;

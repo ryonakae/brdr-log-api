@@ -3,26 +3,29 @@
     class="post"
     :class="{active: isLoaded, highlight: isEnter}"
     @click.once.stop="setTitleOffset"
-    @mouseenter.stop="onEnter"
-    @mouseleave.stop="onLeave"
-    @touchstart.stop="onEnter"
-    @touchend.stop="onLeave"
   >
     <router-link :to="'/post/'+post.id" tag="div">
-      <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
-      <h1 class="title" v-html="postTitle"></h1>
-      <div class="info">
-        <div class="date">{{post.date | moment}}</div>
-        <ul class="categories">
-          <li
-            v-for="category in categories"
-            :key="category.id"
-            class="category"
-            @click.stop="filter(category.id, category.name)"
-          >
-            <span>{{category.name}}</span>
-          </li>
-        </ul>
+      <div
+        @mouseenter.stop="onEnter"
+        @mouseleave.stop="onLeave"
+        @touchstart.stop="onEnter"
+        @touchend.stop="onLeave"
+      >
+        <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
+        <h1 class="title" v-html="postTitle"></h1>
+        <div class="info">
+          <div class="date">{{post.date | moment}}</div>
+          <ul class="categories">
+            <li
+              v-for="category in categories"
+              :key="category.id"
+              class="category"
+              @click.stop="filter(category.id, category.name)"
+            >
+              <span>{{category.name}}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </router-link>
   </div>
@@ -186,6 +189,15 @@ export default {
   cursor: pointer;
   color: var(--color_sub);
   pointer-events: none;
+  padding: calc(var(--margin_page) / 2);
+  margin-left: calc(var(--margin_page) / -2);
+  margin-right: calc(var(--margin_page) / -2);
+
+  @media (--mq_sp) {
+    padding: calc(var(--margin_page_sp) / 2);
+    margin-left: calc(var(--margin_page_sp) / -2);
+    margin-right: calc(var(--margin_page_sp) / -2);
+  }
 
   &.active {
     color: inherit;

@@ -23,8 +23,8 @@
   --fontSize_code: calc(var(--fontSize) * 0.9);
 
   /* line height */
-  --lineHeight_title: 1.4;
-  --lineHeight_content: 1.8;
+  --lineHeight_title: 1.5;
+  --lineHeight_content: 1.6;
   --lineHeight_caption: 1.5;
   --lineHeight_code: 1.4;
 
@@ -32,9 +32,9 @@
   --letterSpacing: 0.055em;
 
   /* margin */
-  --margin_page: 30px;
-  --margin_page_sp: 15px;
-  --margin_top: 9em;
+  --margin_page: 40px;
+  --margin_page_sp: 20px;
+  --margin_top: 8em;
   --margin_top_sp: 6em;
 
   /* width */
@@ -50,6 +50,21 @@
       text-decoration: none;
       color: var(--color_bg);
       background-color: var(--color_key);
+    }
+  }
+
+  /* post header */
+  --header: {
+    padding: calc(var(--margin_page) / 2);
+    margin-top: var(--margin_top);
+    margin-left: calc(var(--margin_page) / 2);
+    margin-right: calc(var(--margin_page) / 2);
+
+    @media (--mq_sp) {
+      padding: calc(var(--margin_page_sp) / 2);
+      margin-top: var(--margin_top_sp);
+      margin-left: calc(var(--margin_page_sp) / 2);
+      margin-right: calc(var(--margin_page_sp) / 2);
     }
   }
 

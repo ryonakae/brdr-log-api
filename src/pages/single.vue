@@ -253,13 +253,13 @@ export default {
 }
 
 .header {
+  @apply --header;
+
   background-color: var(--color_bg);
   top: var(--margin_top);
-  margin-top: var(--margin_top);
 
   @media (--mq_sp) {
     top: var(--margin_top_sp);
-    margin-top: var(--margin_top_sp);
   }
 }
 
