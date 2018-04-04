@@ -1,25 +1,58 @@
 const webpack = require('webpack')
-const WorkBoxPlugin = require('workbox-webpack-plugin')
 const merge = require('webpack-merge')
 const path = require('path')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const { GenerateSW } = require('workbox-webpack-plugin')
+const themePath = '/wp-content/themes/l/'
 
-const filePath = {
-  theme: '/wp-content/themes/l/'
+const swOptions = {
+  cacheId: 'brdr-log',
+  // globDirectory: path.join(__dirname, 'theme'),
+  // globPatterns: ['**/*.{html,css,js}', 'fonts/**/*'],
+  swDest: path.join(__dirname, 'theme/service-worker.js'),
+  clientsClaim: true,
+  skipWaiting: true,
+  runtimeCaching: [
+    {
+      urlPattern: /\/wp-json\/.+/,
+      handler: 'networkFirst',
+      options: {
+        cacheName: 'api',
+        expiration: {
+          maxAgeSeconds: 60 * 60 * 24
+        }
+      }
+    },
+    {
+      urlPattern: /^(https?):\/\/.*\/.*\.(jpg|jpeg|gif|png)/,
+      handler: 'cacheFirst',
+      options: {
+        cacheName: 'images',
+        expiration: {
+          maxAgeSeconds: 60 * 60 * 24 * 7
+        }
+      }
+    }
+  ]
 }
 
-// common config
 const common = {
   entry: {
     index: path.join(__dirname, 'src/index.js')
   },
 
   output: {
-    filename: '[name].js',
-    path: path.join(__dirname, 'theme')
+    path: path.join(__dirname, 'theme'),
+    filename: '[name].js'
   },
 
   module: {
     rules: [
+      // svg images
+      {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader'
+      },
       // images
       {
         test: /\.(jpg|png|bmp|gif)$/,
@@ -28,13 +61,8 @@ const common = {
           limit: 20000,
           name: '[name].[ext]',
           outputPath: 'images/',
-          publicPath: filePath.theme + 'images/'
+          publicPath: themePath + 'images/'
         }
-      },
-      // images(svg)
-      {
-        test: /\.svg$/,
-        loader: 'svg-sprite-loader'
       },
 
       // webfont
@@ -45,7 +73,7 @@ const common = {
           limit: 1,
           name: '[name].[ext]',
           outputPath: 'fonts/',
-          publicPath: filePath.theme + 'fonts/'
+          publicPath: themePath + 'fonts/'
         }
       },
 
@@ -65,6 +93,7 @@ const common = {
   },
 
   resolve: {
+    extensions: ['.js', '.vue'],
     alias: {
       '@': path.join(__dirname, 'src'),
       styles: path.join(__dirname, 'src/assets/styles'),
@@ -73,49 +102,34 @@ const common = {
     }
   },
 
-  plugins: [
-    new webpack.NamedModulesPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: module => {
-        return module.context && module.context.includes('node_modules')
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          name: 'vendor',
+          chunks: 'initial',
+          enforce: true
+        }
       }
-    }),
-    new WorkBoxPlugin({
-      cacheId: 'brdr-log',
-      globDirectory: path.join(__dirname, 'theme'),
-      globPatterns: ['**/*.{html,css,js}', 'fonts/**/*'],
-      swDest: path.join(__dirname, 'theme/service-worker.js'),
-      clientsClaim: true,
-      skipWaiting: true,
-      runtimeCaching: [
-        {
-          urlPattern: /\/wp-json\/.+/,
-          handler: 'networkFirst',
-          options: {
-            cacheName: 'api',
-            cacheExpiration: {
-              maxAgeSeconds: 60 * 60 * 24
-            }
-          }
-        },
-        {
-          urlPattern: /^(https?):\/\/.*\/.*\.(jpg|jpeg|gif|png)/,
-          handler: 'cacheFirst',
-          options: {
-            cacheName: 'images',
-            cacheExpiration: {
-              maxAgeSeconds: 60 * 60 * 24 * 7
-            }
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            drop_console: true
           }
         }
-      ]
-    })
-  ]
+      })
+    ]
+  },
+
+  plugins: [new GenerateSW(swOptions)]
 }
 
-// development config
 const dev = {
+  mode: 'development',
+
   entry: {
     index: [
       path.join(__dirname, 'src/index.js'),
@@ -124,44 +138,20 @@ const dev = {
   },
 
   output: {
-    publicPath: filePath.theme
+    publicPath: themePath
   },
 
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      debug: true
-    })
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
 
-  cache: true,
   devtool: 'inline-source-map'
 }
 
-// production config
 const prod = {
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        drop_console: true
-      },
-      comments: false
-    }),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin()
-  ]
+  mode: 'production',
+
+  plugins: [new webpack.optimize.AggressiveMergingPlugin()]
 }
 
-// exports
 module.exports = merge(
   common,
   process.env.NODE_ENV === 'production' ? prod : dev

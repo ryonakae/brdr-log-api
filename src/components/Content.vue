@@ -75,13 +75,13 @@ export default {
         await new Promise(resolve => setTimeout(resolve, 100))
 
         if (!imgLoad.isComplete) {
-          console.log('[Content.vue - init] images are NOT loaded')
+          console.log('[Content - init] images are NOT loaded')
           this.$store.commit('changeIsLoading', true)
           await new Promise(resolve => imgLoad.on('always', resolve))
           this.isImagesLoaded = true
-          console.log('[Content.vue - init] all images are loaded')
+          console.log('[Content - init] all images are loaded')
         } else {
-          console.log('[Content.vue - init] images are ALREADY loaded')
+          console.log('[Content - init] images are ALREADY loaded')
           this.isImagesLoaded = true
         }
       })()
@@ -90,7 +90,7 @@ export default {
     checkLoad() {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
       if (this.isFontLoaded && this.isImagesLoaded) {
-        console.log('[Content.vue - checkLoad] all webfont/images loaded')
+        console.log('[Content - checkLoad] all webfont/images loaded')
         this.$store.commit('changeIsLoading', false)
       }
     }

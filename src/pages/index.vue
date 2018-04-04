@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import PostComponent from '@/components/Post.vue'
-import EyecatchComponent from '@/components/Eyecatch.vue'
+import PostComponent from '@/components/Post'
+import EyecatchComponent from '@/components/Eyecatch'
 import { scroller } from '@/index'
 
 export default {
@@ -93,10 +93,10 @@ export default {
       try {
         const res = await this.client.get('/posts', { params: params })
         this.$store.commit('setAllPosts', this.posts.concat(res.data))
-        console.log('[index.vue - getPosts]', this.posts, params)
+        console.log('[index - getPosts]', this.posts, params)
         return res.data
       } catch (err) {
-        console.error('[index.vue - getPosts]', err)
+        console.error('[index - getPosts]', err)
       }
     },
 
@@ -104,18 +104,18 @@ export default {
       try {
         const _params = Object.assign(params, { offset: this.posts.length })
         const res = await this.getPosts(_params)
-        console.log('[index.vue - onScroll]', res)
+        console.log('[index - onScroll]', res)
         this.isScrolling = false
         if (res.length === 0) scroller.remove('index.onScroll')
       } catch (err) {
-        console.error('[index.vue - onScroll]', err)
+        console.error('[index - onScroll]', err)
       } finally {
         this.checkLoad()
       }
     },
 
     async onScroll() {
-      console.log('[index.vue - onScroll]')
+      console.log('[index - onScroll]')
       const documentHeight = document.body.clientHeight
       const scrollBottom = scroller.getScrollBottom()
 
@@ -130,7 +130,7 @@ export default {
     checkLoad() {
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
       if (this.isFontLoaded && this.posts.length === this.loadedPost) {
-        console.log('[index.vue - checkLoad] all webfont and post loaded')
+        console.log('[index - checkLoad] all webfont and post loaded')
         this.$store.commit('changeIsLoading', false)
       }
     }

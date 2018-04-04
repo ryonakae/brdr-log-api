@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import store from '@/store'
 import router from '@/router'
-import App from '@/App.vue'
+import App from '@/App'
 import { Utils, Resizer, Scroller } from 'web-utility-js'
 import viewportUnitsBuggyfill from 'viewport-units-buggyfill'
 

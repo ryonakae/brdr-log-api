@@ -58,7 +58,7 @@ export default {
         const res = await this.client.get('/categories')
         return res.data
       } catch (err) {
-        console.log('[Navi.vue - getAllCategories]', err)
+        console.log('[Navi - getAllCategories]', err)
       }
     },
 

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import NotFoundComponent from '@/components/NotFound.vue'
+import NotFoundComponent from '@/components/NotFound'
 
 export default {
   components: {

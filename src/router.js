@@ -2,10 +2,10 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import index from '@/pages/index.vue'
-import page from '@/pages/page.vue'
-import single from '@/pages/single.vue'
-import notFound from '@/pages/notFound.vue'
+import index from '@/pages/index'
+import page from '@/pages/page'
+import single from '@/pages/single'
+import notFound from '@/pages/notFound'
 
 Vue.use(VueRouter)
 
