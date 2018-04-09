@@ -268,6 +268,7 @@ export default {
   & :global(code) {
     background-color: var(--color_bgSub);
     font-family: var(--fontFamily_code);
+    font-size: var(--fontSize_code);
     letter-spacing: initial;
     word-break: break-all;
   }
@@ -276,7 +277,6 @@ export default {
     max-width: 100%;
     padding: 1em 1.3em;
     text-align: left;
-    font-size: var(--fontSize_code);
     background-color: var(--color_bgSub);
     background-clip: padding-box;
     word-wrap: normal;
