@@ -36,17 +36,15 @@
 }
 
 @font-face {
-  font-family: "Noto Sans Japanese";
+  font-family: Hiragino;
   font-weight: normal;
-  src: local("Noto Sans CJK JP DemiLight"), local("NotoSansCJKjp-DemiLight"),
-    url("~fonts/NotoSansCJKjp-DemiLight.woff2") format("woff2"),
-    url("~fonts/NotoSansCJKjp-DemiLight.woff") format("woff");
+  src: local("HiraginoSans-W3"), local("ヒラギノ角ゴ ProN W3"),
+    local("Hiragino Kaku Gothic ProN");
 }
 
 @font-face {
-  font-family: "Noto Sans Japanese";
+  font-family: Hiragino;
   font-weight: bold;
-  src: local("Noto Sans CJK JP Bold"), local("NotoSansCJKjp-Bold"),
-    url("~fonts/NotoSansCJKjp-Bold.woff2") format("woff2"),
-    url("~fonts/NotoSansCJKjp-Bold.woff") format("woff");
+  src: local("HiraginoSans-W6"), local("ヒラギノ角ゴ ProN W6"),
+    local("Hiragino Kaku Gothic ProN W6");
 }

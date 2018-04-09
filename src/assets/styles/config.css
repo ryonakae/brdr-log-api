@@ -6,10 +6,8 @@
   --color_bgSub: color(var(--color_key) alpha(5%));
 
   /* font family */
-  --fontFamily: YakuHanJPs, YakuHanJP, "Neue Frutiger", "Noto Sans Japanese",
-    sans-serif;
-  --fontFamily_code: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier,
-    monospace;
+  --fontFamily: YakuHanJPs, YakuHanJP, "Neue Frutiger", Hiragino, sans-serif;
+  --fontFamily_code: Menlo, Monaco, "Courier New", Courier, monospace;
 
   /* font size */
   --fontSize: 1.5rem;
@@ -30,7 +28,7 @@
 
   /* line height */
   --lineHeight_title: 1.5;
-  --lineHeight_content: 1.6;
+  --lineHeight_content: 1.65;
   --lineHeight_caption: 1.5;
   --lineHeight_code: 1.4;
 

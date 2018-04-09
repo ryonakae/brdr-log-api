@@ -23,12 +23,9 @@
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     ga('create', 'UA-46325777-11', 'auto');
   </script>
-
-  <script src="<?php echo get_template_directory_uri(); ?>/vendor.js"></script>
-  <script src="<?php echo get_template_directory_uri(); ?>/index.js"></script>
 </head>
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div id="app" style="position: fixed; opacity: 0; visibility: hidden; overflow: hidden;">
+  <div id="app" style="position: fixed; visibility: hidden; overflow: hidden;">
     <!-- site header -->
     <header itemscope itemtype="http://schema.org/WPHeader" role="banner">
       <?php if (is_singular()) : ?>
@@ -116,6 +113,9 @@
       <a href="https://twitter.com/ryo_dg" itemscope itemtype="http://schema.org/Person" itemprop="author url">Ryo Nakae</a>
     </footer>
   </div>
+
+  <script defer src="<?php echo get_template_directory_uri(); ?>/vendor.js"></script>
+  <script defer src="<?php echo get_template_directory_uri(); ?>/index.js"></script>
 
   <?php wp_footer(); ?>
 </body>

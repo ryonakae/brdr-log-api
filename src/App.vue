@@ -39,8 +39,7 @@ export default {
             families: [
               'YakuHanJPs:n4',
               'YakuHanJP:n4,n7',
-              'Neue Frutiger:n4,n7',
-              'Noto Sans Japanese:n4,n7'
+              'Neue Frutiger:n4,n7'
             ]
           },
           fontloading: (familyName, fvd) => {
