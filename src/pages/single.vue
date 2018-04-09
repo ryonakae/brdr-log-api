@@ -247,11 +247,6 @@ export default {
 <style scoped>
 @import 'config.css';
 
-.header,
-.footer {
-  @apply --content;
-}
-
 .header {
   @apply --header;
 
@@ -286,6 +281,8 @@ export default {
 }
 
 .footer {
+  @apply --content;
+
   margin-top: calc(var(--margin_page) * 2);
   margin-bottom: var(--margin_page);
   font-size: var(--fontSize_small);

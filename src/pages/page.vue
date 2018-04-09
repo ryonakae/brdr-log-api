@@ -80,10 +80,6 @@ export default {
 @import 'config.css';
 
 .header {
-  @apply --content;
-}
-
-.header {
   @apply --header;
 
   margin-top: var(--margin_top);
