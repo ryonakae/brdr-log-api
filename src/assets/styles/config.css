@@ -1,7 +1,7 @@
 :root {
   /* color */
   --color_bg: #fff;
-  --color_key: #0d0d0d;
+  --color_key: #141414;
   --color_sub: color(var(--color_key) alpha(55%));
   --color_bgSub: color(var(--color_key) alpha(5%));
 
@@ -10,7 +10,7 @@
   --fontFamily_code: Menlo, Monaco, "Courier New", Courier, monospace;
 
   /* font size */
-  --fontSize: 1.5rem;
+  --fontSize: 1.6rem;
   --fontSize_small: 1.2rem;
   --fontSize_h1: calc(var(--fontSize) * 1.5);
   --fontSize_h2: calc(var(--fontSize) * 1.4);
@@ -28,9 +28,9 @@
 
   /* line height */
   --lineHeight_title: 1.5;
-  --lineHeight_content: 1.65;
+  --lineHeight_content: 1.7;
   --lineHeight_caption: 1.5;
-  --lineHeight_code: 1.4;
+  --lineHeight_code: 1.5;
 
   /* letter spacing */
   --letterSpacing: 0.055em;

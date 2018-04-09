@@ -300,7 +300,7 @@ export default {
   }
 
   & :global(hr) {
-    width: 5%;
+    width: 2em;
     height: 1px;
     background-color: var(--color_key);
     border: none;
