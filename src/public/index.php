@@ -10,7 +10,8 @@
       is_logged_in => is_user_logged_in(),
       is_preview => is_preview(),
       posts_per_page => get_option('posts_per_page'),
-      template_directory_url => get_template_directory_uri()
+      template_directory_url => get_template_directory_uri(),
+      site_title => get_bloginfo('name')
     ));
   ?>
 

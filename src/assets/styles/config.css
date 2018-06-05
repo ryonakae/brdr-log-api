@@ -1,7 +1,7 @@
 :root {
   /* color */
   --color_bg: #fff;
-  --color_key: #141414;
+  --color_key: #31373d;
   --color_sub: color(var(--color_key) alpha(55%));
   --color_bgSub: color(var(--color_key) alpha(5%));
 
@@ -33,7 +33,7 @@
   --lineHeight_code: 1.5;
 
   /* letter spacing */
-  --letterSpacing: 0.055em;
+  --letterSpacing: 0.07em;
 
   /* margin */
   --margin_page: 40px;

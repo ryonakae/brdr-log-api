@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
   pageTitle: '',
-  siteTitle: document.title,
+  siteTitle: window.wpSettings.site_title,
   siteUrl: location.protocol + '//' + location.host,
   client: axios.create(),
   perPage: window.wpSettings.posts_per_page,
