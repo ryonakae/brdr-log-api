@@ -155,4 +155,15 @@ if (function_exists('cloudinary_url')) {
   }
 }
 
+// 投稿の本文中の画像をショートコードにする
+function shortcode_image($arg) {
+  extract(shortcode_atts(array (
+    'src' => '',
+    'alt' => ''
+  ), $arg));
+
+  return '<img src="' . $src . '" alt="' . $alt . '">';
+}
+add_shortcode('image', 'shortcode_image');
+
 ?>
