@@ -51,7 +51,7 @@ export default {
     NotFoundComponent
   },
 
-  data() {
+  data () {
     return {
       categories: [],
       topHeight: 0,
@@ -61,31 +61,31 @@ export default {
   },
 
   computed: {
-    client() {
+    client () {
       return this.$store.state.client
     },
 
-    postId() {
+    postId () {
       return this.$route.params.id
     },
 
-    post() {
+    post () {
       return this.$store.state.currentPost
     },
 
-    hasPost() {
+    hasPost () {
       return Object.keys(this.post).length > 0
     },
 
-    hasEyecatch() {
+    hasEyecatch () {
       return this.post.featured_media > 0
     },
 
-    hasCategoriyNames() {
+    hasCategoriyNames () {
       return this.post.hasOwnProperty('_categories')
     },
 
-    postTitle() {
+    postTitle () {
       let title = this.post.title.rendered
       if (this.post.status === 'draft') {
         title = 'Draft: ' + this.post.title.rendered
@@ -93,19 +93,21 @@ export default {
       return title
     },
 
-    titleOffset() {
+    titleOffset () {
       return this.$store.state.titleOffset > 0
         ? this.$store.state.titleOffset
         : ''
     },
 
-    titleStyle() {
+    titleStyle () {
       let style
 
       if (this.hasEyecatch) {
         style = {
           position: 'absolute',
           top: this.titleOffset + 'px',
+          left: 0,
+          right: 0,
           marginTop: 0
         }
       } else {
@@ -117,19 +119,19 @@ export default {
       return style
     },
 
-    isPreview() {
+    isPreview () {
       return window.wpSettings.is_preview
     }
   },
 
   filters: {
-    moment(date) {
+    moment (date) {
       return moment(date).format('YYYY.M.D')
     }
   },
 
   methods: {
-    init() {
+    init () {
       console.log('[single - init]')
 
       // アイキャッチがある場合、viewportUnitsBuggyfillをrefreshする
@@ -140,7 +142,7 @@ export default {
       resizer.add('single.setTopHeight', this.setTopHeight.bind(this))
     },
 
-    async getPost(id) {
+    async getPost (id) {
       try {
         const res = await this.client.get('/posts/' + id, {
           params: { _embed: '' }
@@ -152,7 +154,7 @@ export default {
       }
     },
 
-    async getPostRevisions(id) {
+    async getPostRevisions (id) {
       try {
         const res = await this.client.get('/posts/' + id + '/revisions')
         console.log('[single - getPostRevisions]', res.data)
@@ -162,7 +164,7 @@ export default {
       }
     },
 
-    async getCategory() {
+    async getCategory () {
       console.log('[single - getCategory]')
       // indexから遷移した時、this.post._categoryにカテゴリの情報がすでに入っているので、それを使う
       if (this.hasCategoriyNames) {
@@ -176,7 +178,7 @@ export default {
       }
     },
 
-    async setTopHeight() {
+    async setTopHeight () {
       if (this.hasEyecatch) {
         console.log('[single - setTopHeight] has eyecatch')
         const imgLoad = imagesLoaded(this.$refs.eyecatch.$el, {
@@ -199,21 +201,21 @@ export default {
       }
     },
 
-    filter(categoryId, categoryName) {
+    filter (categoryId, categoryName) {
       this.$store.dispatch('filter', {
         categoryId: categoryId,
         categoryName: categoryName
       })
     },
 
-    onNotFound() {
+    onNotFound () {
       this.isNotFound = true
       this.$store.commit('setPageTitle', 'Page Not Found')
       this.$store.commit('changeIsLoading', false)
     }
   },
 
-  async mounted() {
+  async mounted () {
     if (this.hasPost) return this.init()
 
     try {
@@ -237,7 +239,7 @@ export default {
     }
   },
 
-  beforeRouteLeave(to, from, next) {
+  beforeRouteLeave (to, from, next) {
     resizer.remove('single.setTopHeight')
     next()
   }
@@ -281,10 +283,9 @@ export default {
 }
 
 .footer {
-  @apply --content;
-
   margin-top: calc(var(--margin_page) * 2);
   margin-bottom: var(--margin_page);
+  margin-left: var(--margin_page);
   font-size: var(--fontSize_small);
 
   & a {
@@ -294,6 +295,7 @@ export default {
   @media (--mq_sp) {
     margin-top: calc(var(--margin_page_sp) * 2);
     margin-bottom: var(--margin_page_sp);
+    margin-left: var(--margin_page_sp);
   }
 }
 

@@ -11,34 +11,34 @@ import '@/libraries/prettify'
 export default {
   props: ['data'],
 
-  data() {
+  data () {
     return {
       isImagesLoaded: false
     }
   },
 
   computed: {
-    hasContent() {
+    hasContent () {
       return this.data.content.rendered !== ''
     },
 
-    isFontLoaded() {
+    isFontLoaded () {
       return this.$store.state.isFontLoaded
     }
   },
 
   watch: {
-    isImagesLoaded() {
+    isImagesLoaded () {
       this.checkLoad()
     },
 
-    isFontLoaded() {
+    isFontLoaded () {
       this.checkLoad()
     }
   },
 
   methods: {
-    init() {
+    init () {
       // Twitterの埋め込みツイートがあったら関数実行
       const $tweet = document.getElementsByClassName('twitter-tweet')
       if ($tweet.length > 0) window.twttr.widgets.load(document.body)
@@ -87,7 +87,7 @@ export default {
       })()
     },
 
-    checkLoad() {
+    checkLoad () {
       // webフォントがロードされて、全ての画像が読み込み済みの時の処理
       if (this.isFontLoaded && this.isImagesLoaded) {
         console.log('[Content - checkLoad] all webfont/images loaded')
@@ -96,7 +96,7 @@ export default {
     }
   },
 
-  mounted() {
+  mounted () {
     this.init()
   }
 }
@@ -196,7 +196,7 @@ export default {
 
   & :global(ul),
   & :global(ol) {
-    padding-left: 1.3em;
+    /* padding-left: 1.3em; */
 
     & :global(ul),
     & :global(ol) {
@@ -236,8 +236,8 @@ export default {
     }
 
     @media (--mq_sp) {
-      margin-left: 0;
-      margin-right: 0;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     & :global(img) {

@@ -13,7 +13,6 @@ body {
   background-color: var(--color_bg);
   font-family: var(--fontFamily);
   font-size: var(--fontSize);
-  font-feature-settings: "palt" on;
   letter-spacing: var(--letterSpacing);
   overflow-wrap: break-word;
   -webkit-text-size-adjust: 100%;

@@ -16,27 +16,69 @@ remove_action('admin_print_scripts', 'print_emoji_detection_script');
 remove_action('admin_print_styles', 'print_emoji_styles');
 
 // head内のインラインスタイル削除
-add_filter('widgets_init', function() {
+function remove_inline_style() {
   global $wp_widget_factory;
   remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
-});
+}
+add_filter('widgets_init', 'remove_inline_style');
 
 // head内のdns-prefetchを削除
-add_filter('wp_resource_hints', function($hints, $relation_type) {
+function remove_dns_prefetch($hints, $relation_type) {
   if ('dns-prefetch' === $relation_type) {
     return array_diff(wp_dependencies_unique_hosts(), $hints);
   }
   return $hints;
-}, 10, 2);
+}
+add_filter('wp_resource_hints', 'remove_dns_prefetch', 10, 2);
+
+// セルフピンバックの無効化
+function disable_pinback(&$links) {
+  $home = get_option('home');
+  foreach($links as $l => $link)
+  if(0 === strpos($link, $home))
+  unset($links[$l]);
+}
+add_filter('pre_ping', 'disable_pinback');
+
+// ビジュアルエディタを無効化
+function disable_visual_editor(){
+  add_filter('user_can_richedit', function(){
+    return false;
+  });
+}
+add_filter('load-post.php', 'disable_visual_editor');
+add_filter('load-post-new.php', 'disable_visual_editor');
+
+// 投稿の自動保存を無効化
+// function disable_autosave() {
+//   wp_deregister_script('autosave');
+// }
+// add_filter('wp_print_scripts', 'disable_autosave');
+
+// カテゴリーを無効化(非表示)
+// function disable_categories() {
+//   register_taxonomy('category', array());
+// }
+// add_filter('init', 'disable_categories');
+// unregister_widget( 'WP_Widget_Categories' );
+
+// タグを無効化
+function disable_tags() {
+  unregister_taxonomy_for_object_type('post_tag', 'post');
+}
+add_filter('init', 'disable_tags');
 
 // アイキャッチ画像の有効化
 add_theme_support('post-thumbnails');
 
 // 画像生成時の画質を変更
-add_filter('jpeg_quality', function($arg){ return 100; });
+function change_image_quality($arg) {
+  return 100;
+}
+add_filter('jpeg_quality', 'change_image_quality');
 
 // 画像のサイズを削除
-add_filter('intermediate_image_sizes_advanced', function($sizes){
+function delete_image_sizes($sizes) {
   // medium_large(Advanced Custom Fields)
   update_option('medium_large_size_w', 0);
 
@@ -44,51 +86,29 @@ add_filter('intermediate_image_sizes_advanced', function($sizes){
 	// unset($sizes['medium']);
 	unset($sizes['large']);
 	return $sizes;
-});
+}
+add_filter('intermediate_image_sizes_advanced', 'delete_image_sizes');
 
 // 画像のサイズを追加
 add_image_size('admin_thumbnail', 300, 300, true);
 add_image_size('theme_eyecatch', 2048, 2048, false);
 
-// セルフピンバックの無効化
-add_filter('pre_ping', function(&$links) {
-  $home = get_option('home');
-  foreach($links as $l => $link)
-  if(0 === strpos($link, $home))
-  unset($links[$l]);
-});
-
-// ビジュアルエディタを無効化
-function disable_visual_editor(){
-  add_filter('user_can_richedit', function(){ return false; });
-}
-add_filter('load-post.php', 'disable_visual_editor');
-add_filter('load-post-new.php', 'disable_visual_editor');
-
-// 投稿の自動保存を無効化
-// add_filter('wp_print_scripts', function() {
-//   wp_deregister_script('autosave');
-// });
-
-// カテゴリーを無効化(非表示)
-// add_filter('init', function() {
-//   register_taxonomy('category', array());
-// });
-// unregister_widget( 'WP_Widget_Categories' );
-
-// タグを無効化
-add_filter('init', function() {
-  unregister_taxonomy_for_object_type('post_tag', 'post');
-});
-
 // 投稿に画像をショートコードで挿入する
 function my_image_send_to_editor($html, $id, $caption, $title, $align, $url, $size, $alt) {
   $image = wp_get_attachment_image_src($id, $size)[0];
 
-  if ($caption === '') {
-    $html = '[image src="' . $image . '" alt="' . $alt . '"]' . "\n";
+  if ($caption) {
+    if ($alt) {
+      $html = '[image src="' . $image . '" alt="' . $alt . '" caption="' . $caption . '"]' . "\n";
+    } else {
+      $html = '[image src="' . $image . '" caption="' . $caption . '"]' . "\n";
+    }
   } else {
-    $html = '[image src="' . $image . '" alt="' . $alt . '" caption="' . $caption . '"]' . "\n";
+    if ($alt) {
+      $html = '[image src="' . $image . '" alt="' . $alt . '"]' . "\n";
+    } else {
+      $html = '[image src="' . $image . '"]' . "\n";
+    }
   }
 
   return $html;
@@ -103,14 +123,20 @@ function shortcode_image($arg) {
     'caption' => ''
   ), $arg));
 
-  if ($caption === '') {
+  if ($alt) {
+    $image = '<img src="' . $src . '" alt="' . $alt . '">';
+  } else {
+    $image = '<img src="' . $src . '">';
+  }
+
+  if ($caption) {
     $html = '<figure class="img">' . "\n" .
-            '  ' . '<img src="' . $src . '" alt="' . $alt . '">' . "\n" .
+            '  ' . $image . "\n" .
+            '  ' . '<figcaption>' . $caption . '</figcaption>' . "\n" .
             '</figure>';
   } else {
     $html = '<figure class="img">' . "\n" .
-            '  ' . '<img src="' . $src . '" alt="' . $alt . '">' . "\n" .
-            '  ' . '<figcaption>' . $caption . '</figcaption>' . "\n" .
+            '  ' . $image . "\n" .
             '</figure>';
   }
 
@@ -119,40 +145,36 @@ function shortcode_image($arg) {
 add_shortcode('image', 'shortcode_image');
 
 // 画像をアップロードしたときにファイル名をタイムスタンプに変更
-add_filter('sanitize_file_name', function($filename) {
+function rename_filename_to_timestamp($filename) {
   $info = pathinfo($filename);
 	$ext  = empty($info['extension']) ? '' : '.' . $info['extension'];
 	if ($info['filename'] != 'sitemap') {
 		$filename = strtolower(time().$ext);
 	}
   return $filename;
-}, 10);
-
-// 画像をアップロードした時にデフォルトで入るタイトルを削除
-add_filter('wp_get_attachment_image_attributes', function($attr) {
-  unset( $attr['alt'] );
-  unset( $attr['title']) ;
-  return $attr;
-});
+}
+add_filter('sanitize_file_name', 'rename_filename_to_timestamp', 10);
 
 // Cloudinary
 if (function_exists('cloudinary_url')) {
   // デフォルトのフォーマットを設定
-  add_filter('cloudinary_default_crop', function($crop) {
+  function set_default_crop($crop) {
     return 'limit';
-  }, 10, 1);
-  add_filter('cloudinary_default_args', function($args) {
+  }
+  function set_default_args($args) {
     $args['transform']['crop'] = 'limit';
     $args['transform']['fetch_format'] = 'auto';
     $args['transform']['quality'] = 'auto:best';
     $args['transform']['flags'] = 'progressive';
     return $args;
-  });
+  }
+  add_filter('cloudinary_default_crop', 'set_default_crop', 10, 1);
+  add_filter('cloudinary_default_args', 'set_default_args');
 
   // productionでだけ本文中の画像URLをCloudinaryのものに置換する
   // developmentではAuto Cloudinaryの設定の「Content Images」のチェックを外す（アイキャッチが表示できなくなるため）
   if (getenv('SERVER_ENV') == 'production') {
-    add_filter('the_content', function($content) {
+    function replace_image_url($content) {
       $pattern = '/<img.*?src=(["\'])(.+?)\1.*?>/i';
       preg_match_all($pattern, $content, $matches);
 
@@ -166,7 +188,8 @@ if (function_exists('cloudinary_url')) {
       }
 
       return $content;
-    });
+    }
+    add_filter('the_content', 'replace_image_url');
   }
 }
 
