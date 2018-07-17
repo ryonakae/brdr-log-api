@@ -81,34 +81,42 @@ add_filter('init', function() {
   unregister_taxonomy_for_object_type('post_tag', 'post');
 });
 
-// 投稿に画像を挿入するときのフォーマットを変更
-function my_get_image_tag($html, $id, $alt, $title, $align, $size){
-  $html = preg_replace('/ width="\d+"/', '', $html);
-  $html = preg_replace('/ height="\d+"/', '', $html);
-  $html = preg_replace('/ class=".+"/', '', $html);
-  $html = preg_replace('/ title=".+"/', '', $html);
-  return $html;
-}
-add_filter('get_image_tag', 'my_get_image_tag', 1 ,6);
+// 投稿に画像をショートコードで挿入する
+function my_image_send_to_editor($html, $id, $caption, $title, $align, $url, $size, $alt) {
+  $image = wp_get_attachment_image_src($id, $size)[0];
 
-function my_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $size ) {
-  $html = preg_replace('/<a href=".+">/', '', $html);
-  $html = preg_replace('/<\/a>/', '', $html);
-  $html = preg_replace('/" \/>/', '">', $html);
-
-  if ($caption) {
-    $html = '<p class="img">' . "\n" .
-            $html . "\n" .
-            '<small>' . $caption . '</small>'  . "\n" .
-            '</p>';
-  }
-  else {
-    $html = "\n" . '<p class="img">' . $html . '</p>';
+  if ($caption === '') {
+    $html = '[image src="' . $image . '" alt="' . $alt . '"]' . "\n";
+  } else {
+    $html = '[image src="' . $image . '" alt="' . $alt . '" caption="' . $caption . '"]' . "\n";
   }
 
   return $html;
 }
-add_filter('image_send_to_editor', 'my_image_send_to_editor', 10 ,7);
+add_filter('image_send_to_editor', 'my_image_send_to_editor', 10 ,8);
+
+// 画像ショートコードを指定したフォーマットで展開する
+function shortcode_image($arg) {
+  extract(shortcode_atts(array (
+    'src' => '',
+    'alt' => '',
+    'caption' => ''
+  ), $arg));
+
+  if ($caption === '') {
+    $html = '<figure class="img">' . "\n" .
+            '  ' . '<img src="' . $src . '" alt="' . $alt . '">' . "\n" .
+            '</figure>';
+  } else {
+    $html = '<figure class="img">' . "\n" .
+            '  ' . '<img src="' . $src . '" alt="' . $alt . '">' . "\n" .
+            '  ' . '<figcaption>' . $caption . '</figcaption>' . "\n" .
+            '</figure>';
+  }
+
+  return $html;
+}
+add_shortcode('image', 'shortcode_image');
 
 // 画像をアップロードしたときにファイル名をタイムスタンプに変更
 add_filter('sanitize_file_name', function($filename) {
@@ -119,6 +127,13 @@ add_filter('sanitize_file_name', function($filename) {
 	}
   return $filename;
 }, 10);
+
+// 画像をアップロードした時にデフォルトで入るタイトルを削除
+add_filter('wp_get_attachment_image_attributes', function($attr) {
+  unset( $attr['alt'] );
+  unset( $attr['title']) ;
+  return $attr;
+});
 
 // Cloudinary
 if (function_exists('cloudinary_url')) {
@@ -154,16 +169,5 @@ if (function_exists('cloudinary_url')) {
     });
   }
 }
-
-// 投稿の本文中の画像をショートコードにする
-function shortcode_image($arg) {
-  extract(shortcode_atts(array (
-    'src' => '',
-    'alt' => ''
-  ), $arg));
-
-  return '<img src="' . $src . '" alt="' . $alt . '">';
-}
-add_shortcode('image', 'shortcode_image');
 
 ?>
