@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasAllPosts" class="page">
-    <div class="post" v-for="post in posts" :key="post.id">
+    <div class="item" v-for="post in posts" :key="post.id">
       <post-component :post="post"></post-component>
     </div>
 
@@ -182,9 +182,11 @@ export default {
   }
 }
 
-.post {
-  display: block;
+.item {
+  max-width: calc(var(--width_content) + var(--margin_title) * 2);
   margin-top: calc(2.6em - var(--margin_title) * 2);
+  margin-left: auto;
+  margin-right: auto;
 
   &:first-child {
     margin-top: 0;

@@ -5,19 +5,21 @@
         <eyecatch-component class="eyecatch" :post="post" ref="eyecatch"></eyecatch-component>
 
         <header class="header" :style="titleStyle" ref="title">
-          <h1 class="title" v-html="postTitle"></h1>
-          <div class="info">
-            <div class="date">{{post.date | moment}}</div>
-            <ul class="categories">
-              <li
-                v-for="category in categories"
-                :key="category.id"
-                class="category"
-                @click.stop="filter(category.id, category.name)"
-              >
-                <span>{{category.name}}</span>
-              </li>
-            </ul>
+          <div class="inner">
+            <h1 class="title" v-html="postTitle"></h1>
+            <div class="info">
+              <div class="date">{{post.date | moment}}</div>
+              <ul class="categories">
+                <li
+                  v-for="category in categories"
+                  :key="category.id"
+                  class="category"
+                  @click.stop="filter(category.id, category.name)"
+                >
+                  <span>{{category.name}}</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </header>
       </div>
@@ -250,15 +252,21 @@ export default {
 @import 'config.css';
 
 .header {
-  @apply --header;
-
-  background-color: var(--color_bg);
+  max-width: calc(var(--width_content) + var(--margin_title) * 2);
   top: var(--margin_top);
   margin-top: var(--margin_top);
+  margin-left: auto;
+  margin-right: auto;
 
   @media (--mq_sp) {
     top: var(--margin_top_sp);
     margin-top: var(--margin_top_sp);
+  }
+
+  & .inner {
+    @apply --header;
+    background-color: var(--color_bg);
+    display: inline-block;
   }
 }
 
