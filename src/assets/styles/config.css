@@ -1,7 +1,7 @@
 :root {
   /* color */
   --color_bg: #fff;
-  --color_key: #31373d;
+  --color_key: #292c2e;
   --color_sub: color(var(--color_key) alpha(55%));
   --color_bgSub: color(var(--color_key) alpha(5%));
 
