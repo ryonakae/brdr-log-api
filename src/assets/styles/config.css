@@ -115,15 +115,13 @@
 
   /* post content */
   --content: {
-    max-width: calc(var(--width_content) + var(--margin_page) * 2);
+    max-width: var(--width_content);
     margin-right: auto;
     margin-left: auto;
-    padding-right: var(--margin_page);
-    padding-left: var(--margin_page);
 
     @media (--mq_sp) {
-      padding-right: var(--margin_page_sp);
-      padding-left: var(--margin_page_sp);
+      margin-right: var(--margin_page_sp);
+      margin-left: var(--margin_page_sp);
     }
   }
 }

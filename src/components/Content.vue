@@ -236,8 +236,8 @@ export default {
     }
 
     @media (--mq_sp) {
-      margin-left: 0;
-      margin-right: 0;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     & :global(img) {
