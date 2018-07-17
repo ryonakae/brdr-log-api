@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
 const themePath = '/wp-content/themes/l/'
@@ -74,6 +75,18 @@ const common = {
       },
 
       {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          {
+            loader: 'css-loader',
+            options: { importLoaders: 1 }
+          },
+          'postcss-loader'
+        ]
+      },
+
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
@@ -118,7 +131,7 @@ const common = {
     ]
   },
 
-  plugins: [new GenerateSW(swOptions)]
+  plugins: [new VueLoaderPlugin(), new GenerateSW(swOptions)]
 }
 
 const dev = {

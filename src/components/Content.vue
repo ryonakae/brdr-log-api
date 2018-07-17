@@ -205,6 +205,7 @@ export default {
     }
   }
 
+  & :global(figure),
   & :global(.img) {
     position: relative;
     display: table;
@@ -227,6 +228,11 @@ export default {
       & :global(img) {
         opacity: 1;
       }
+
+      & :global(small),
+      & :global(figcaption) {
+        opacity: 1;
+      }
     }
 
     @media (--mq_sp) {
@@ -235,6 +241,7 @@ export default {
     }
 
     & :global(img) {
+      display: block;
       line-height: 0;
       max-width: 100%;
       height: auto;
@@ -242,13 +249,15 @@ export default {
       opacity: 0;
     }
 
-    & :global(small) {
+    & :global(small),
+    & :global(figcaption) {
       display: block;
       text-align: center;
       margin-top: 1em;
       line-height: var(--lineHeight_caption);
       font-size: var(--fontSize_small);
       color: var(--color_sub);
+      opacity: 0;
     }
   }
 

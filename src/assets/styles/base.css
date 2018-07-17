@@ -43,8 +43,8 @@ body {
 
   @nest :global(body[data-device="pc"]) &:hover {
     text-decoration: none;
-    color: var(--textColor_inverse);
-    background-color: var(--textColor_default);
+    color: var(--color_key);
+    background-color: var(--color_bg);
   }
 }
 

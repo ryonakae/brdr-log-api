@@ -4,7 +4,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/brdr-log
   docker:
-    - image: circleci/node:8.9.4
+    - image: circleci/node:8.11.3
 
 jobs:
   build-publish:
