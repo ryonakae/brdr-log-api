@@ -61,9 +61,9 @@
   /* post header */
   --header: {
     max-width: calc(var(--width_content) + var(--margin_title) * 2);
-    padding: calc(var(--margin_title));
-    margin-right: calc(var(--margin_page) - var(--margin_title));
-    margin-left: calc(var(--margin_page) - var(--margin_title));
+    margin-right: auto;
+    margin-left: auto;
+    padding: var(--margin_title);
 
     @media (--mq_sp) {
       margin-right: calc(var(--margin_page_sp) - var(--margin_title));
@@ -115,13 +115,15 @@
 
   /* post content */
   --content: {
-    max-width: var(--width_content);
-    margin-right: var(--margin_page);
-    margin-left: var(--margin_page);
+    max-width: calc(var(--width_content) + var(--margin_page) * 2);
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: var(--margin_page);
+    padding-left: var(--margin_page);
 
     @media (--mq_sp) {
-      margin-right: var(--margin_page_sp);
-      margin-left: var(--margin_page_sp);
+      padding-right: var(--margin_page_sp);
+      padding-left: var(--margin_page_sp);
     }
   }
 }

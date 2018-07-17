@@ -19,54 +19,54 @@ export default {
     EyecatchComponent
   },
 
-  data() {
+  data () {
     return {
       isScrolling: false
     }
   },
 
   computed: {
-    client() {
+    client () {
       return this.$store.state.client
     },
 
-    perPage() {
+    perPage () {
       return this.$store.state.perPage
     },
 
-    posts() {
+    posts () {
       return this.$store.state.allPosts
     },
 
-    currentPost() {
+    currentPost () {
       return this.$store.state.currentPost
     },
 
-    hasAllPosts() {
+    hasAllPosts () {
       return this.posts.length > 0
     },
 
-    hasCurrentPost() {
+    hasCurrentPost () {
       return this.$store.state.currentPost !== void 0
     },
 
-    loadedPost() {
+    loadedPost () {
       return this.$store.state.loadedPost
     },
 
-    isFontLoaded() {
+    isFontLoaded () {
       return this.$store.state.isFontLoaded
     },
 
-    isFiltered() {
+    isFiltered () {
       return this.$store.state.categoryId !== 0
     },
 
-    categoryId() {
+    categoryId () {
       return this.$store.state.categoryId
     },
 
-    params() {
+    params () {
       let params = {
         _embed: '',
         per_page: this.perPage,
@@ -81,19 +81,19 @@ export default {
   },
 
   watch: {
-    loadedPost() {
+    loadedPost () {
       this.checkLoad()
     },
-    isFontLoaded() {
+    isFontLoaded () {
       this.checkLoad()
     },
-    categoryId() {
+    categoryId () {
       this.getPosts(this.params)
     }
   },
 
   methods: {
-    async getPosts(params) {
+    async getPosts (params) {
       try {
         const res = await this.client.get('/posts', { params: params })
         this.$store.commit('setAllPosts', this.posts.concat(res.data))
@@ -104,7 +104,7 @@ export default {
       }
     },
 
-    async getMorePosts(params) {
+    async getMorePosts (params) {
       try {
         const _params = Object.assign(params, { offset: this.posts.length })
         const res = await this.getPosts(_params)
@@ -118,7 +118,7 @@ export default {
       }
     },
 
-    async onScroll() {
+    async onScroll () {
       console.log('[index - onScroll]')
       const documentHeight = document.body.clientHeight
       const scrollBottom = scroller.getScrollBottom()
@@ -131,7 +131,7 @@ export default {
       }
     },
 
-    checkLoad() {
+    checkLoad () {
       // webフォントがロードされて、loadedCountが記事数と同じになった時の処理
       if (this.isFontLoaded && this.posts.length === this.loadedPost) {
         console.log('[index - checkLoad] all webfont and post loaded')
@@ -140,7 +140,7 @@ export default {
     }
   },
 
-  async mounted() {
+  async mounted () {
     this.$store.commit('changeIsLoading', true)
     this.$store.commit('setCurrentPost', { data: {} })
     this.$store.commit('setPageTitle', '')
@@ -148,7 +148,7 @@ export default {
     scroller.add('index.onScroll', this.onScroll.bind(this))
   },
 
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     next(vm => {
       // プレビュー時、かつ /?p=[id]&preview=true というクエリがある場合は、singleに遷移する
       // 遷移時にp(id)を渡す
@@ -161,7 +161,7 @@ export default {
     })
   },
 
-  beforeRouteLeave(to, from, next) {
+  beforeRouteLeave (to, from, next) {
     this.$store.commit('resetLoadedPost')
     scroller.remove('index.onScroll')
     next()
@@ -173,7 +173,6 @@ export default {
 @import 'config.css';
 
 .page {
-  @apply --content;
   margin-top: var(--margin_top);
   margin-bottom: calc(var(--margin_page) * 2.5 + 1em);
 

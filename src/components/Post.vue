@@ -45,7 +45,7 @@ export default {
 
   props: ['post'],
 
-  data() {
+  data () {
     return {
       categories: [],
       isLoaded: false,
@@ -54,15 +54,15 @@ export default {
   },
 
   computed: {
-    leaveDelay() {
+    leaveDelay () {
       return utils.getDevice() === 'mobile' ? 150 : 0
     },
 
-    hasEyecatch() {
+    hasEyecatch () {
       return this.post.featured_media > 0
     },
 
-    postTitle() {
+    postTitle () {
       let title
 
       if (this.post.status === 'draft') {
@@ -76,13 +76,13 @@ export default {
   },
 
   filters: {
-    moment(date) {
+    moment (date) {
       return moment(date).format('YYYY.M.D')
     }
   },
 
   methods: {
-    async init() {
+    async init () {
       const res = await this.$store.dispatch(
         'getAllCategoryName',
         this.post.categories
@@ -92,7 +92,7 @@ export default {
       this.isLoaded = true
     },
 
-    onEnter() {
+    onEnter () {
       console.log('[PostItem - onEnter] start', this.$route.path)
       // singleでclickイベントが発火してしまう対策
       if (this.$route.path !== '/') return
@@ -114,7 +114,7 @@ export default {
       console.log('[PostItem - onEnter] done', this.$store.state.currentPost)
     },
 
-    async onLeave() {
+    async onLeave () {
       // singleに遷移する時にアイキャッチが一瞬消えてしまいチラついて見えるので、
       // currentPostをクリアするのを少しだけ遅らせる（SPだけ）
       // すでにsingleに遷移している場合はクリアしない
@@ -129,7 +129,7 @@ export default {
       console.log('[PostItem - onLeave] done', this.$store.state.currentPost)
     },
 
-    async preloadImages() {
+    async preloadImages () {
       // httpsの画像だけ配列に追加する
       const regexp = /https:\/\/.*\/.*\.(jpg|jpeg|gif|png)/g
       const imgArray = this.post.content.rendered.match(regexp)
@@ -147,12 +147,12 @@ export default {
       }
     },
 
-    setTitleOffset(e) {
+    setTitleOffset (e) {
       const offset = e.currentTarget.offsetTop - window.pageYOffset
       this.$store.commit('setTitleOffset', offset)
     },
 
-    filter(categoryId, categoryName) {
+    filter (categoryId, categoryName) {
       this.$store.dispatch('filter', {
         categoryId: categoryId,
         categoryName: categoryName
@@ -160,7 +160,7 @@ export default {
     }
   },
 
-  async mounted() {
+  async mounted () {
     try {
       if (this.hasEyecatch) {
         const imgLoad = imagesLoaded(this.$refs.eyecatch.$el, {
@@ -184,8 +184,6 @@ export default {
 .post {
   @apply --header;
 
-  margin-left: -var(--margin_title);
-  margin-right: -var(--margin_title);
   position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
