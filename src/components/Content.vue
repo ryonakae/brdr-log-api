@@ -112,6 +112,7 @@ export default {
 .content {
   line-height: var(--lineHeight_content);
   text-align: justify;
+  word-break: break-all;
 
   & > :global(*) {
     @apply --content;
@@ -133,7 +134,7 @@ export default {
   & :global(h4),
   & :global(h5),
   & :global(h6) {
-    margin-top: 1.5em;
+    margin-top: 2em;
     margin-bottom: 0.5em;
     line-height: var(--lineHeight_title);
     text-align: left;
@@ -141,62 +142,38 @@ export default {
 
   & :global(h1) {
     font-size: var(--fontSize_h1);
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h1_sp);
-    }
   }
 
   & :global(h2) {
     font-size: var(--fontSize_h2);
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h2_sp);
-    }
   }
 
   & :global(h3) {
     font-size: var(--fontSize_h3);
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h3_sp);
-    }
   }
 
   & :global(h4) {
     font-size: var(--fontSize_h4);
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h4_sp);
-    }
   }
 
   & :global(h5) {
     font-size: var(--fontSize_h5);
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h5_sp);
-    }
   }
 
   & :global(h6) {
     font-size: var(--fontSize_h6);
-
-    @media (--mq_sp) {
-      font-size: var(--fontSize_h6_sp);
-    }
   }
 
   & :global(p),
   & :global(ul),
   & :global(ol) {
-    margin-top: 1.2em;
-    margin-bottom: 1.2em;
+    margin-top: 1.3em;
+    margin-bottom: 1.3em;
   }
 
   & :global(ul),
   & :global(ol) {
-    /* padding-left: 1.3em; */
+    padding-left: 1.5em;
 
     & :global(ul),
     & :global(ol) {
@@ -207,12 +184,13 @@ export default {
 
   & :global(figure),
   & :global(.img) {
-    position: relative;
-    display: table;
-    max-width: 100%;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background-color: var(--color_bgSub);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     &:first-child {
       margin-top: 0;
@@ -236,35 +214,32 @@ export default {
     }
 
     @media (--mq_sp) {
-      margin-left: auto;
-      margin-right: auto;
+      max-width: 100%;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     & :global(img) {
-      display: block;
-      line-height: 0;
       max-width: 100%;
       height: auto;
       vertical-align: top;
       opacity: 0;
     }
 
-    & :global(small),
     & :global(figcaption) {
-      display: block;
+      width: 100%;
       text-align: center;
       margin-top: 1em;
       line-height: var(--lineHeight_caption);
       font-size: var(--fontSize_small);
       color: var(--color_sub);
       opacity: 0;
-    }
-  }
 
-  & :global(blockquote),
-  & :global(pre) {
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
+      @media (--mq_sp) {
+        padding-right: var(--margin_page_sp);
+        padding-left: var(--margin_page_sp);
+      }
+    }
   }
 
   & :global(blockquote) {
@@ -279,11 +254,9 @@ export default {
     font-family: var(--fontFamily_code);
     font-size: var(--fontSize_code);
     letter-spacing: initial;
-    word-break: break-all;
   }
 
   & :global(pre) {
-    max-width: 100%;
     padding: 1em 1.3em;
     text-align: left;
     background-color: var(--color_bgSub);
@@ -301,6 +274,7 @@ export default {
     }
 
     @media (--mq_sp) {
+      max-width: 100%;
       margin-left: 0;
       margin-right: 0;
       padding-left: var(--margin_page_sp);
@@ -322,7 +296,6 @@ export default {
     padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
-    max-width: 100%;
 
     & :global(iframe) {
       position: absolute;
@@ -331,12 +304,31 @@ export default {
       width: 100%;
       height: 100%;
     }
+
+    @media (--mq_sp) {
+      padding: 0;
+      height: calc(100vw / 16 * 9);
+    }
+  }
+
+  & :global(p) > :global(.iframe) {
+    @media (--mq_sp) {
+      margin-left: -var(--margin_page_sp);
+      margin-right: -var(--margin_page_sp);
+    }
   }
 
   & :global(.twitter-tweet),
   & :global(.instagram-media) {
     margin-top: 1.5em !important;
     margin-bottom: 1.5em !important;
+
+    @media (--mq_sp) {
+      margin-right: auto !important;
+      margin-left: auto !important;
+      padding-right: var(--margin_page_sp) !important;
+      padding-left: var(--margin_page_sp) !important;
+    }
   }
 }
 </style>

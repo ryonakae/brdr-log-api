@@ -189,11 +189,11 @@ export default {
   -webkit-user-select: none;
   display: inline-block;
   cursor: pointer;
-  color: var(--color_sub);
+  opacity: 0.7;
   pointer-events: none;
 
   &.active {
-    color: inherit;
+    opacity: 1;
     pointer-events: auto;
   }
 
