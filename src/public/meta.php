@@ -4,6 +4,7 @@
   $og_url = '';
   $og_type = '';
   $og_image = '';
+  $twitter_card = '';
 
   // 詳細(single, page)のとき
   if (is_single() || is_page()) {
@@ -33,9 +34,11 @@
       $thumbnail_id = get_post_thumbnail_id($post->ID);
       $image = wp_get_attachment_image_src( $thumbnail_id, 'theme_eyecatch' );
       $og_image = $image[0];
+      $twitter_card = 'summary_large_image';
     }
     else {
       $og_image = get_template_directory_uri().'/ogp.png';
+      $twitter_card = 'summary';
     }
   }
   // それ以外(一覧など)のとき
@@ -45,6 +48,7 @@
     $og_url = get_bloginfo('url');
     $og_type = 'website';
     $og_image = get_template_directory_uri().'/ogp.png';
+    $twitter_card = 'summary_large_image';
   }
 ?>
 
@@ -64,7 +68,7 @@
 <meta property="og:image" content="<?php echo $og_image; ?>">
 <meta property="og:locale" content="ja_JP">
 
-<meta name="twitter:card" value="summary_large_image">
+<meta name="twitter:card" value="<?php echo $twitter_card; ?>">
 <meta name="twitter:title" value="<?php echo $title; ?>">
 <meta name="twitter:description" value="<?php echo $description; ?>">
 <meta name="twitter:image:src" value="<?php echo $og_image; ?>">
