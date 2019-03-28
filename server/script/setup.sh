@@ -33,7 +33,6 @@ eval $EXEC wp plugin install --activate \
   wp-multibyte-patch \
   jetpack-markdown \
   disable-comments \
-  auto-cloudinary \
   force-regenerate-thumbnails
 
 # install Advanced Custom Fields & Repeater Field
