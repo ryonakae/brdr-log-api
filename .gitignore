@@ -9,3 +9,6 @@ theme
 _sprite.*
 
 !.gitkeep
+
+.env
+backup
