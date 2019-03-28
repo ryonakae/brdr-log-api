@@ -155,42 +155,4 @@ function rename_filename_to_timestamp($filename) {
 }
 add_filter('sanitize_file_name', 'rename_filename_to_timestamp', 10);
 
-// Cloudinary
-if (function_exists('cloudinary_url')) {
-  // デフォルトのフォーマットを設定
-  function set_default_crop($crop) {
-    return 'limit';
-  }
-  function set_default_args($args) {
-    $args['transform']['crop'] = 'limit';
-    $args['transform']['fetch_format'] = 'auto';
-    $args['transform']['quality'] = 'auto:best';
-    $args['transform']['flags'] = 'progressive';
-    return $args;
-  }
-  add_filter('cloudinary_default_crop', 'set_default_crop', 10, 1);
-  add_filter('cloudinary_default_args', 'set_default_args');
-
-  // productionでだけ本文中の画像URLをCloudinaryのものに置換する
-  // developmentではAuto Cloudinaryの設定の「Content Images」のチェックを外す（アイキャッチが表示できなくなるため）
-  if (getenv('SERVER_ENV') == 'production') {
-    function replace_image_url($content) {
-      $pattern = '/<img.*?src=(["\'])(.+?)\1.*?>/i';
-      preg_match_all($pattern, $content, $matches);
-
-      foreach ($matches[2] as $url) {
-        $content = str_replace($url, cloudinary_url($url, array(
-          'transform' => array(
-            'width' => 1440,
-            'height' => 1440,
-          )
-        )), $content);
-      }
-
-      return $content;
-    }
-    add_filter('the_content', 'replace_image_url');
-  }
-}
-
 ?>

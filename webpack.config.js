@@ -4,7 +4,7 @@ const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
-const themePath = '/wp-content/themes/l/'
+const themePath = '/wp-content/themes/log/'
 
 const swOptions = {
   cacheId: 'brdr-log',

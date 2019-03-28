@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:1.13.5-alpine
+    ports:
+      - ${VIRTUAL_PORT}:80
+    restart: always
+    env_file: .env
+    volumes:
+      - data-wp:/var/www/html:ro
+      - ./server/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./server/nginx/conf:/etc/nginx/conf/:ro
+      - ./server/nginx/htpasswd:/etc/nginx/htpasswd/:ro
+      - ${THEME_DIRECTORY}:/var/www/html/wp-content/themes/${THEME_NAME}:ro
+    networks:
+      - proxy
+      - back
+
+  wordpress:
+    build: ./server/wordpress
+    ports:
+      - 9000
+    restart: always
+    env_file: .env
+    volumes:
+      - data-wp:/var/www/html:rw
+      - ./server/wordpress:/usr/local/etc/php:ro
+      - ${THEME_DIRECTORY}:/var/www/html/wp-content/themes/${THEME_NAME}:ro
+    networks:
+      - back
+
+  mysql:
+    image: mysql:5.7.19
+    ports:
+      - 3306
+    restart: always
+    env_file: .env
+    volumes:
+      - data-db:/var/lib/mysql:rw
+    networks:
+      - back
+
+  data:
+    image: busybox:musl
+    volumes:
+      - data-wp:/var/www/html:rw
+      - data-db:/var/lib/mysql:rw
+      - ./backup:/backup:rw
+    networks:
+      - back
+
+volumes:
+  data-wp:
+    external:
+      name: ${COMPOSE_PROJECT_NAME}-wp
+  data-db:
+    external:
+      name: ${COMPOSE_PROJECT_NAME}-db
+
+networks:
+  proxy:
+    external:
+      name: ${NETWORK_PROXY_NAME}
+  back:
