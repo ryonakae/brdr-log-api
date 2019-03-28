@@ -20,7 +20,8 @@ eval $EXEC wp theme activate log
 eval $EXEC wp theme delete \
   twentyfifteen \
   twentysixteen \
-  twentyseventeen
+  twentyseventeen \
+  twentynineteen
 
 # delete default plugin
 eval $EXEC wp plugin delete \
