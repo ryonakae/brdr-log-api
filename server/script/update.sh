@@ -1,8 +1,6 @@
 #!/bin/sh
 
-EXEC='docker-compose exec -u www-data wordpress'
-
-eval $EXEC wp core update
-eval $EXEC wp plugin update --all
-eval $EXEC wp theme update --all
-eval $EXEC wp core language update
+docker-compose run --rm wpcli core update
+docker-compose run --rm wpcli plugin update --all
+docker-compose run --rm wpcli theme update --all
+docker-compose run --rm wpcli core language update

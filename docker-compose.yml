@@ -41,6 +41,18 @@ services:
     networks:
       - back
 
+  wpcli:
+    image: tatemz/wp-cli
+    volumes:
+      - data-wp:/var/www/html:rw
+      - data-db:/var/lib/mysql:rw
+      - ./backup:/backup:rw
+      - ${THEME_DIRECTORY}:/var/www/html/wp-content/themes/${THEME_NAME}:ro
+    entrypoint: wp
+    command: '--info'
+    networks:
+      - back
+
   data:
     image: busybox:musl
     volumes:
