@@ -84,51 +84,10 @@ function register_rest_specific_fields() {
   register_rest_field('post', '_categories', array(
     'get_callback' => 'get_categories_info'
   ));
-  // 前後の投稿の情報
-  register_rest_field('post', '_adjacent_post', array(
-    'get_callback' => 'get_adjacent_post_info'
-  ));
-  // htmlタグなしの抜粋の取得
-  register_rest_field('post', '_excerpt', array(
-    'get_callback' => 'get_excerpt_info'
-  ));
 }
 function get_categories_info($object) {
   $categories = get_the_category($object['id']);
   return $categories;
-}
-function get_adjacent_post_info($object) {
-  global $post;
-  $post = $object['id'];
-
-  $previous_post = get_previous_post();
-  $next_post = get_next_post();
-
-  if (is_a($next_post, 'WP_Post')) {
-    $response['next_post'] = array(
-      'id' => $next_post->ID,
-      'slug' => $next_post->post_name
-    );
-  } else {
-    $response['next_post'] = null;
-  }
-
-  if (is_a($previous_post, 'WP_Post')) {
-    $response['previous_post'] = array(
-      'id' => $previous_post->ID,
-      'slug' => $previous_post->post_name
-    );
-  } else {
-    $response['previous_post'] = null;
-  }
-
-  return $response;
-}
-function get_excerpt_info($object) {
-  global $post;
-  $post = $object['id'];
-  $excerpt = get_the_excerpt();
-  return $excerpt;
 }
 add_action('rest_api_init', 'register_rest_specific_fields');
 ?>
