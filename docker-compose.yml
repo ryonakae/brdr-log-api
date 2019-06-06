@@ -56,10 +56,10 @@ services:
 volumes:
   data-wp:
     external:
-      name: ${COMPOSE_PROJECT_NAME}-wp
+      name: ${VOLUME_NAME}-wp
   data-db:
     external:
-      name: ${COMPOSE_PROJECT_NAME}-db
+      name: ${VOLUME_NAME}-db
 
 networks:
   default:
