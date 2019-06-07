@@ -146,10 +146,21 @@ function register_rest_specific_fields() {
   register_rest_field('post', '_categories', array(
     'get_callback' => 'get_categories_info'
   ));
+
+  // htmlタグなしの抜粋の取得
+  register_rest_field('post', '_excerpt', array(
+    'get_callback' => 'get_excerpt_info'
+  ));
 }
 function get_categories_info($object) {
   $categories = get_the_category($object['id']);
   return $categories;
+}
+function get_excerpt_info($object) {
+  global $post;
+  $post = $object['id'];
+  $excerpt = get_the_excerpt();
+  return $excerpt;
 }
 add_action('rest_api_init', 'register_rest_specific_fields');
 ?>
