@@ -49,6 +49,7 @@ services:
       - ./backup:/backup:rw
       - ./wordpress/theme:/var/www/html/wp-content/themes/headless:ro
     # entrypoint: wp
+    working_dir: /
     command: '--info'
     networks:
       - default

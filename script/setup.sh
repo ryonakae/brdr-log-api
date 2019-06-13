@@ -18,12 +18,13 @@ elif [ "$5" = "" ]; then
 fi
 
 EXEC='docker-compose run --rm wpcli'
+EXECWP='docker-compose run --rm wpcli wp --path="/var/www/html"'
 
 # fix permission of wp-content
-docker-compose exec -u root data chown -R www-data:www-data /var/www/html/wp-content
+eval $EXEC chown -R www-data:www-data /var/www/html/wp-content
 
 # install wordpress
-eval $EXEC wp core install \
+eval $EXECWP core install \
   --url=$1 \
   --title=$2 \
   --admin_user=$3 \
@@ -31,34 +32,37 @@ eval $EXEC wp core install \
   --admin_email=$5
 
 # update wordpress
-eval $EXEC wp core update
-eval $EXEC wp core update-db
+eval $EXECWP core update
+eval $EXECWP core update-db
 
 # install & activate japanese lang file
-eval $EXEC wp core language install ja
-eval $EXEC wp site switch-language ja
+eval $EXECWP core language install ja
+eval $EXECWP site switch-language ja
 
 # change permalink setting
-eval $EXEC wp rewrite structure '/post/%post_id%'
+eval $EXECWP rewrite structure '/post/%post_id%'
 
 # activate headless theme
-eval $EXEC wp theme activate headless
+eval $EXECWP theme activate headless
 
 # delete default theme
-eval $EXEC wp theme delete \
+eval $EXECWP theme delete \
   twentyfifteen \
   twentysixteen \
   twentyseventeen \
   twentynineteen
 
 # delete default plugin
-eval $EXEC wp plugin delete \
+eval $EXECWP plugin delete \
   akismet \
   hello
 
 # install and actvate plugin
-eval $EXEC wp plugin install --activate \
+eval $EXECWP plugin install --activate \
   disable-comments \
   force-regenerate-thumbnails \
   update-control \
   wp-multibyte-patch
+
+# restart
+docker-compose restart
