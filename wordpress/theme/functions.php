@@ -62,18 +62,16 @@ function change_image_quality($arg) {
 add_filter('jpeg_quality', 'change_image_quality');
 
 // 画像のサイズを削除
-function delete_image_sizes($sizes) {
-  unset($sizes['thumbnail']);
-  unset($sizes['medium']);
-  unset($sizes['large']);
-  return $sizes;
-}
-add_filter('intermediate_image_sizes_advanced', 'delete_image_sizes');
+function set_image_sizes() {
+  remove_image_size('thumbnail');
+  remove_image_size('medium');
+  remove_image_size('large');
 
-// 画像のサイズを追加
-add_image_size('post-small', 750, 750, false);
-add_image_size('post-medium', 1440, 1440, false);
-add_image_size('post-large', 2560, 2560, false);
+  add_image_size('post-small', 750, 750, false);
+  add_image_size('post-medium', 1440, 1440, false);
+  add_image_size('post-large', 2560, 2560, false);
+}
+add_action('init', 'set_image_sizes');
 
 // 画像をアップロードしたときにファイル名をタイムスタンプに変更
 function rename_filename_to_timestamp($filename) {
