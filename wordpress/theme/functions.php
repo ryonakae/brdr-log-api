@@ -63,7 +63,7 @@ add_filter('jpeg_quality', 'change_image_quality');
 
 // 画像のサイズを削除
 function delete_image_sizes($sizes) {
-  // unset($sizes['thumbnail']);
+  unset($sizes['thumbnail']);
   unset($sizes['medium']);
   unset($sizes['large']);
   return $sizes;
@@ -71,7 +71,9 @@ function delete_image_sizes($sizes) {
 add_filter('intermediate_image_sizes_advanced', 'delete_image_sizes');
 
 // 画像のサイズを追加
-add_image_size('detail', 2560, 2560, false);
+add_image_size('thumbnail', 750, 750, false);
+add_image_size('medium', 1440, 1440, false);
+add_image_size('large', 2560, 2560, false);
 
 // 画像をアップロードしたときにファイル名をタイムスタンプに変更
 function rename_filename_to_timestamp($filename) {
