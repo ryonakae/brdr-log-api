@@ -1,0 +1,8 @@
+body,
+body * {
+  font-family: system-ui;
+}
+
+.editor-post-title * {
+  font-family: system-ui;
+}

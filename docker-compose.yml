@@ -2,44 +2,44 @@ version: '3'
 
 services:
   nginx:
-    image: nginx:1.13.5-alpine
+    image: nginx:1.17.0-alpine
     ports:
       - ${VIRTUAL_PORT}:80
     restart: always
     env_file: .env
     volumes:
       - data-wp:/var/www/html:ro
-      - ./server/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./server/nginx/conf:/etc/nginx/conf/:ro
-      - ./server/nginx/htpasswd:/etc/nginx/htpasswd/:ro
-      - ${THEME_DIRECTORY}:/var/www/html/wp-content/themes/${THEME_NAME}:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf/nginx.conf:ro
+      - ./wordpress/theme:/var/www/html/wp-content/themes/headless:ro
     networks:
       - proxy
-      - back
+      - default
 
   wordpress:
-    build: ./server/wordpress
-    ports:
+    build: ./wordpress
+    expose:
       - 9000
     restart: always
     env_file: .env
     volumes:
       - data-wp:/var/www/html:rw
-      - ./server/wordpress:/usr/local/etc/php:ro
-      - ${THEME_DIRECTORY}:/var/www/html/wp-content/themes/${THEME_NAME}:ro
+      - ./wordpress/default.ini:/usr/local/etc/php/conf.d/default.ini:ro
+      - ./wordpress/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./wordpress/theme:/var/www/html/wp-content/themes/headless:ro
     networks:
-      - back
+      - default
 
   mysql:
     image: mysql:5.7.19
-    ports:
+    expose:
       - 3306
     restart: always
     env_file: .env
     volumes:
       - data-db:/var/lib/mysql:rw
     networks:
-      - back
+      - default
 
   wpcli:
     image: tatemz/wp-cli
@@ -47,31 +47,23 @@ services:
       - data-wp:/var/www/html:rw
       - data-db:/var/lib/mysql:rw
       - ./backup:/backup:rw
-      - ${THEME_DIRECTORY}:/var/www/html/wp-content/themes/${THEME_NAME}:ro
-    entrypoint: wp
+      - ./wordpress/theme:/var/www/html/wp-content/themes/headless:ro
+    # entrypoint: wp
+    working_dir: /
     command: '--info'
     networks:
-      - back
-
-  data:
-    image: busybox:musl
-    volumes:
-      - data-wp:/var/www/html:rw
-      - data-db:/var/lib/mysql:rw
-      - ./backup:/backup:rw
-    networks:
-      - back
+      - default
 
 volumes:
   data-wp:
     external:
-      name: ${COMPOSE_PROJECT_NAME}-wp
+      name: ${VOLUME_NAME}-wp
   data-db:
     external:
-      name: ${COMPOSE_PROJECT_NAME}-db
+      name: ${VOLUME_NAME}-db
 
 networks:
+  default:
   proxy:
     external:
       name: ${NETWORK_PROXY_NAME}
-  back:
