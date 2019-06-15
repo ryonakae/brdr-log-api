@@ -36,8 +36,7 @@ eval $EXECWP core update
 eval $EXECWP core update-db
 
 # install & activate japanese lang file
-eval $EXECWP core language install ja
-eval $EXECWP site switch-language ja
+eval $EXECWP core language install ja --activate
 
 # change permalink setting
 eval $EXECWP rewrite structure '/post/%post_id%'
@@ -62,7 +61,8 @@ eval $EXECWP plugin install --activate \
   disable-comments \
   force-regenerate-thumbnails \
   update-control \
-  wp-multibyte-patch
+  wp-multibyte-patch \
+  wp-jamstack-deployments
 
 # restart
 docker-compose restart
