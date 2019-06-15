@@ -163,4 +163,11 @@ function get_excerpt_info($object) {
   return $excerpt;
 }
 add_action('rest_api_init', 'register_rest_specific_fields');
+
+// Gutenbergエディタに独自のスタイルを適用する
+function apply_editor_style() {
+  add_theme_support('editor-styles');
+  add_editor_style('style-editor.css');
+}
+add_action('after_setup_theme', 'apply_editor_style');
 ?>
