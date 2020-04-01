@@ -60,9 +60,9 @@ function change_image_quality($arg) {
   return 100;
 }
 add_filter('jpeg_quality', 'change_image_quality');
+add_filter('wp_editor_set_quality', 'change_image_quality');
 
 // 画像のサイズを削除
-add_filter('intermediate_image_sizes_advanced', 'disable_image_sizes');
 function disable_image_sizes($new_sizes) {
   unset($new_sizes['thumbnail']);
   unset($new_sizes['medium']);
@@ -72,7 +72,50 @@ function disable_image_sizes($new_sizes) {
   unset($new_sizes['2048x2048']);
   return $new_sizes;
 }
+add_filter('intermediate_image_sizes_advanced', 'disable_image_sizes');
 add_filter('big_image_size_threshold', '__return_false');
+
+// 画像のアップロード後に画像を圧縮(可逆or非可逆)
+function compress_images($metadata, $img_id) {
+  // 元画像のフルパス
+  $org_path = get_attached_file($img_id);
+
+  // 画像のファイルタイプを取得
+  $img_type = get_post_mime_type($img_id);
+
+  // ファイルタイプがJPEGの場合
+  if ($img_type == 'image/jpeg') {
+    //非可逆圧縮後に可逆圧縮
+    $output = shell_exec("cjpeg -quality 85 '$org_path' > '$org_path.jpg' && jpegtran -optimise -copy none -outfile '$org_path' '$org_path.jpg' && rm '$org_path.jpg'");
+
+    // 全てのサムネイルを圧縮
+    foreach ($metadata['sizes'] as $size => $value) {
+      // 全てのサムネイルのフルパスを取得
+      $thumb_path = dirname($org_path).'/'.$value['file'];
+
+      // 全てのサムネイルを非可逆圧縮後に可逆圧縮
+      $output = shell_exec("cjpeg -quality 85 '$thumb_path' > '$thumb_path.jpg' && jpegtran -optimise -copy none -outfile '$thumb_path' '$thumb_path.jpg' && rm '$thumb_path.jpg'");
+    }
+  }
+
+	// ファイルタイプがPNGの場合
+  if ($img_type == 'image/png') {
+    // 非可逆圧縮
+    $output = shell_exec("pngquant --ext .png --quality=80-90 -s1 --force '$org_path'");
+
+    // 全てのサムネイルを圧縮
+    foreach ($metadata['sizes'] as $size => $value) {
+      // 全てのサムネイルのフルパスを取得
+      $thumb_path = dirname($org_path).'/'.$value['file'];
+
+      // 非可逆圧縮
+      $output = shell_exec("pngquant --ext .png --quality=80-90 -s1 --force '$thumb_path'");
+    }
+  }
+
+  return $metadata;
+}
+add_filter('wp_generate_attachment_metadata', 'compress_images', 10, 2);
 
 // 画像をアップロードしたときにファイル名をタイムスタンプに変更
 function rename_filename_to_timestamp($filename) {
