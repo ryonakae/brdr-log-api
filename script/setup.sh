@@ -35,8 +35,8 @@ eval $EXECWP core install \
 eval $EXECWP core update
 eval $EXECWP core update-db
 
-# install & activate japanese lang file
-eval $EXECWP core language install ja --activate
+# change timezone
+eval $EXECWP option update timezone_string 'Asia/Tokyo'
 
 # change permalink setting
 eval $EXECWP rewrite structure '/post/%post_id%'
@@ -46,10 +46,9 @@ eval $EXECWP theme activate headless
 
 # delete default theme
 eval $EXECWP theme delete \
-  twentyfifteen \
-  twentysixteen \
   twentyseventeen \
-  twentynineteen
+  twentynineteen \
+  twentytwenty
 
 # delete default plugin
 eval $EXECWP plugin delete \
@@ -63,6 +62,10 @@ eval $EXECWP plugin install --activate \
   update-control \
   wp-multibyte-patch \
   wp-jamstack-deployments
+
+# install & activate japanese lang file
+eval $EXECWP core language install ja --activate
+eval $EXECWP core language update
 
 # restart
 docker-compose restart

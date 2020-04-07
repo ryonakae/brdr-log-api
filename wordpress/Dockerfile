@@ -1,9 +1,14 @@
-FROM wordpress:5.2.1-php7.2-fpm
+FROM wordpress:5.4.0-php7.4-fpm
 
 # 不足してるPHPライブラリをインストール
 RUN apt-get update && apt-get install -y \
+  # for gd
   libjpeg-dev \
   libpng-dev \
+  libfreetype6-dev \
+  # for oniguruma
+  libonig-dev \
+  # for mozjpeg & pngquant
   zlib1g-dev \
   autoconf \
   automake \
@@ -16,8 +21,8 @@ RUN apt-get update && apt-get install -y \
 RUN rm -rf /var/lib/apt/lists/*
 
 # PHPの拡張をインストール
-RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
-RUN docker-php-ext-install gd pdo pdo_mysql mysqli mbstring
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
+RUN docker-php-ext-install gd pdo pdo_mysql mysqli
 
 # mozjpegをインストール
 WORKDIR /home

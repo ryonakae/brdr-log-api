@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    image: nginx:1.17.0-alpine
+    image: nginx:1.17.9-alpine
     ports:
       - ${VIRTUAL_PORT}:80
     restart: always
@@ -31,7 +31,7 @@ services:
       - default
 
   mysql:
-    image: mysql:5.7.19
+    image: mysql:5.7.29
     expose:
       - 3306
     restart: always
