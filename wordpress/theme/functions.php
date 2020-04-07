@@ -32,10 +32,19 @@ function remove_dns_prefetch($hints, $relation_type) {
 add_filter('wp_resource_hints', 'remove_dns_prefetch', 10, 2);
 
 // head内のGutenberg用CSSを削除
-add_action( 'wp_enqueue_scripts', 'remove_block_library_style' );
 function remove_block_library_style() {
-  wp_dequeue_style( 'wp-block-library' );
+  wp_dequeue_style('wp-block-library');
 }
+add_action( 'wp_enqueue_scripts', 'remove_block_library_style' );
+
+// WP REST APIのURLをhome_url(WordPressアドレス)に固定する
+function change_rest_url($url) {
+  if (is_admin()) {
+    $url = str_replace(home_url(), site_url(), $url);
+  }
+  return $url;
+}
+add_filter('rest_url', 'change_rest_url');
 
 // セルフピンバックの無効化
 function disable_pinback(&$links) {
@@ -120,10 +129,10 @@ add_filter('wp_generate_attachment_metadata', 'compress_images', 10, 2);
 // 画像をアップロードしたときにファイル名をタイムスタンプに変更
 function rename_filename_to_timestamp($filename) {
   $info = pathinfo($filename);
-	$ext  = empty($info['extension']) ? '' : '.' . $info['extension'];
-	if ($info['filename'] != 'sitemap') {
-		$filename = strtolower(time().$ext);
-	}
+  $ext  = empty($info['extension']) ? '' : '.' . $info['extension'];
+  if ($info['filename'] != 'sitemap') {
+    $filename = strtolower(time().$ext);
+  }
   return $filename;
 }
 add_filter('sanitize_file_name', 'rename_filename_to_timestamp', 10);
