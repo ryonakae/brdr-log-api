@@ -250,4 +250,18 @@ function custom_allowed_block_types($allowed_block_types) {
   return $allowed_block_types;
 }
 add_filter('allowed_block_types', 'custom_allowed_block_types');
+
+// ログインしたらダッシュボードではなく投稿一覧に遷移させる
+function redirect_dashiboard() {
+  if ($_SERVER['SCRIPT_NAME'] == '/wp-admin/index.php') {
+    wp_redirect(admin_url('edit.php'));
+  }
+}
+add_action('admin_init', 'redirect_dashiboard');
+
+// メニューのダッシュボードを非表示にする
+function remove_dashiboard_menu() {
+  remove_menu_page('index.php');
+}
+add_action('admin_menu', 'remove_dashiboard_menu');
 ?>
