@@ -48,7 +48,8 @@ eval $EXECWP theme activate headless
 eval $EXECWP theme delete \
   twentyseventeen \
   twentynineteen \
-  twentytwenty
+  twentytwenty \
+  twentytwentyone
 
 # delete default plugin
 eval $EXECWP plugin delete \
@@ -61,7 +62,8 @@ eval $EXECWP plugin install --activate \
   force-regenerate-thumbnails \
   update-control \
   wp-multibyte-patch \
-  wp-jamstack-deployments
+  wp-jamstack-deployments \
+  headless-mode
 
 # install & activate japanese lang file
 eval $EXECWP core language install ja --activate
