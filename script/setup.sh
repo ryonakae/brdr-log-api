@@ -62,8 +62,7 @@ eval $EXECWP plugin install --activate \
   force-regenerate-thumbnails \
   update-control \
   wp-multibyte-patch \
-  wp-jamstack-deployments \
-  headless-mode
+  wp-jamstack-deployments
 
 # install & activate japanese lang file
 eval $EXECWP core language install ja --activate
